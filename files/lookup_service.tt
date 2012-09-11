@@ -2,11 +2,11 @@
 # Generated automatically. Do not edit.
 
 [%FOREACH p IN port %]
-<port [% p.portnum %] >
+<port [% p.portnum %]>
 
-[% FOREACH it IN p.endpoint.pairs %]
-    <endpoint [% it.key %]>
-    [% FOREACH g in it.value.gls %]
+[% FOREACH it = p.endpoint %]
+    <endpoint [% it.name %]>
+    [% FOREACH g = it.gls %]
         <gls>
 	    root    [% g.root %]
 	    ls_ttl [% g.ls_ttl %]
@@ -21,12 +21,12 @@
 	    service_type [% g.service_type %]
        </gls>
    [% END %]
-   disable [% p.endpoint.disable %]
-   module [% p.endpoint.module %]
+       disable [% it.disable %]
+       module [% it.module %]
    </endpoint>
 </port>
-[% END %]
-[% END %]
+[% END -%]
+[% END -%]
 
 ls_registration_interval [% ls_registration_interval %]
 disable_echo [% disable_echo %]
@@ -36,7 +36,6 @@ root_hints_url [% root_hints_url %]
 [% IF root_hints_file %]
 root_hints_file [% root_hints_file %]
 [% END %]
-
 reaper_interval [% reaper_interval %]
 max_worker_lifetime [% max_worker_lifetime %]
 max_worker_processes [% max_worker_processes %]
