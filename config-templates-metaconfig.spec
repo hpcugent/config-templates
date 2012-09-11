@@ -1,5 +1,5 @@
 %define tplroot %{?_datarootdir}%{!?_datarootdir:%{_datadir}}
-%define tpldir %{tplroot}/quattor/templates/metaconfig}
+%define tpldir %{tplroot}/quattor/templates/metaconfig
 
 Name: config-templates-metaconfig
 Version: 0.1.0
