@@ -26,6 +26,7 @@
    </endpoint>
 </port>
 [% END %]
+[% END %]
 
 ls_registration_interval [% ls_registration_interval %]
 disable_echo [% disable_echo %]
