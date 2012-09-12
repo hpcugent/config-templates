@@ -1,0 +1,239 @@
+# Configuration file for Perfsonar BUOY daemons
+
+# Basic stuff that will not change, to avoid littering the schema
+OWPSessionSuffix        .owp
+BWSessionSuffix         .recv.bw
+SummarySuffix           .sum
+
+OWPCmd                  powstream
+# We MUST allow tiny clock schew in BW monitoring, since perfSONAR has
+# no clue about ptpd.
+BWCmd                   bwctl -a1
+SessionSumCmd           owstats -M
+DevNull                 /dev/null
+
+# Global in nature...should not change
+ConfigVersion 20090716.0
+SecretNames   16Jul2009 15Jul2008 FallBack
+SecretName    16Jul2009
+16Jul2009     SayWhatAgainIDareYou
+15Jul2008     AFestivusForTheRestOfUs
+FallBack      TingsBeBerryBerryBadMon
+
+# Logging info
+[% if debug %]
+Debug
+[% else %]
+!Debug
+[% end %]
+[% if verbose %]
+Verbose
+[% else %]
+!Verbose
+[% end %]
+SyslogFacility        local5
+
+##################
+#
+# POSSIBLE CHANGES
+#
+##################
+BWBinDir      [% bindir %]
+BWDataDir     [% bwctl.data_dir %]
+
+
+OWPBinDir     [% bindir %]
+OWPDataDir    [% owamp.data_dir %]
+OwampdVarDir  [% var_dir %]
+
+    # If OWP/BW share directories - you can drop the prefix and only
+    # specify the parameter once. (e.g. BinDir works for 'both'.)
+
+    # user:group info
+UserName   [% user %]
+GroupName  [% group %]
+
+
+##################
+#
+# POSSIBLE CHANGES
+#
+##################
+
+    # Central host config params
+OWPCentralHost [% owamp.central_host %]
+BWCentralHost  [% bwctl.central_host %]
+
+    # If set, only allow contact from CONTACTADDRs defined for each node
+[% if verify_peer_addr %]
+OWPVerifyPeerAddr
+BWVerifyPeerAddr
+[% else %]
+!OWPVerifyPeerAddr
+!BWVerifyPeerAddr
+[% end %]
+
+    # read timeout on file upload socket.
+OWPCentralHostTimeout   [% owamp.timeout %]
+BWCentralHostTimeout    [% bwctl.timeout %]
+
+    # Directory on central server to stage data while parsing into db.
+OWPCentralDataDir   [% owamp.data_dir %]
+BWCentralDataDir    [% bwctl.data_dir %]
+
+OWPCentralArchDir   [% owamp.archive_dir %]
+BWCentralArchDir    [% bwctl.archive_dir %]
+
+#################
+#
+# POSSIBLE CHANGE (DATABASE OPTIONS)
+#
+#################
+
+    # CentralDBHost will default to 'localhost' if not set.  This can be used
+    # to specify another host for mysql interaction. (not recommended)
+# CentralDBHost mysql.host.com
+CentralDBType     [% central_db_type %]
+CentralDBUser     [% central_db_user %]
+CentralDBPass     [% central_db_pass %]
+BWCentralDBName   [% bwctl.db %]
+OWPCentralDBName  [% owamp.db %]
+
+    # add a read only user so that the cgis have minimum privileges
+CGIDBUser           readonly
+CGIDBPass           readonly
+
+CGITmpDir           /tmp
+Ploticus           /usr/bin/pl
+
+    # connect/write/read timeout for sending socket (Can be set on a
+    # per-node bases if needed.)
+SendTimeout        [% send_timeout %]
+#
+#    # Address types and descriptions
+#    # On Abilene, LAT addrs map to nms4-* and BW addrs map to nms1-*
+#    # On I2NET, LAT addrs map to nms-rlat and BW addrs map to nms-?thr?
+#ADDRTYPES   [[BW4 BW6 LAT4 LAT6]]
+#
+#    # ADDRDESC is relative to 'node' so it can be over-ridden in NODE blocks
+#    # (Useful for specifying the ISP a given address is associated with.)
+BW4ADDRDESC     IPv4 Throughput
+BW6ADDRDESC     IPv6 Throughput
+LAT4ADDRDESC    IPv4 Latency
+LAT6ADDRDESC    IPv6 Latency
+
+
+
+#######################################################################
+## BWCTL Iperf-TCP Test Definition
+#
+[% FOREACH test in testspecs.pairs %]
+<TESTSPEC=[% test.key %]>
+DESCRIPTION [% test.value.description %]
+TOOL [% test.value.tool %]
+[% if test.value.bw %]
+BWTestInterval [% test.value.bw.interval %]
+BWTestIntervalStartAlpha [% test.value.bw.start_alpha %]
+BWReportInterval [% test.value.bw.report_interval %]
+#
+#    # TCP send/recv buffer size. (Might not be good to set for auto-scaling
+#    # kernels)
+#BWWindowSize            4M
+#
+#    # do a tcp test
+[% test.value.type %]
+BWTestDuration  [% test.value.bw.duration %]
+[% else %]
+
+OWPINTERVAL     [% test.owp.interval %]
+OWPLOSSTHRESH   [% test.owp.lossthresh %]
+#
+## number of session packets
+## 10800 is the number of seconds in 3 hours - with above 'interval'
+## set to 0.1 - that means 108000 packets in a 3 hour session.
+## Because powstream uses 2 control connections to stich together
+## concurrent sessions to achieve continuous testing, 3 hour long
+## individual sessions means our testing can survive ~6 hour
+## network partitions.
+OWPSESSIONCOUNT [% test.owp.session_count %]
+#
+## number of packets in a sample (see owstats -N )
+## OWPSAMPLECOUNT MUST be an even multiple of OWPSESSIONCOUNT.
+##
+## Attempting to get a summary session ~ 1/minute. So, with the
+## above 'interval' of 0.1 that means roughly 600 packets per minute.
+OWPSAMPLECOUNT [% test.owp.sample_count %]
+OWPBUCKETWIDTH [% test.owp.bucket_width %]
+[% end %]
+</TESTSPEC>
+
+#######################################################################
+# Host definitions, should equal the result of the hostname in `uname -a`, this
+#   is how the master will determine which machine is running a test.  Its a
+#   good idea to enter all machines that are involved in all tests here.
+#
+[% FOREACH node in nodes.pairs %]
+<NODE=[% node.key %]>
+LONGNAME [% node.value.longname %]
+CONTACTADDR [% node.value.contactaddr %]
+BW4ADDR     [% node.value.contactaddr %]:[% node.value.bw_port %]
+LAT4ADDR    [% node.value.contactaddr %]
+</NODE>
+[% END %]
+
+LOCALNODES [[ [% ' '.join(localnodes) %] ]]
+
+[% FOREACH host in hosts.pairs %]
+<HOST=host.key>
+NODE    [% host.value.node %]
+</HOST>
+[% END %]
+
+# The next two are 'targets' of the test.  They are just running bwctl/owamp and
+#  do not need to be running a master collector (for star tests).  If we are
+#  running a mesh then we will need to run the collector/master.
+#
+
+#################
+#
+# MUST CHANGE
+#
+#################
+
+#######################################################################
+# Group Definitions
+[% foreach group in groups.keys %]
+<GROUP=[% group.key %]>
+
+DESCRIPTION [% group.value.description %]
+GROUPTYPE   [% group.value.type %]
+
+
+[% if group.value.hauptnode %]
+HAUPTNODE [% group.value.hauptnode %]
+[% end %]
+
+NODES [[ [% ' '.join(group.value.nodes) %] ]]
+
+[% if group.value.include_senders %]
+INCLUDE_SENDERS [% ' '.join(group.value.include_senders) %]
+[% end %]
+[% if group.value.include_receivers %]
+INCLUDE_RECEIVERS [% ' '.join(group.value.include_receivers) %]
+[%end
+</GROUP>
+[%end]
+
+#######################################################################
+# Measurement Sets
+[% FOREACH ms in measurementsets.pairs %]
+<MeasurementSet=[% ms.key %]>
+DESCRIPTION [% ms.value.description %]
+ADDRTYPE    [% ms.value.addr_type %]
+GROUP       [% ms.value.group %]
+TESTSPEC    [% ms.value.testspec %]
+[% if ms.value.exclude_self %]
+EXCLUDE_SELF
+[% end %]
+</MeasurementSet>
+[% end %]
