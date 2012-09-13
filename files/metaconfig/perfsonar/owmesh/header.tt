@@ -5,9 +5,7 @@ BWSessionSuffix         .recv.bw
 SummarySuffix           .sum
 
 OWPCmd                  powstream
-# We MUST allow tiny clock schew in BW monitoring, since perfSONAR has
-# no clue about ptpd.
-BWCmd                   bwctl -a1
+BWCmd                   bwctl
 SessionSumCmd           owstats -M
 DevNull                 /dev/null
 
