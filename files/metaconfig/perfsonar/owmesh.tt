@@ -46,8 +46,8 @@ OWPCentralHostTimeout   [% owamp.timeout %]
 BWCentralHostTimeout    [% bwctl.timeout %]
 
 # Directory on central server to stage data while parsing into db.
-OWPCentralDataDir   [% owamp.data_dir %]
-BWCentralDataDir    [% bwctl.data_dir %]
+OWPCentralDataDir   [% owamp.data_dir %]/upload
+BWCentralDataDir    [% bwctl.data_dir %]/upload
 
 OWPCentralArchDir   [% owamp.archive_dir %]
 BWCentralArchDir    [% bwctl.archive_dir %]
@@ -115,13 +115,5 @@ LOCALNODES [[ [% localnodes.join(' ') %] ]]
 #######################################################################
 # Measurement Sets
 [% FOREACH ms IN measurementsets.pairs %]
-<MeasurementSet=[% ms.key %]>
-DESCRIPTION [% ms.value.description %]
-ADDRTYPE    [% ms.value.addr_type %]
-GROUP       [% ms.value.group %]
-TESTSPEC    [% ms.value.testspec %]
-[% IF ms.value.exclude_self %]
-EXCLUDE_SELF
-[% END %]
-</MeasurementSet>
+[% INCLUDE metaconfig/perfsonar/owmesh/measurementset.tt name=ms.key desc=ms.value %]
 [% END %]
