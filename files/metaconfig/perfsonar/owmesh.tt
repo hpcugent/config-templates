@@ -1,30 +1,6 @@
 # Configuration file for Perfsonar BUOY daemons
 
-# Basic stuff that will not change, to avoid littering the schema
-OWPSessionSuffix        .owp
-BWSessionSuffix         .recv.bw
-SummarySuffix           .sum
-
-OWPCmd                  powstream
-# We MUST allow tiny clock schew in BW monitoring, since perfSONAR has
-# no clue about ptpd.
-BWCmd                   bwctl -a1
-SessionSumCmd           owstats -M
-DevNull                 /dev/null
-
-# Global in nature...should not change
-ConfigVersion 20090716.0
-SecretNames   16Jul2009 15Jul2008 FallBack
-SecretName    16Jul2009
-16Jul2009     SayWhatAgainIDareYou
-15Jul2008     AFestivusForTheRestOfUs
-FallBack      TingsBeBerryBerryBadMon
-
-# Logging info
-!Debug
-!Verbose
-SyslogFacility        local5
-
+[% INCLUDE metaconfig/perfsonar/owmesh/header.tt %]
 ##################
 #
 # POSSIBLE CHANGES
@@ -92,72 +68,17 @@ BWCentralDBName   [% bwctl.db %]
 OWPCentralDBName  [% owamp.db %]
 
 # add a read only user so that the cgis have minimum privileges
-CGIDBUser           readonly
-CGIDBPass           readonly
-
-CGITmpDir           /tmp
-Ploticus           /usr/bin/pl
 
 # connect/write/read timeout for sending socket (Can be set on a
 # per-node bases if needed.)
 SendTimeout        [% send_timeout %]
-#
-#    # Address types and descriptions
-#    # On Abilene, LAT addrs map to nms4-* and BW addrs map to nms1-*
-#    # On I2NET, LAT addrs map to nms-rlat and BW addrs map to nms-?thr?
-#ADDRTYPES   [[BW4 BW6 LAT4 LAT6]]
-#
-#    # ADDRDESC is relative to 'node' so it can be over-ridden in NODE blocks
-#    # (Useful for specifying the ISP a given address is associated with.)
-BW4ADDRDESC     IPv4 Throughput
-BW6ADDRDESC     IPv6 Throughput
-LAT4ADDRDESC    IPv4 Latency
-LAT6ADDRDESC    IPv6 Latency
-
 
 
 #######################################################################
 ## BWCTL Iperf-TCP Test Definition
 #
 [% FOREACH test IN testspecs.pairs %]
-<TESTSPEC=[% test.key %]>
-DESCRIPTION [% test.value.description %]
-TOOL [% test.value.tool %]
-[% IF test.value.bw %]
-BWTestInterval [% test.value.bw.interval %]
-BWTestIntervalStartAlpha [% test.value.bw.start_alpha %]
-BWReportInterval [% test.value.bw.report_interval %]
-#
-#    # TCP send/recv buffer size. (Might not be good to set for auto-scaling
-#    # kernels)
-#BWWindowSize            4M
-#
-#    # do a tcp test
-[% test.value.type %]
-BWTestDuration  [% test.value.bw.duration %]
-[% ELSE %]
-
-OWPINTERVAL     [% test.owp.interval %]
-OWPLOSSTHRESH   [% test.owp.lossthresh %]
-#
-## number of session packets
-## 10800 is the number of seconds in 3 hours - with above 'interval'
-## set to 0.1 - that means 108000 packets in a 3 hour session.
-## Because powstream uses 2 control connections to stich together
-## concurrent sessions to achieve continuous testing, 3 hour long
-## individual sessions means our testing can survive ~6 hour
-## network partitions.
-OWPSESSIONCOUNT [% test.owp.session_count %]
-#
-## number of packets in a sample (see owstats -N )
-## OWPSAMPLECOUNT MUST be an even multiple of OWPSESSIONCOUNT.
-##
-## Attempting to get a summary session ~ 1/minute. So, with the
-## above 'interval' of 0.1 that means roughly 600 packets per minute.
-OWPSAMPLECOUNT [% test.owp.sample_count %]
-OWPBUCKETWIDTH [% test.owp.bucket_width %]
-[% END %]
-</TESTSPEC>
+[% INCLUDE metaconfig/perfsonar/owmesh/testspec.tt name=test.key desc=test.value %]
 [% END %]
 #######################################################################
 # Host definitions, should equal the result of the hostname in `uname -a`, this
@@ -165,20 +86,13 @@ OWPBUCKETWIDTH [% test.owp.bucket_width %]
 #   good idea to enter all machines that are involved in all tests here.
 #
 [% FOREACH node IN nodes.pairs %]
-<NODE=[% node.key %]>
-LONGNAME [% node.value.longname %]
-CONTACTADDR [% node.value.contact_addr %]
-BW4ADDR     [% node.value.contact_addr %]:[% node.value.bw_port %]
-LAT4ADDR    [% node.value.contact_addr %]
-</NODE>
+[% INCLUDE metaconfig/perfsonar/owmesh/node.tt name=node.key desc=node.value %]
 [% END %]
 
 LOCALNODES [[ [% localnodes.join(' ') %] ]]
 
 [% FOREACH host IN hosts.pairs %]
-<HOST=[%host.key%]>
-NODE    [% host.value.node %]
-</HOST>
+[% INCLUDE metaconfig/perfsonar/owmesh/host.tt name=host.key desc=host.value %]
 [% END %]
 
 # The next two are 'targets' of the test.  They are just running bwctl/owamp and
@@ -195,25 +109,7 @@ NODE    [% host.value.node %]
 #######################################################################
 # Group Definitions
 [% FOREACH group IN groups.pairs %]
-<GROUP=[% group.key %]>
-
-DESCRIPTION [% group.value.description %]
-GROUPTYPE   [% group.value.type %]
-
-
-[% IF group.value.hauptnode %]
-HAUPTNODE [% group.value.hauptnode %]
-[% END %]
-
-NODES [[ [% group.value.nodes.join(' ') %] ]]
-
-[% IF group.value.include_senders %]
-INCLUDE_SENDERS [[ [% group.value.include_senders.join(' ') %] ]]
-[% END %]
-[% IF group.value.include_receivers %]
-INCLUDE_RECEIVERS [[ [% group.value.include_receivers.join(' ') %] ]]
-[%END %]
-</GROUP>
+[% INCLUDE metaconfig/perfsonar/owmesh/group.tt name=group.key desc=group.value %]
 [%END %]
 
 #######################################################################

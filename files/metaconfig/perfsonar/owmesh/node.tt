@@ -1,0 +1,7 @@
+# Node specification for [%name%]
+<NODE=[% name %]>
+LONGNAME [% desc.longname %]
+CONTACTADDR [% desc.contact_addr %]
+BW4ADDR     [% desc.contact_addr %]:[% desc.bw_port %]
+LAT4ADDR    [% desc.contact_addr %]
+</NODE>
