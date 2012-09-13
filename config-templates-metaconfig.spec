@@ -28,7 +28,7 @@ with ncm-metaconfig.
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{tpldir}
-install metaconfig/* $RPM_BUILD_ROOT/%{tpldir}/
+cp -r metaconfig/* $RPM_BUILD_ROOT/%{tpldir}/
 
 %files
 %{tpldir}/*
