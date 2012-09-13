@@ -27,9 +27,8 @@ with ncm-metaconfig.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/%{tpldir}/perfsonar/
-install lookup_service.tt $RPM_BUILD_ROOT/%{tpldir}/perfsonar/
-
+mkdir -p $RPM_BUILD_ROOT/%{tpldir}/perfsonar
+install perfsonar/ $RPM_BUILD_ROOT/%{tpldir}/perfsonar/*
 
 %files
 %{tpldir}/*
