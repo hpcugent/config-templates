@@ -2,6 +2,6 @@
 <NODE=[% name %]>
 LONGNAME [% desc.longname %]
 CONTACTADDR [% desc.contact_addr %]
-BW4ADDR     [% desc.contact_addr %]:[% desc.bw_port %]
+BW4ADDR     [% desc.contact_addr %]
 LAT4ADDR    [% desc.contact_addr %]
 </NODE>
