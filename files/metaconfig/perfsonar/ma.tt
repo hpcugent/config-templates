@@ -12,7 +12,7 @@
                     ls_instance [% e.buoy.ls_instance %]
                         # use a 'file' database
                     metadata_db_file [% e.buoy.metadata_db_file %]
-                    metadata_db_type [% e.buoy.metadata_db_file %]
+                    metadata_db_type [% e.buoy.metadata_db_type %]
                         # Directory that contains the owmesh.conf file
                     owmesh [% e.buoy.owmesh %]
                         # Service information
