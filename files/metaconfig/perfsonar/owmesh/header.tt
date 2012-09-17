@@ -27,17 +27,3 @@ CGIDBPass           readonly
 
 CGITmpDir           /tmp
 Ploticus           /usr/bin/pl
-
-#    # Address types and descriptions
-#    # On Abilene, LAT addrs map to nms4-* and BW addrs map to nms1-*
-#    # On I2NET, LAT addrs map to nms-rlat and BW addrs map to nms-?thr?
-#ADDRTYPES   [[BW4 BW6 LAT4 LAT6]]
-#
-#    # ADDRDESC is relative to 'node' so it can be over-ridden in NODE blocks
-#    # (Useful for specifying the ISP a given address is associated with.)
-
-
-BW4ADDRDESC     IPv4 Throughput
-BW6ADDRDESC     IPv6 Throughput
-LAT4ADDRDESC    IPv4 Latency
-LAT6ADDRDESC    IPv6 Latency

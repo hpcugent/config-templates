@@ -52,6 +52,9 @@ BWCentralDataDir    [% bwctl.data_dir %]/upload
 OWPCentralArchDir   [% owamp.archive_dir %]
 BWCentralArchDir    [% bwctl.archive_dir %]
 
+ADDRTYPES   [[ [% addrtype.join(' ') %] ]]
+
+
 #################
 #
 # POSSIBLE CHANGE (DATABASE OPTIONS)
