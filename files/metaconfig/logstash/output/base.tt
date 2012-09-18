@@ -1,0 +1,8 @@
+[% IF desc.exclude_tags %]
+exclude_tags => [ [% FOREACH t IN desc.exclude_tags %] "t", [% END %] ]
+[% END %]
+[% IF desc.tags %]
+tags => [% FOREACH t in desc.tags %] "t", [% END %] ]
+[% END %]
+[% IF desc.type %]
+type => "[% desc.type %]"
