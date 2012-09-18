@@ -1,0 +1,12 @@
+file {
+    [% INCLUDE metaconfig/logstash/input/base.tt %]
+    path => [ [% FOREACH p in desc.path %] "[% p %]" [% END %] ]
+    exclude => [ [% FOREACH p in desc.exclude %] "[% p %]" [% END %] ]
+    [% IF desc.sincedb_path %]
+    sincedb_path => "[% desc.sincedb_path %]"
+    [% END %]
+    [% IF desc.sincedb_write_interval %]
+    sincedb_write_interval => [% desc.sincedb_write_interval %]
+    [% END %]
+    stat_interval => [% desc.stat_interval %]
+}

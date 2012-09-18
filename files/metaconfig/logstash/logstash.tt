@@ -1,0 +1,20 @@
+input {
+    [% FOREACH i IN input.gelf %]
+        [% INCLUDE metaconfig/logstash/input/gelf.tt desc=i %]
+    [% END %]
+    [% FOREACH i IN input.file %]
+        [% INCLUDE metaconfig/logstash/input/file.tt desc=i %]
+    [% END %]
+    [% FOREACH i IN input amqp %]
+        [% INCLUDE metaconfig/logstash/input/amqp.tt desc=i %]
+    [% END %]
+}
+
+filter {
+}
+
+output {
+    [% FOREACH o IN  output.gelf %]
+        [% INCLUDE metaconfig/logstash/output/gelf.tt desc=o %]
+    [% END %]
+}

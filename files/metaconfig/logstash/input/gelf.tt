@@ -1,0 +1,10 @@
+gelf {
+    [% INCLUDE metaconfig/logstash/input/base.tt %]
+    port => [% desc.port %]
+    [% IF desc.remap %]
+    remap => true
+    [% ELSE %]
+    remap => false
+    [% END %]
+    [% IF desc.add_field %]
+}
