@@ -2,15 +2,18 @@ input {
     [% FOREACH i IN input.gelf %]
         [% INCLUDE metaconfig/logstash/input/gelf.tt desc=i %]
     [% END %]
-    [% FOREACH i IN input.file %]
+    [% FOREACH i IN input.files %]
         [% INCLUDE metaconfig/logstash/input/file.tt desc=i %]
     [% END %]
-    [% FOREACH i IN input amqp %]
+    [% FOREACH i IN input.amqp %]
         [% INCLUDE metaconfig/logstash/input/amqp.tt desc=i %]
     [% END %]
 }
 
 filter {
+   [% FOREACH f IN filters.grok %]
+       [% INCLUDE metaconfig/logstash/filters/grok.tt desc=f %]
+   [% END %]
 }
 
 output {

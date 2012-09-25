@@ -1,16 +1,11 @@
-    add_field =>  [ [% FOREACH v IN desc.add_field.pairs %]
-        "[% v.key %]",  "[% v.value %]",
-    [% END %] ]
-    [% END %]
-    [% IF desc.format %]
-        format => "[% desc.format %]"
-    [% END %]
-    name => "[% desc.name %]"
-    [% IF desc.tags %]
+[%- FOREACH v IN desc.add_field.pairs %]
+    add_field => ["[% v.key %]",  "[% v.value -%]"]
+[% END %]
+[% IF desc.format.exists %]
+    format => "[% desc.format %]"
+[% END %]
+[% IF desc.tags.exists %]
     tags => [ [% FOREACH t IN desc.tags %] "[%t%]", [% END %] ]
-    type => "[% desc.type %]"
-    [% IF desc.debug %]
-    debug => true
-    [% ELSE %]
-    debug => false
-    [% END %]
+[% END %]
+type => "[% desc.type %]"
+debug => [% desc.debug ? "true" : "false" %]
