@@ -1,0 +1,4 @@
+stdout {
+[% INCLUDE metaconfig/logstash/output/basic.tt %]
+debug_format => "[% desc.debug_format %]
+}
