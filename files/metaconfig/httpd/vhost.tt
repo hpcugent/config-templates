@@ -1,0 +1,12 @@
+[%- IF !$dirs_render -%]
+[% dirs_render = "metaconfig/httpd/directory.tt" %]
+[%- END -%]
+[% FOREACH dir IN vhost.directories %]
+[% INCLUDE $dirs_render desc=dir FILTER indent %]
+[% END %]
+
+[%- IF vhost.exists('ssl') -%]
+[% INCLUDE metaconfig/httpd/ssl.tt desc=vhost.ssl %]
+[%- END -%]
+
+ServerName [% vhost.name %]
