@@ -1,0 +1,11 @@
+<Directory [% desc.name %]>
+
+[%- IF desc.exists('ssl') -%]
+[% INCLUDE metaconfig/httpd/ssl.tt desc=desc.ssl %]
+[%- END -%]
+
+[%- IF desc.exists('options') -%]
+Options [% desc.options.join(' ') %]
+[%- END -%]
+
+</Directory>
