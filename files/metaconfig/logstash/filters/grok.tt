@@ -1,27 +1,21 @@
 grok {
 [% INCLUDE metaconfig/logstash/filters/basic.tt %]
-[% FOREACH m IN desc.match %]
+[% FOREACH m IN desc.match -%]
 match => [ "[% m.name %]", "[% m.pattern %]" ]
-[% END %]
+[% END -%]
 break_on_match => [% IF desc.break_on_match %] true [% ELSE %] false [% END %]
-[% IF desc.exclude_tags.exists %]
-    exclude_tags => [ [% FOREACH e IN desc.exclude_tags %] "[% e %]", [% END %] ]
+[% FOREACH e IN desc.excludetags %]
+exclude_tags => "[% e %]"
 [% END %]
-named_captures_only => [% IF desc.named_captures_only %] true [% ELSE %] false [% END %]
-[% IF desc.keep_empty_captures.exists %]
-    keep_empty_captures => [% IF desc.keep_empty_captures %] true [% ELSE %] false [% END %]
+named_captures_only => [% desc.named_captures_only ? "true" : "false" %]
+keep_empty_captures => [% desc.keep_empty_captures ? "true" : "false" %]
+[% FOREACH p IN desc.pattern %]
+pattern => "[% p %]"
+[% END -%]
+[% FOREACH p IN desc.patterns_dir %]
+patterns_dir => "[% p %]"
 [% END %]
-[% IF desc.exists('pattern') %]
-    [% FOREACH p IN desc.pattern %]
-    pattern => "[% p %]"
-    [% END %]
-[% END %]
-[% IF desc.exists('patterns_dir') %]
-    [% FOREACH p IN desc.patterns_dir %]
-    patterns_dir => "[% p %]"
-    [% END %]
-[% END %]
-[% IF desc.remove_tag.exists %]
-    remove_tag => [ [% FOREACH p IN desc.remove_tag %] "[% p %]", [% END %] ]
+[% FOREACH t IN desc.remove_tag %]
+remove_tag => "[% t %]"
 [% END %]
 }
