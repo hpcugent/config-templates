@@ -10,3 +10,4 @@
 [%- END -%]
 
 ServerName [% vhost.name %]
+DocumentRoot [% vhost.DocumentRoot %]
