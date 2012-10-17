@@ -2,24 +2,22 @@ gelf {
    [% INCLUDE metaconfig/logstash/output/base.tt %]
    host => "[% desc.host %]"
    port => [% desc.port %]
-   [% IF desc.ship_metadata.exists %]
-   ship_metadata => [% IF desc.ship_metadata %] true [% ELSE %] false [% END %]
-   [% END %]
-   [% IF desc.custom_fields.exists %]
+   ship_metadata => [% desc.ship_metadata ? "true" : "false" %]
+   [% IF desc.exists('custom_fields') %]
    custom_fields => [ [% FOREACH f IN desc.custom_fields.pairs %]
        "[% f.key %]", "[% f.value %]",
        [% END %]
    [% END %]
-   [% IF desc.facility.exists %]
+   [% IF desc.exists('facility') %]
    facility => "[% desc.facility %]"
    [% END %]
-   [% IF desc.level.exists %]
-   level => [ [% FOREACH l IN desc.level %] "[% l %]", [% END %] ]
+   [% FOREACH l IN desc.level -%]
+   level => "[% l %]"
    [% END %]
-   [% IF desc.sender.exists %]
+   [% IF desc.exists('sender') %]
    sender => "[% desc.sender %]"
    [% END %]
-   [% IF desc.fields.exists %]
-   fields => [ [% FOREACH f IN desc.fields %] "f", [% END %] ]
+   [% FOREACH f IN desc.fields -%]
+   fields => "[% f %]"
    [% END %]
 }
