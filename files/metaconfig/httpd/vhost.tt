@@ -9,5 +9,5 @@
 [% INCLUDE metaconfig/httpd/ssl.tt desc=vhost.ssl %]
 [%- END -%]
 
-ServerName [% vhost.name %]
-DocumentRoot [% vhost.DocumentRoot %]
+servername [% vhost.name %]
+documentroot [% vhost.DocumentRoot %]

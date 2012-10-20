@@ -1,16 +1,16 @@
-PassengerRuby [% settings.PassengerRuby %]
-PassengerRoot [% settings.PassengerRoot %]
-PassengerMaxPoolSize [% settings.PassengerMaxPoolSize %]
+passengerruby [% settings.PassengerRuby %]
+passengerroot [% settings.PassengerRoot %]
+passengermaxpoolsize [% settings.PassengerMaxPoolSize %]
 
 [% FOREACH vhost IN vhosts.pairs %]
-<VirtualHost [% vhost.value.ip %]:[% vhost.value.port %]>
+<virtualhost [% vhost.value.ip %]:[% vhost.value.port %]>
 
     [%- FOREACH uri IN vhost.value.RailsBaseURI -%]
-    RailsBaseUri [% uri %]
+    railsbaseuri [% uri %]
     [%- END -%]
     [% IF vhost.value.exists('RailsEnv') %]
-    RailsEnv [% vhost.value.RailsEnv %]
+    railsenv [% vhost.value.RailsEnv %]
     [%- END -%]
     [% INCLUDE metaconfig/httpd/vhost.tt vhost = vhost.value FILTER indent %]
-</VirtualHost>
+</virtualhost>
 [% END %]
