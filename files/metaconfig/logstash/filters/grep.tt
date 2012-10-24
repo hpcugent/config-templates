@@ -3,7 +3,7 @@ grep {
 negate =>[% desc.negate ? "true" : "false" %]
 drop => [% desc.drop ? "true" : "false" %]
 [% FOREACH m IN desc.match -%]
-match => [ "[% m.name %]", "[% m.pattern %]" ]
+match => [ "[% m.field %]", "[% m.pattern %]" ]
 [% END -%]
 [% FOREACH e IN desc.excludetags %]
 exclude_tags => "[% e %]"
