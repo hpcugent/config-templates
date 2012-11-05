@@ -1,0 +1,6 @@
+location [% location.operator IF location.exists("operator") %] [% location.name %] {
+[% IF location.root %]
+    root [% location.root %];
+[% END %]
+[% INCLUDE nginx/nginx/proxy.tt px=location.proxy IF location.exists("proxy")
+    FILTER indent %]
