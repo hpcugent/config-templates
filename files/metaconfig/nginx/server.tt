@@ -3,7 +3,7 @@ listen [% srv.listen.addr %] [% "default" IF srv.listen.default% -%]
 [% FOREACH i IN srv.includes %]
 include [% i %];
 [% END %]
-server_name [% srv.name %];
+server_name [% FOREACH name IN srv.name %] [% name %] [% END %];
 [% FOREACH e IN srv.error_page %]
 error_page [% e.error_codes.join(" ") %] [% e.file %];
 [% END %]
