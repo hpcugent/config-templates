@@ -1,6 +1,6 @@
 proxy_cache_path [% path.path -%]
  levels=[%- path.levels.join(":") -%]
-[%- FOREACH k IN path.keys.pairs -%]
+[%- FOREACH k IN path.keys_zone.pairs -%]
  keys_zone=[% k.key %]:[% k.value %]m
 [%- END -%]
 [%- IF path.max_size -%]
