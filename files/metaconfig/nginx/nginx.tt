@@ -1,17 +1,18 @@
 [%- IF !$srv_render %]
-[% srv_render="basic_server.tt" %]
+[% srv_render="server.tt" %]
 [% END -%]
 
 user nginx;
-worker_processes [% worker_processes %]
+worker_processes [% global.worker_processes %]
 error_log /var/log/nginx/error.log
 pid /var/run/nginx.pid
 
 events {
-    worker_connections [% worker_connections %]
+    worker_connections [% global.worker_connections %]
     use epoll
 }
 
+[% FOREACH h IN http %]
 http {
     [% FOREACH i IN includes %]
     include [% i %]
@@ -21,18 +22,24 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
     access_log /var/log/nginx/access.log main;
-    gzip [% gzip ? "on" : "off" %]
+    gzip [% h.gzip ? "on" : "off" %];
 
+    keepalive_timeout [% h.keepalive_timeout %];
     sendfile on;
 
-    [% IF cache %]
-    [% INCLUDE $cache_globals FILTER indent %]
+    [% FOREACH u IN h.upstream.pairs %]
+    [% INCLUDE metaconfig/nginx/proxy/upstream.tt name=u.key cfg=u.value FILTER indent %]
+    [% END %]
+
+    [% FOREACH p IN h.proxy_cache_path %]
+    [% INCLUDE metaconfig/nginx/proxy/path.tt path=p FILTER indent %]
     [% END %]
 
     [% FOREACH i IN servers %]
     server {
-    [% INCLUDE metaconfig/nginx/$srv srv=i FILTER indent %]
+    [% INCLUDE metaconfig/nginx/$srv_render srv=i FILTER indent %]
     }
     [% END %]
 
 }
+[% END %]
