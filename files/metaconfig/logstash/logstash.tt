@@ -24,6 +24,9 @@ filter {
 
 output {
     [% FOREACH o IN  output.gelf %]
-        [% INCLUDE metaconfig/logstash/output/gelf.tt desc=o %]
+        [%- INCLUDE metaconfig/logstash/output/gelf.tt desc=o FILTER indent %]
+    [% END %]
+    [% FOREACH o IN  output.elasticsearch %]
+        [%- INCLUDE metaconfig/logstash/output/elasticsearch.tt desc=o FILTER indent %]
     [% END %]
 }

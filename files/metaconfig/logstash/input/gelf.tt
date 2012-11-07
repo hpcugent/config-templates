@@ -6,5 +6,7 @@ gelf {
     [% ELSE %]
     remap => false
     [% END %]
-    [% IF desc.add_field %]
+    [% FOREACH f IN desc.add_field %]
+    add_field => [ "[% f.key %]", "[% f.value %]" ]
+    [% END %]
 }
