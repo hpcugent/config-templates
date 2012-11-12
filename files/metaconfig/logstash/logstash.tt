@@ -11,11 +11,11 @@ input {
 }
 
 filter {
-   [% FOREACH f IN filters.grep %]
-       [% INCLUDE metaconfig/logstash/filters/grep.tt desc=f %]
-   [% END %]
    [% FOREACH f IN filters.grok %]
        [% INCLUDE metaconfig/logstash/filters/grok.tt desc=f %]
+   [% END %]
+   [% FOREACH f IN filters.grep %]
+       [% INCLUDE metaconfig/logstash/filters/grep.tt desc=f %]
    [% END %]
    [% FOREACH f IN filters.date %]
        [% INCLUDE metaconfig/logstash/filters/date.tt desc=f %]
