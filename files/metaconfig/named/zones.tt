@@ -1,0 +1,11 @@
+[% FOREACH zone IN desc.pairs %]
+zone "[% zone.key %]" {
+    type [% zone.value.type %];
+    file "[% zone.value.file %]";
+    [% FOREACH i IN ['transfers-in', 'transfers-out'] %]
+    [% IF zone.value.$i -%]
+    [% i %] [% zone.value.$i %];
+    [% END %]
+    [% END %]
+};
+[% END %]

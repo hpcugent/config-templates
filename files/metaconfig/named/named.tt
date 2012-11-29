@@ -9,3 +9,5 @@ options {
 logging {
 [% INCLUDE metaconfig/named/logging.tt desc=logging FILTER indent -%]
 };
+
+[% INCLUDE metaconfig/named/zones.tt desc=zones %]
