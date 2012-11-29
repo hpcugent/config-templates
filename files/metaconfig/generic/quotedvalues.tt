@@ -1,0 +1,3 @@
+[%- FOREACH i IN conf.pairs -%]
+[% i.key %]="[% i.value %]";
+[% END -%]
