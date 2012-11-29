@@ -1,0 +1,45 @@
+forward first;
+forwarders {
+    [% FOREACH i IN desc.forwarders %]
+    [% i %];
+    [% END %]
+};
+
+[%- v = "query-source" -%]
+[% FOREACH i IN desc.$v -%]
+query-source address [% i.exists('address') ? i.address : "*" %] port [% i.port %];
+[% END %]
+[%- v = "transfer-source" -%]
+[% FOREACH i IN desc.$v -%]
+transfer-source [% i.exists('address') ? i.address : "*" %] port [% i.port %];
+[% END -%]
+[%- v = "notify-source" -%]
+[% FOREACH i IN desc.$v -%]
+notify-source [% i.exists('address') ? i.address : "*" %] port [% i.port %];
+[% END -%]
+
+notify [% desc.notify ? "yes" : "no" %];
+rrset-order {order random;};
+[%- v = "listen-on" -%]
+
+listen-on port 53 {
+    [% FOREACH i IN desc.$v -%]
+    [% i %];
+    [%- END %]
+};
+
+[% FOREACH i IN ['recursion', 'dnssec-enable', 'dnssec-validation'] %]
+[% i %] [% desc.$i ? "yes" : "no" %];
+[%- END -%]
+dnssec-lookaside auto;
+[% FOREACH i IN ['directory', 'dump-file', 'memstatistics-file', 'bindkeys-file'] %]
+[% i %] "[% desc.$i %]";
+[%- END -%]
+
+[%- v = "allow-query" -%]
+
+allow-query {
+    [% FOREACH i IN desc.$v -%]
+    [% i %];
+    [%- END %]
+};
