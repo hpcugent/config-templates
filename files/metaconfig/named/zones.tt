@@ -1,0 +1,11 @@
+[% FOREACH zone IN desc %]
+zone "[% zone.name %]" [% zone.class %] {
+    type [% zone.type %];
+    file "[% zone.file %]";
+    [% FOREACH i IN ['transfers-in', 'transfers-out'] -%]
+    [%- IF zone.$i -%]
+    [% i %] [% zone.$i %];
+    [%- END -%]
+    [%- END %]
+};
+[% END %]

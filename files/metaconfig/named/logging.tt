@@ -1,0 +1,8 @@
+[% FOREACH d IN desc.channels.pairs %]
+channel [% d.key %] {
+    severity [% d.value.severity %];
+    [%- IF d.value.file %]
+    file "[% d.value.file %]";
+    [%- END %]
+};
+[% END %]
