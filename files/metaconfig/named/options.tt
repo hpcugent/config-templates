@@ -39,7 +39,7 @@ dnssec-lookaside auto;
 [%- v = "allow-query" -%]
 
 allow-query {
-    [% FOREACH i IN desc.$v -%]
-    [% i %];
+    [%- FOREACH i IN desc.$v %]
+    "[% i %]";
     [%- END %]
 };
