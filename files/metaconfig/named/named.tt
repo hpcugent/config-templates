@@ -15,5 +15,5 @@ logging {
 [% INCLUDE metaconfig/named/zones.tt desc=zones %]
 
 [%- FOREACH i IN includes -%]
-include "[% i %];
+include "[% i %]";
 [%- END %]
