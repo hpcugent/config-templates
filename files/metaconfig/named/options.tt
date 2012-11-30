@@ -1,8 +1,8 @@
 forward first;
 forwarders {
-    [% FOREACH i IN desc.forwarders %]
+    [%- FOREACH i IN desc.forwarders %]
     [% i %];
-    [% END %]
+    [%- END %]
 };
 
 [%- v = "query-source" -%]
