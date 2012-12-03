@@ -2,7 +2,7 @@
 %define tpldir %{tplroot}/templates/quattor/metaconfig
 
 Name: config-templates-metaconfig
-Version: 0.1.23
+Version: 0.1.24
 Release: 1%{?dist}
 Summary: Templates for services configured with ncm-metaconfig and Template::Toolkit
 Group: Applications/System
