@@ -20,13 +20,15 @@ notify-source [% i.exists('address') ? i.address : "*" %] port [% i.port %];
 
 notify [% desc.notify ? "yes" : "no" %];
 rrset-order {order random;};
-[%- v = "listen-on" -%]
 
+
+[% IF desc.listen-on %]
 listen-on port 53 {
-    [% FOREACH i IN desc.$v -%]
+    [% FOREACH i IN desc.listen-on -%]
     [% i %];
     [%- END %]
 };
+[% END %]
 
 [% FOREACH i IN ['recursion', 'dnssec-enable', 'dnssec-validation'] %]
 [% i %] [% desc.$i ? "yes" : "no" %];
