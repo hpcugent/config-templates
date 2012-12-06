@@ -21,10 +21,10 @@ notify-source [% i.exists('address') ? i.address : "*" %] port [% i.port %];
 notify [% desc.notify ? "yes" : "no" %];
 rrset-order {order random;};
 
-
-[% IF desc.listen-on %]
+[%- v = "listen-on" %]
+[% IF desc.$v %]
 listen-on port 53 {
-    [% FOREACH i IN desc.listen-on -%]
+    [% FOREACH i IN desc.$v -%]
     [% i %];
     [%- END %]
 };
