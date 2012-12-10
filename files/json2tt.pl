@@ -4,6 +4,12 @@ use warnings;
 use JSON::XS;
 use Template;
 
+##
+## Instructions
+## yum install perl-Template-Toolkit -y
+## cut and paste the portion of the json profile and save to a file
+## ./json2tt.pl /path/to/file/with/json/snippet path/to/template.tt
+
 open(my $fh, "<", $ARGV[0]);
 my $json = decode_json(join("", <$fh>));
 close($fh);

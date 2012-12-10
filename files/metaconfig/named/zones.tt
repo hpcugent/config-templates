@@ -7,5 +7,12 @@ zone "[% zone.name %]" [% zone.class %] {
     [% i %] [% zone.$i %];
     [%- END -%]
     [%- END %]
+    [% IF zone.masters %]
+    masters {
+        [% FOREACH i IN zone.masters %]
+        [% i %];
+        [%- END %]
+    };
+    [% END %]
 };
 [% END %]
