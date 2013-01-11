@@ -1,9 +1,9 @@
 <directory [% desc.name %]>
 
 [%- IF desc.exists('ssl') -%]
-[% INCLUDE metaconfig/httpd/ssl.tt desc=desc.ssl %]
+[% INCLUDE metaconfig/httpd/ssl.tt desc=desc.ssl FILTER indent%]
 [%- END -%]
 
-[% INCLUDE metaconfig/httpd/file_basic.tt %]
+[% INCLUDE metaconfig/httpd/file_basic.tt FILTER indent %]
 
 </directory>
