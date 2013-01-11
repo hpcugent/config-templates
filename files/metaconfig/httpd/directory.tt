@@ -4,8 +4,6 @@
 [% INCLUDE metaconfig/httpd/ssl.tt desc=desc.ssl %]
 [%- END -%]
 
-[%- IF desc.exists('options') -%]
-options [% desc.options.join(' ') %]
-[%- END -%]
+[% INCLUDE metaconfig/httpd/file_basic.tt %]
 
 </directory>
