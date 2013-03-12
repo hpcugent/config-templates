@@ -7,7 +7,7 @@
 [% INCLUDE metaconfig/httpd/file_basic.tt FILTER indent %]
 
 [%- IF desc.exists('rewrite') -%]
-[% INCLUDE metaconfig/httpd/rewrite.tt FILTER indent%]
+[% INCLUDE metaconfig/httpd/rewrite.tt desc=desc.rewrite FILTER indent%]
 [%- END -%]
 
 [%- IF desc.exists('auth') -%]
