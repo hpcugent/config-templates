@@ -1,0 +1,11 @@
+rewriteengine on
+[% IF desc.exists('base') %]
+rewritebase [% desc.base %]
+[% END %]
+
+[%- FOREACH rule IN desc.rules -%]
+[% FOREACH condition IN rule.conditions -%]
+rewritecond [% condition.test %] [% condition.pattern %]
+[% END -%]
+rewriterule [% rule.regexp %] [% rule.destination %] [[% rule.flags.join(',') %]]
+[% END %]
