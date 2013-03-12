@@ -3,9 +3,9 @@ rewriteengine on
 rewritebase [% desc.base %]
 [% END %]
 
-[% FOREACH rule IN desc.rules %]
-[% FOREACH condition in rule.conditions %]
+[%- FOREACH rule IN desc.rules -%]
+[% FOREACH condition IN rule.conditions -%]
 rewritecond [% condition.test %] [% condition.pattern %]
-[% END %]
+[% END -%]
 rewriterule [% rule.regexp %] [% rule.destination %] [[% rule.flags.join(',') %]]
 [% END %]
