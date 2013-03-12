@@ -1,3 +1,4 @@
+rewriteengine on
 [% IF desc.exists('base') %]
 rewritebase [% desc.base %]
 [% END %]
