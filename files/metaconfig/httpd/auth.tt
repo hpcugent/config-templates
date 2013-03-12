@@ -1,0 +1,11 @@
+[%- IF desc.requires.exists('user') -%]
+require user [% desc.requires.user.join(' ') %]
+[%- ELSIF desc.requires.exists('group') -%]
+require group [% desc.requires.group.join(' ') %]
+[%- ELSE -%]
+require valid-user
+[% END %]
+
+authname [% desc.name %]
+authuserfile [% desc.userfile %]
+authtype [% desc.type %]
