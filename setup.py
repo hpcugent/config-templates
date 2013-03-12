@@ -31,13 +31,24 @@ import os
 from distutils.core import setup
 import glob
 
-def get_regular_files(directory):
-    for d, subs, files in os.walk(directory):
-        for f in files:
-            yield os.path.join(d, f)
+BASE_DIR = "/usr/share/templates/quattor/metaconfig"
+
+def gen_data_files(*dirs):
+    "Copied from http://stackoverflow.com/questions/3596979/manifest-in-ignored-on-python-setup-py-install-no-data-files-installed"
+    data = []
+
+    for src_dir in dirs:
+        for root,dirs,files in os.walk(src_dir):
+            d = root.split("/")
+            dst = os.path.sep.join([BASE_DIR] + d[2:])
+            data.append((dst, map(lambda f: os.path.sep.join([root, f]),
+                                     files)))
+
+    return data
+
 
 setup(name="config-templates-metaconfig",
-      version="1.0",
+      version="1.2",
       description="Templates for services configured with ncm-metaconfig and Template::Toolkit",
       long_description="""Skeletons of configuration files for services that will be configured
 with ncm-metaconfig.
@@ -45,7 +56,6 @@ with ncm-metaconfig.
       license="LGPL",
       author="HPC UGent",
       author_email="hpc-admin@lists.ugent.be",
+      data_files=gen_data_files("files/metaconfig"),
       scripts=["files/json2tt.pl"],
-      data_files=[("quattor/metaconfig",
-                   get_regular_files("files/metaconfig"))],
       url="http://www.ugent.be/hpc")
