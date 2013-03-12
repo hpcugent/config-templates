@@ -6,4 +6,8 @@
 
 [% INCLUDE metaconfig/httpd/file_basic.tt FILTER indent %]
 
+[%- IF desc.exists('rewrite') -%]
+[% INCLUDE metaconfig/httpd/rewrite.tt FILTER indent%]
+[%- END -%]
+
 </directory>
