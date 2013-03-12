@@ -6,6 +6,6 @@ require group [% desc.requires.group.join(' ') %]
 require valid-user
 [% END %]
 
-authname [% desc.name %]
+authname "[% desc.name %]"
 authuserfile [% desc.userfile %]
 authtype [% desc.type %]
