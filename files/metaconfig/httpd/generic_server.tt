@@ -7,9 +7,5 @@ loadmodule [% m.key %] [% m.value %]
 </virtualhost>
 [% END %]
 [% FOREACH a IN aliases %]
-alias [% a.url %] [% a.destination %]
-[% END %]
-
-[% FOREACH a IN scriptalias %]
-scriptalias [% a.url %] [% a.destination %]
+[%a.type%]alias [% a.url %] [% a.destination %]
 [% END %]
