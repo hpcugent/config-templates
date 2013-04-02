@@ -2,7 +2,7 @@
 options [% desc.options.join(' ') %]
 [%- END -%]
 
-[%- IF desc.exists('access') -%]
+[% IF desc.exists('access') -%]
 order [% desc.access.order %]
 [% FOREACH a IN desc.access.allow %]
 allow from [% a %]
