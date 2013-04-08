@@ -1,0 +1,5 @@
+device {
+[% FOREACH device -%]
+[%  INCLUDE metaconfig/multipath/attribute.tt FILTER indent %]
+[% END -%]
+}
