@@ -1,0 +1,79 @@
+[%- IF defaults -%]
+defaults {
+[% FOREACH defaults %]
+[%-  INCLUDE metaconfig/multipath/attribute.tt FILTER indent %]
+[% END -%]
+}
+[% END -%]
+
+[% IF multipaths -%]
+multipaths {
+[%- FOREACH mp IN multipaths %]
+[% FILTER indent -%]
+multipath {
+[% FILTER indent -%]
+[%- FOREACH mp -%]
+[%-   FILTER indent %]
+[%-   SWITCH key -%]
+[%     CASE ['alias', 'wwid'] -%]
+[% key %] [% value %]
+[%     CASE -%]
+[%        INCLUDE metaconfig/multipath/attribute.tt key=key value=value -%]
+[%-   END -%]
+[%   END -%]
+[%- END -%]
+[% END -%]
+}
+[%- END -%]
+[% END %]
+}
+[% END -%]
+
+[% IF devices -%]
+devices {
+[%- FOREACH device IN devices %]
+[%    FILTER indent -%]
+[%-     INCLUDE metaconfig/multipath/device.tt device=device -%]
+[%-   END -%]
+[% END %]
+}
+[% END -%]
+
+
+[% IF blacklist -%]
+[%- FOREACH bl IN blacklist %]
+blacklist {
+[%    FILTER indent -%]
+[%-     FOREACH bl -%]
+[%-       FILTER indent %]
+[%-         SWITCH key -%]
+[%-          CASE ['device'] -%]
+[%-            INCLUDE metaconfig/multipath/device.tt device=value -%]
+[%           CASE -%]
+[%-           key %] [% value -%]
+[%-        END -%]
+[%-      END %]
+[%     END -%]
+[%   END -%]
+}
+[%   END %]
+[% END -%]
+
+[% IF blacklist_exceptions -%]
+[%- FOREACH bl IN blacklist_exceptions %]
+blacklist_excpetions {
+[%    FILTER indent -%]
+[%-     FOREACH bl -%]
+[%-       FILTER indent %]
+[%-         SWITCH key -%]
+[%-           CASE ['device'] -%]
+[%-             INCLUDE metaconfig/multipath/device.tt device=value -%]
+[%            CASE -%]
+[%-             key %] [% value -%]
+[%-         END -%]
+[%-       END %]
+[%     END -%]
+[%   END -%]
+}
+[%  END %]
+[% END -%]
