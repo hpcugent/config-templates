@@ -7,7 +7,7 @@
 [%-     CASE ['path_selector', 'features'] -%]
  [% value.join(' ') %]
 [%-     CASE _booleans -%]
- [%-       INCLUDE metaconfig/generic/yes_no_boolean.tt -%]
+ [%       INCLUDE metaconfig/generic/yes_no_boolean.tt -%]
 [%-     CASE -%]
  [% value -%]
 [%-   END -%]
