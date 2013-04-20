@@ -9,6 +9,8 @@
 [%- comma_sep_quoted_list = ["Root_Access", "RW_Access", "R_Access", "MDONLY_Access", "MDONLY_RO_Access", "Access",
                              "NFS_Protocols", "Transport_Protocols", "SecType"]
 -%]
+[%- long_or_never = ["Attr_Expiration_Time", "Symlink_Expiration_Time", "Directory_Expiration_Time"]
+-%]
 [%- key -%] =
 [%-   SWITCH key -%]
 [%-     CASE [ "Filesystem_id" ] -%]
@@ -17,6 +19,12 @@
  "[%- value.join(',') -%]"
 [%-     CASE booleans -%]
  [%       INCLUDE metaconfig/generic/TRUE_FALSE_boolean.tt -%]
+[%-     CASE long_or_never -%]
+[%-          IF (value.match('^-1$')) -%]
+ Never
+[%-          ELSE -%]
+ [%            value -%]
+[%-          END -%]
 [%-     CASE -%]
 [%-          IF (value.match('^(-?\d+)$')) -%]
  [%            value -%]
