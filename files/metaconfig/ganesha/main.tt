@@ -1,0 +1,40 @@
+[% FOREACH section IN main %]
+[% section.key %] {
+[%      FOREACH section.value -%]
+[%-         INCLUDE metaconfig/ganesha/attribute.tt FILTER indent %]
+[%      END -%]
+}
+[% END %]
+
+[%- FOREACH export IN exports %]
+[%-     IF export.clients -%]
+[%-         FOREACH client IN export.clients %]
+EXPORT_CLIENT {
+[%            FILTER indent -%]
+Path = "[% export.Path %]";
+[%             FOREACH client %]
+[%-                  INCLUDE metaconfig/ganesha/attribute.tt %]
+[%              END -%]
+[%-            END -%]
+}
+[%          END -%]
+[%      END -%]
+
+EXPORT {
+[%  FILTER indent -%]
+[%-   FOREACH export -%]
+[%-     SWITCH key -%]
+[%-         CASE ['clients'] -%]
+[%- -%]
+[%-          CASE  -%]
+[%-              INCLUDE metaconfig/ganesha/attribute.tt %]
+[%          END -%]
+[%-    END -%]
+[%-  END -%]
+}
+[% END %]
+[% IF includes -%]
+[%-     FOREACH incl IN includes -%]
+%include "[%- incl  -%]"
+[%      END -%]
+[% END -%]
