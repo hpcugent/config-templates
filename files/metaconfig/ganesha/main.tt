@@ -1,11 +1,9 @@
 [% FOREACH section IN main %]
-[%-  IF (section.value.size) -%]
 [% section.key %] {
 [%      FOREACH section.value -%]
 [%-         INCLUDE metaconfig/ganesha/attribute.tt FILTER indent %]
 [%      END -%]
 }
-[%-  END %]
 [% END %]
 
 [%- FOREACH export IN exports %]
