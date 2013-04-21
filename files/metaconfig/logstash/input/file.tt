@@ -1,6 +1,6 @@
 file {
-[%- FILTER indent -%]
-[%-  INCLUDE metaconfig/logstash/input/base.tt %]
+[% FILTER indent -%]
+[%-  INCLUDE metaconfig/logstash/input/base.tt -%]
 [%  FOREACH p IN desc.path -%]
 path => "[% p %]"
 [%  END -%]

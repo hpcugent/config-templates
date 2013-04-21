@@ -1,7 +1,7 @@
 [%- FOREACH t IN desc.exclude_tags -%]
 exclude_tags => "[% t %]"
 [% END -%]
-[%- FOREACH t IN desc.tags %]
+[%- FOREACH t IN desc.tags -%]
 tags => "[% t %]"
 [% END -%]
 [%- IF desc.type %]

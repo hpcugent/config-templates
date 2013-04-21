@@ -1,6 +1,6 @@
 amqp {
-[% FILTER indent %]
-[%  INCLUDE metaconfig/logstash/input/base.tt %]
+[% FILTER indent -%]
+[%-  INCLUDE metaconfig/logstash/input/base.tt -%]
 arguments => [ [% FOREACH a IN desc.arguments %] "[% a %]", [% END %] ]
 [%  IF desc.auto_delete %]
 auto_delete => [% IF desc.auto_delete %] true [% ELSE %] false [% END %]
@@ -8,8 +8,8 @@ auto_delete => [% IF desc.auto_delete %] true [% ELSE %] false [% END %]
 exclusive => [% IF desc.exclusive %] true [% ELSE %] false [% END %]
 [%  IF desc.durable.exists %]
 durable => [% IF desc.durable %] true [% ELSE %] false [% END %]
-[%  END %]
-[%  IF desc.verify_ssl.exists %]
+[%  END -%]
+[%-  IF desc.verify_ssl.exists %]
 verify_ssl => [% IF desc.verify_ssl %] true [% ELSE %] false [% END %]
 [%  END %]
 host => "[% desc.host %]"
@@ -24,9 +24,9 @@ port => [% desc.port %]
 threads => [% desc.threads %]
 [%  IF desc.user.exists %]
 user => "[% desc.user %]"
-[%  END %]
-[%  IF desc.vhost.exists %]
+[%  END -%]
+[%-  IF desc.vhost.exists %]
 vhost => "[% desc.vhost %]"
-[%  END %]
-[% END %]
+[%  END -%]
+[%- END %]
 }

@@ -1,7 +1,7 @@
 [%- FOREACH v IN desc.add_field.pairs -%]
 add_field => ["[% v.key %]",  "[% v.value -%]"]
-[% END %]
-[% IF desc.format.exists %]
+[% END -%]
+[%- IF desc.format.exists %]
 format => "[% desc.format %]"
 [% END -%]
 [%- IF desc.tags.exists -%]

@@ -1,6 +1,6 @@
 gelf {
 [% FILTER indent -%]
-[%-  INCLUDE metaconfig/logstash/output/base.tt %]
+[%-  INCLUDE metaconfig/logstash/output/base.tt -%]
 host => "[% desc.host %]"
 port => [% desc.port %]
 ship_metadata => [% desc.ship_metadata ? "true" : "false" %]

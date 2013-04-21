@@ -1,6 +1,6 @@
 elasticsearch {
 [% FILTER indent -%]
-[%- INCLUDE metaconfig/logstash/output/base.tt %]
+[%- INCLUDE metaconfig/logstash/output/base.tt -%]
 host => "[% desc.host %]"
 port => [% desc.port %]
 [%  IF desc.exists('max_inflight_requests') %]

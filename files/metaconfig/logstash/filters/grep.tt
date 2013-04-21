@@ -1,6 +1,6 @@
 grep {
 [% FILTER indent -%]
-[%-  INCLUDE metaconfig/logstash/filters/basic.tt %]
+[%-  INCLUDE metaconfig/logstash/filters/basic.tt -%]
 negate =>[% desc.negate ? "true" : "false" %]
 drop => [% desc.drop ? "true" : "false" %]
 [%  FOREACH m IN desc.match -%]
