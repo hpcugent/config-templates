@@ -1,4 +1,6 @@
 stdout {
-[% INCLUDE metaconfig/logstash/output/basic.tt %]
+[% FILTER indent -%]
+[%-  INCLUDE metaconfig/logstash/output/basic.tt %]
 debug_format => "[% desc.debug_format %]
+[% END -%]
 }

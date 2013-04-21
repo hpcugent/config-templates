@@ -1,12 +1,14 @@
 grep {
-[% INCLUDE metaconfig/logstash/filters/basic.tt %]
+[% FILTER indent -%]
+[%-  INCLUDE metaconfig/logstash/filters/basic.tt %]
 negate =>[% desc.negate ? "true" : "false" %]
 drop => [% desc.drop ? "true" : "false" %]
-[% FOREACH m IN desc.match -%]
+[%  FOREACH m IN desc.match -%]
 match => [ "[% m.field %]", "[% m.pattern %]" ]
-[% END -%]
-[% FOREACH e IN desc.excludetags %]
+[%  END -%]
+[%- FOREACH e IN desc.excludetags %]
 exclude_tags => "[% e %]"
-[% END %]
+[%  END %]
 remove_tag => "[% t %]"
+[% END -%]
 }
