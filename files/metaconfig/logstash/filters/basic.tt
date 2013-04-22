@@ -2,6 +2,6 @@ type => "[% desc.type %]"
 [% FOREACH f IN desc.add_field.pairs -%]
 add_field => [ "[% f.key %]", "[% f.value %]" ]
 [% END -%]
-[% FOREACH t IN desc.tags -%]
+[%- FOREACH t IN desc.tags -%]
 tags => "[% t %]
 [% END -%]

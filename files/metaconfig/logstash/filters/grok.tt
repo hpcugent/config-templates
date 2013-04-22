@@ -1,21 +1,23 @@
 grok {
-[% INCLUDE metaconfig/logstash/filters/basic.tt %]
-[% FOREACH m IN desc.match -%]
+[% FILTER indent -%]
+[%  INCLUDE metaconfig/logstash/filters/basic.tt -%]
+[%  FOREACH m IN desc.match -%]
 match => [ "[% m.name %]", "[% m.pattern %]" ]
-[% END -%]
+[%  END -%]
 break_on_match => [% IF desc.break_on_match %] true [% ELSE %] false [% END %]
-[% FOREACH e IN desc.excludetags %]
+[%  FOREACH e IN desc.excludetags -%]
 exclude_tags => "[% e %]"
-[% END %]
+[%  END %]
 named_captures_only => [% desc.named_captures_only ? "true" : "false" %]
 keep_empty_captures => [% desc.keep_empty_captures ? "true" : "false" %]
-[% FOREACH p IN desc.pattern %]
+[%  FOREACH p IN desc.pattern -%]
 pattern => "[% p %]"
-[% END -%]
-[% FOREACH p IN desc.patterns_dir %]
+[%  END -%]
+[%-  FOREACH p IN desc.patterns_dir -%]
 patterns_dir => "[% p %]"
-[% END %]
-[% FOREACH t IN desc.remove_tag %]
+[%  END -%]
+[%-  FOREACH t IN desc.remove_tag -%]
 remove_tag => "[% t %]"
-[% END %]
+[%  END -%]
+[%- END -%]
 }

@@ -1,23 +1,25 @@
 gelf {
-   [% INCLUDE metaconfig/logstash/output/base.tt %]
-   host => "[% desc.host %]"
-   port => [% desc.port %]
-   ship_metadata => [% desc.ship_metadata ? "true" : "false" %]
-   [% IF desc.exists('custom_fields') %]
-   custom_fields => [ [% FOREACH f IN desc.custom_fields.pairs %]
-       "[% f.key %]", "[% f.value %]",
-       [% END %]
-   [% END %]
-   [% IF desc.exists('facility') %]
-   facility => "[% desc.facility %]"
-   [% END %]
-   [% FOREACH l IN desc.level -%]
-   level => "[% l %]"
-   [% END %]
-   [% IF desc.exists('sender') %]
-   sender => "[% desc.sender %]"
-   [% END %]
-   [% FOREACH f IN desc.fields -%]
-   fields => "[% f %]"
-   [% END %]
+[% FILTER indent -%]
+[%-  INCLUDE metaconfig/logstash/output/base.tt -%]
+host => "[% desc.host %]"
+port => [% desc.port %]
+ship_metadata => [% desc.ship_metadata ? "true" : "false" %]
+[%  IF desc.exists('custom_fields') %]
+custom_fields => [ [% FOREACH f IN desc.custom_fields.pairs %]
+"[% f.key %]", "[% f.value %]",
+[%                    END %]
+[%  END -%]
+[%-  IF desc.exists('facility') %]
+facility => "[% desc.facility %]"
+[%  END -%]
+[%-  FOREACH l IN desc.level -%]
+level => "[% l %]"
+[%  END -%]
+[%-  IF desc.exists('sender') %]
+sender => "[% desc.sender %]"
+[%  END -%]
+[%-  FOREACH f IN desc.fields %]
+fields => "[% f %]"
+[%  END -%]
+[%- END -%]
 }

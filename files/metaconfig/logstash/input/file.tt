@@ -1,16 +1,18 @@
 file {
-    [% INCLUDE metaconfig/logstash/input/base.tt %]
-    [% FOREACH p IN desc.path %]
-    path => "[% p %]"
-    [% END %]
-    [% FOREACH e IN desc.exclude %]
-    exclude => "[% e %]"
-    [% END %]
-    [% IF desc.sincedb_path.exists %]
-    sincedb_path => "[% desc.sincedb_path %]"
-    [% END %]
-    [% IF desc.sincedb_write_interval %]
-    sincedb_write_interval => [% desc.sincedb_write_interval %]
-    [% END %]
-    stat_interval => [% desc.stat_interval %]
+[% FILTER indent -%]
+[%-  INCLUDE metaconfig/logstash/input/base.tt -%]
+[%  FOREACH p IN desc.path -%]
+path => "[% p %]"
+[%  END -%]
+[%-  FOREACH e IN desc.exclude -%]
+exclude => "[% e %]"
+[%  END -%]
+[%-  IF desc.sincedb_path.exists %]
+sincedb_path => "[% desc.sincedb_path %]"
+[%  END -%]
+[%-  IF desc.sincedb_write_interval %]
+sincedb_write_interval => [% desc.sincedb_write_interval %]
+[%  END -%]
+stat_interval => [% desc.stat_interval %]
+[% END -%]
 }

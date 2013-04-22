@@ -1,10 +1,12 @@
 elasticsearch {
-   [%- INCLUDE metaconfig/logstash/output/base.tt FILTER indent %]
-   host => "[% desc.host %]"
-   port => [% desc.port %]
-   [% IF desc.exists('max_inflight_requests') %]
-   max_inflight_requests => [% desc.max_inflight_requests %]
-   [% END %]
-   index => "[% desc.index %]"
-   embedded => [% desc.embedded ? "true" : "false" %]
+[% FILTER indent -%]
+[%- INCLUDE metaconfig/logstash/output/base.tt -%]
+host => "[% desc.host %]"
+port => [% desc.port %]
+[%  IF desc.exists('max_inflight_requests') %]
+max_inflight_requests => [% desc.max_inflight_requests %]
+[%  END %]
+index => "[% desc.index %]"
+embedded => [% desc.embedded ? "true" : "false" %]
+[% END -%]
 }

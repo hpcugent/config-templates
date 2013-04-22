@@ -1,12 +1,14 @@
 gelf {
-    [% INCLUDE metaconfig/logstash/input/base.tt %]
-    port => [% desc.port %]
-    [% IF desc.remap %]
-    remap => true
-    [% ELSE %]
-    remap => false
-    [% END %]
-    [% FOREACH f IN desc.add_field %]
-    add_field => [ "[% f.key %]", "[% f.value %]" ]
-    [% END %]
+[% FILTER indent -%]
+[%-  INCLUDE metaconfig/logstash/input/base.tt -%]
+port => [% desc.port %]
+[%  IF desc.remap -%]
+remap => true
+[%  ELSE -%]
+remap => false
+[%  END -%]
+[%-  FOREACH f IN desc.add_field -%]
+add_field => [ "[% f.key %]", "[% f.value %]" ]
+[%  END -%]
+[%- END -%]
 }
