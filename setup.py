@@ -48,7 +48,7 @@ def gen_data_files(*dirs):
 
 
 setup(name="config-templates-metaconfig",
-      version="1.7",
+      version="1.8",
       description="Templates for services configured with ncm-metaconfig and Template::Toolkit",
       long_description="""Skeletons of configuration files for services that will be configured
 with ncm-metaconfig.
