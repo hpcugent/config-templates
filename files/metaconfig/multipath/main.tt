@@ -1,6 +1,7 @@
 [%- IF defaults -%]
 defaults {
-[% FOREACH defaults %]
+[% FOREACH key IN defaults.keys.sort %]
+[%-  value = defaults.$key -%]
 [%-  INCLUDE metaconfig/multipath/attribute.tt FILTER indent %]
 [% END -%]
 }
@@ -12,7 +13,8 @@ multipaths {
 [% FILTER indent -%]
 multipath {
 [% FILTER indent -%]
-[%- FOREACH mp -%]
+[%- FOREACH key IN mp.keys.sort -%]
+[%-   value = mp.$key -%]
 [%-   FILTER indent %]
 [%-   SWITCH key -%]
 [%     CASE ['alias', 'wwid'] -%]
@@ -44,7 +46,8 @@ devices {
 [%- FOREACH bl IN blacklist %]
 blacklist {
 [%    FILTER indent -%]
-[%-     FOREACH bl -%]
+[%-     FOREACH key IN bl.keys.sort -%]
+[%-       value = bl.$key -%]
 [%-       FILTER indent %]
 [%-         SWITCH key -%]
 [%-          CASE ['device'] -%]
@@ -63,7 +66,8 @@ blacklist {
 [%- FOREACH bl IN blacklist_exceptions %]
 blacklist_excpetions {
 [%    FILTER indent -%]
-[%-     FOREACH bl -%]
+[%-     FOREACH key IN bl.keys.sort -%]
+[%-       value = bl.$key -%]
 [%-       FILTER indent %]
 [%-         SWITCH key -%]
 [%-           CASE ['device'] -%]

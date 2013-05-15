@@ -1,6 +1,7 @@
 [% FOREACH section IN main %]
 [% section.key %] {
-[%      FOREACH section.value -%]
+[%      FOREACH key IN section.value.keys.sort -%]
+[%-         value = section.value.$key %]
 [%-         INCLUDE metaconfig/ganesha/attribute.tt FILTER indent %]
 [%      END -%]
 }
@@ -8,12 +9,13 @@
 
 [%- FOREACH export IN exports %]
 [%-     IF export.clients -%]
-[%-         FOREACH client IN export.clients %]
+[%-         FOREACH client IN export.clients.sort %]
 EXPORT_CLIENT {
 [%            FILTER indent -%]
 Path = "[% export.Path %]";
-[%             FOREACH client %]
-[%-                  INCLUDE metaconfig/ganesha/attribute.tt %]
+[%             FOREACH key IN client.keys.sort %]
+[%-                 value = client.$key -%]
+[%-                 INCLUDE metaconfig/ganesha/attribute.tt %]
 [%              END -%]
 [%-            END -%]
 }
@@ -22,7 +24,8 @@ Path = "[% export.Path %]";
 
 EXPORT {
 [%  FILTER indent -%]
-[%-   FOREACH export -%]
+[%-   FOREACH key IN export.keys.sort -%]
+[%-     value = export.$key -%]
 [%-     SWITCH key -%]
 [%-         CASE ['clients'] -%]
 [%- -%]
@@ -34,7 +37,7 @@ EXPORT {
 }
 [% END %]
 [% IF includes -%]
-[%-     FOREACH incl IN includes -%]
+[%-     FOREACH incl IN includes.sort -%]
 %include "[%- incl  -%]"
 [%      END -%]
 [% END -%]

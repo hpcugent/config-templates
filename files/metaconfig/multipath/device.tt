@@ -1,5 +1,6 @@
 device {
-[% FOREACH device -%]
+[% FOREACH key IN device.keys.sort -%]
+[%- value = device.$key -%]
 [%  INCLUDE metaconfig/multipath/attribute.tt FILTER indent %]
 [% END -%]
 }
