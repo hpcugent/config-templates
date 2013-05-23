@@ -1,6 +1,6 @@
-[%- FOREACH s IN section.pairs -%]
+[%- FOREACH s IN sections.pairs -%]
 [[% s.key %]]
-[%- FOREACH i IN s.value.pairs -%]
+[% FOREACH i IN s.value.pairs -%]
 [% i.key %]=[% i.value %]
 [% END -%]
 [% END -%]
