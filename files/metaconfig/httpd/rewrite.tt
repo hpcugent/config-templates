@@ -3,6 +3,15 @@ rewriteengine on
 rewritebase [% desc.base %]
 [% END %]
 
+[%- FOREACH map IN desc.maps -%]
+rewritemap [% map.name %]
+[%-     IF map.exists('txt') -%]
+ txt:[%- map.txt -%]
+[%-     ELSIF map.exists('dbm') -%]
+ dbm:[%- map.dbm -%]
+[%-     END -%]
+[% END %]
+
 [%- FOREACH rule IN desc.rules -%]
 [% FOREACH condition IN rule.conditions -%]
 rewritecond [% condition.test %] [% condition.pattern %]
