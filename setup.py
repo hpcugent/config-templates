@@ -38,7 +38,7 @@ def gen_data_files(*dirs):
     data = []
 
     for src_dir in dirs:
-        for root,dirs,files in os.walk(src_dir):
+        for root, dirs, files in os.walk(src_dir):
             d = root.split("/")
             dst = os.path.sep.join([BASE_DIR] + d[2:])
             data.append((dst, map(lambda f: os.path.sep.join([root, f]),
@@ -48,7 +48,7 @@ def gen_data_files(*dirs):
 
 
 setup(name="config-templates-metaconfig",
-      version="1.11",
+      version="1.12",
       description="Templates for services configured with ncm-metaconfig and Template::Toolkit",
       long_description="""Skeletons of configuration files for services that will be configured
 with ncm-metaconfig.
