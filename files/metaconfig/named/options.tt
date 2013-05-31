@@ -8,11 +8,9 @@ forwarders {
 };
 
 [%- FOREACH v IN ["query-source","transfer-source","notify-source"] -%]
-[%-     IF desc.$v -%]
-[%          FOREACH i IN desc.$v -%]
+[%      FOREACH i IN desc.$v -%]
 [% v %] [% v == "query-source" ? "address " : "" %][% i.exists('address') ? i.address : "*" %] port [% i.port %];
-[%          END -%]
-[%-     END -%]
+[%      END -%]
 [%- END -%]
 
 notify [% desc.notify ? "yes" : "no" %];
