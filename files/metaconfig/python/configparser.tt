@@ -1,3 +1,10 @@
+[%- IF main -%]
+[MAIN]
+
+[%- FOREACH m IN main.pairs -%]
+[% m.key %]=[% m.value %]
+[% END -%]
+[% END -%]
 [%- FOREACH s IN sections.pairs -%]
 [[% s.key %]]
 [% FOREACH i IN s.value.pairs -%]
