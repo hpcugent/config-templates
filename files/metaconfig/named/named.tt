@@ -2,7 +2,9 @@
 // Do NOT edit
 // See /usr/share/doc/bind*/sample for examples
 
-[% INCLUDE metaconfig/named/acls.tt desc=acls -%]
+[%- IF acls -%]
+[%      INCLUDE metaconfig/named/acls.tt desc=acls -%]
+[%- END -%]
 
 options {
 [% INCLUDE metaconfig/named/options.tt desc=options FILTER indent -%]
@@ -12,7 +14,9 @@ logging {
 [% INCLUDE metaconfig/named/logging.tt desc=logging FILTER indent -%]
 };
 
+[%- IF zones -%]
 [% INCLUDE metaconfig/named/zones.tt desc=zones %]
+[%- END -%]
 
 [%- FOREACH i IN includes -%]
 include "[% i %]";

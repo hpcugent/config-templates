@@ -1,47 +1,55 @@
-forward first;
+qforward [% desc.forward %];
 forwarders {
-    [%- FOREACH i IN desc.forwarders %]
-    [% i %];
-    [%- END %]
+[%- FILTER indent -%]
+[%-     FOREACH i IN desc.forwarders %]
+[%          i %];
+[%-     END -%]
+[%- END %]
 };
 
-[%- v = "query-source" -%]
-[% FOREACH i IN desc.$v -%]
-query-source address [% i.exists('address') ? i.address : "*" %] port [% i.port %];
-[% END %]
-[%- v = "transfer-source" -%]
-[% FOREACH i IN desc.$v -%]
-transfer-source [% i.exists('address') ? i.address : "*" %] port [% i.port %];
-[% END -%]
-[%- v = "notify-source" -%]
-[% FOREACH i IN desc.$v -%]
-notify-source [% i.exists('address') ? i.address : "*" %] port [% i.port %];
-[% END -%]
+[%- FOREACH v IN ["query-source","transfer-source","notify-source"] -%]
+[%-     IF desc.$v -%]
+[%          FOREACH i IN desc.$v -%]
+[% v %] [% v == "query-source" ? "address " : "" %][% i.exists('address') ? i.address : "*" %] port [% i.port %];
+[%          END -%]
+[%-     END -%]
+[%- END -%]
 
 notify [% desc.notify ? "yes" : "no" %];
 rrset-order {order random;};
 
-[%- v = "listen-on" %]
-[% IF desc.$v %]
+[%- v = "listen-on" -%]
+[%- IF desc.$v -%]
 listen-on port 53 {
-    [% FOREACH i IN desc.$v -%]
-    [% i %];
-    [%- END %]
+[%- FILTER indent -%]
+[%      FOREACH i IN desc.$v -%]
+[%          i %];
+[%-     END -%]
+[%- END -%]
 };
-[% END %]
+[%- END %]
 
-[% FOREACH i IN ['recursion', 'dnssec-enable', 'dnssec-validation'] %]
+[%- FOREACH i IN ['recursion', 'dnssec-enable', 'dnssec-validation', 'empty-zones-enable'] -%]
 [% i %] [% desc.$i ? "yes" : "no" %];
-[%- END -%]
-dnssec-lookaside auto;
-[% FOREACH i IN ['directory', 'dump-file', 'memstatistics-file', 'bindkeys-file'] %]
+[% END -%]
+[% FOREACH i IN ['directory', 'dump-file', 'memstatistics-file', 'bindkeys-file'] -%]
 [% i %] "[% desc.$i %]";
+[% END -%]
+[%- FOREACH i IN ['dnssec-lookaside', 'max-cache-size'] -%]
+[%- IF desc.$i -%]
+[% i %] [% desc.$i %];
+[% END -%]
 [%- END -%]
 
-[%- v = "allow-query" -%]
-
-allow-query {
-    [%- FOREACH i IN desc.$v %]
-    "[% i %]";
-    [%- END %]
+[%- FOREACH ame IN [ 'allow-recursion', 'blackhole', "allow-query", "allow-transfer"] -%]
+[%-     IF desc.$ame.size %]
+[% ame %] {
+[%         FILTER indent -%]
+[%-             FOREACH i IN desc.$ame -%]
+"[%                  i %]";
+[%             END -%]
+[%-         END -%]
 };
+[%     END -%]
+[%- END -%]
+
