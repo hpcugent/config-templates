@@ -21,11 +21,11 @@ rrset-order {order random;};
 [%- v = "listen-on" -%]
 [%- IF desc.$v -%]
 listen-on port 53 {
-[%- FILTER indent -%]
-[%      FOREACH i IN desc.$v -%]
+[%-     FILTER indent -%]
+[%          FOREACH i IN desc.$v -%]
 [%          i %];
+[%-         END -%]
 [%-     END -%]
-[%- END -%]
 };
 [%- END %]
 
@@ -36,9 +36,9 @@ listen-on port 53 {
 [% i %] "[% desc.$i %]";
 [% END -%]
 [%- FOREACH i IN ['dnssec-lookaside', 'max-cache-size'] -%]
-[%- IF desc.$i -%]
+[%-     IF desc.$i -%]
 [% i %] [% desc.$i %];
-[% END -%]
+[%      END -%]
 [%- END -%]
 
 [%- FOREACH ame IN [ 'allow-recursion', 'blackhole', "allow-query", "allow-transfer"] -%]
