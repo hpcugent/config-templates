@@ -5,7 +5,7 @@ type [% zone.type %];
 file "[% zone.file %]";
 [%      FOREACH i IN ['transfers-in', 'transfers-out'] -%]
 [%-         IF zone.$i -%]
-[% i %] [% zone.$i %];
+[%              i %] [% zone.$i %];
 [%-         END -%]
 [%-     END -%]
 [%-      IF zone.masters %]
