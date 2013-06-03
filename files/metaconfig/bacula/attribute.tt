@@ -1,4 +1,4 @@
-[%- quoted = ['Password'] -%]
+[%- quoted = ['Password', 'Changer_Command'] -%]
 [%- boolean = ['Monitor', 'Random_Access', 'Label_Media', 'Autochanger', 'Autoselect',
                'AutomaticMount', 'RemovableMedia', 'AlwaysOpen'] -%]
 [%- commasep = ['Device'] %]
