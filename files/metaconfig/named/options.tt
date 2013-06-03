@@ -1,4 +1,4 @@
-qforward [% desc.forward %];
+forward [% desc.forward %];
 forwarders {
 [%- FILTER indent -%]
 [%-     FOREACH i IN desc.forwarders %]
