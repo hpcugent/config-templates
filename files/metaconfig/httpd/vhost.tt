@@ -22,3 +22,7 @@ documentroot [% vhost.DocumentRoot %]
 [%- IF vhost.exists('rewrite') -%]
 [% INCLUDE metaconfig/httpd/rewrite.tt desc=vhost.rewrite %]
 [%- END -%]
+
+[%- IF vhost.exists('hostname_lookups') -%]
+hostnamelookups [% vhost.hostname_lookups ? "on" : "off" %]
+[%- END -%]
