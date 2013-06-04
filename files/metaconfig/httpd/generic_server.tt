@@ -1,3 +1,6 @@
+[%- FOREACH l IN listen %]
+listen [% l %]
+[% END %]
 [% FOREACH m IN modules.pairs %]
 loadmodule [% m.key %] [% m.value %]
 [% END %]
