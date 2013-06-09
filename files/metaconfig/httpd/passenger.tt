@@ -18,6 +18,6 @@ railsbaseuri [% uri %]
 railsenv [% vhost.value.RailsEnv %]
 [%-     END -%]
 [%-     INCLUDE metaconfig/httpd/vhost.tt vhost = vhost.value  %]
-[%- END -%]
+[%- END %]
 </virtualhost>
-[% END %]
+[% END -%]
