@@ -1,0 +1,3 @@
+<location [% desc.name %]>
+[%- INCLUDE metaconfig/httpd/dirinternals.tt FILTER indent -%]
+</location>

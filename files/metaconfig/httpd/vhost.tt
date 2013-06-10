@@ -12,6 +12,10 @@
 [% INCLUDE $files_render desc=file %]
 [% END -%]
 
+[%- FOREACH location IN vhost.locations %]
+[%     INCLUDE metaconfig/httpd/location.tt desc=location %]
+[% END -%]
+
 [%- IF vhost.exists('ssl') -%]
 [% INCLUDE metaconfig/httpd/ssl.tt desc=vhost.ssl %]
 [%- END -%]
