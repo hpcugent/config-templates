@@ -29,4 +29,8 @@ documentroot [% vhost.DocumentRoot %]
 
 [%- IF vhost.exists('hostname_lookups') -%]
 hostnamelookups [% vhost.hostname_lookups ? "on" : "off" %]
+[% END %]
+
+[%- IF vhost.exists('perl') -%]
+[%     INCLUDE metaconfig/httpd/vhostperl.tt desc=vhost.perl %]
 [%- END -%]
