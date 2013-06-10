@@ -1,0 +1,21 @@
+[%- IF desc.exists('ssl') -%]
+[%    INCLUDE metaconfig/httpd/ssl.tt desc=desc.ssl %]
+[%- END -%]
+
+[% INCLUDE metaconfig/httpd/file_basic.tt  %]
+
+[%- IF desc.exists('rewrite') -%]
+[%    INCLUDE metaconfig/httpd/rewrite.tt desc=desc.rewrite %]
+[%- END -%]
+
+[%- IF desc.exists('auth') -%]
+[%    INCLUDE metaconfig/httpd/auth.tt desc=desc.auth %]
+[%- END -%]
+
+[%- IF desc.exists('handler') -%]
+sethandler [% desc.handler %]
+[%- END %]
+
+[%- IF desc.exists('perl') -%]
+[%     INCLUDE metaconfig/httpd/modperl.tt desc=desc.perl %]
+[%- END -%]
