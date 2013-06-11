@@ -1,0 +1,5 @@
+perloptions [% desc.options.join(" ") %]
+perlswitches [% desc.switches.join(" ") %]
+[% FOREACH m IN desc.modules %]
+perlmodule [% m %]
+[% END %]

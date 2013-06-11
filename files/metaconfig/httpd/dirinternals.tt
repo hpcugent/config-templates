@@ -17,5 +17,5 @@ sethandler [% desc.handler %]
 [%- END %]
 
 [%- IF desc.exists('perl') -%]
-[%     INCLUDE metaconfig/httpd/modperl.tt desc=desc.perl %]
+[%     INCLUDE metaconfig/httpd/perldir.tt desc=desc.perl %]
 [%- END -%]
