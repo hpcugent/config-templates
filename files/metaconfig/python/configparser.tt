@@ -1,7 +1,7 @@
-[%- IF main -%]
+[%- IF MAIN -%]
 [MAIN]
 
-[%-   FOREACH m IN main.pairs -%]
+[%-   FOREACH m IN MAIN.pairs -%]
 [% m.key %]=[% m.value %]
 [%    END -%]
 [% END -%]
