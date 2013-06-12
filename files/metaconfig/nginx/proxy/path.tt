@@ -6,4 +6,7 @@ proxy_cache_path [% path.path -%]
 [%- IF path.max_size -%]
  max_size=[% path.max_size %]m
 [%- END -%]
+[%- IF path.inactive -%]
+ inactive=[% path.inactive %]m
+[%- END -%]
 ;
