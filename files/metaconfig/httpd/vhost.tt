@@ -12,6 +12,10 @@
 [% INCLUDE $files_render desc=file %]
 [% END -%]
 
+[%- FOREACH location IN vhost.locations %]
+[%     INCLUDE metaconfig/httpd/location.tt desc=location %]
+[% END -%]
+
 [%- IF vhost.exists('ssl') -%]
 [% INCLUDE metaconfig/httpd/ssl.tt desc=vhost.ssl %]
 [%- END -%]
@@ -21,4 +25,12 @@ documentroot [% vhost.DocumentRoot %]
 
 [%- IF vhost.exists('rewrite') -%]
 [% INCLUDE metaconfig/httpd/rewrite.tt desc=vhost.rewrite %]
+[%- END -%]
+
+[%- IF vhost.exists('hostname_lookups') -%]
+hostnamelookups [% vhost.hostname_lookups ? "on" : "off" %]
+[% END %]
+
+[%- IF vhost.exists('perl') -%]
+[%     INCLUDE metaconfig/httpd/vhostperl.tt desc=vhost.perl %]
 [%- END -%]

@@ -1,8 +1,20 @@
+[%- FOREACH e IN encodings %]
+addencoding [% e.mime %] [% e.extensions.join(' ') %]
+[% END -%]
+[%- FOREACH l IN listen %]
+listen [% l %]
+[% END -%]
 [% FOREACH m IN modules.pairs %]
 loadmodule [% m.key %] [% m.value %]
 [% END %]
 [% FOREACH v IN vhosts.pairs %]
-<virtualhost [% v.value.ip %]:[% v.value.port %] >
+<virtualhost
+[%-    FOREACH ip IN v.value.ip -%]
+[%-         FILTER indent -%]
+[%             ip %]:[% v.value.port %]
+[%-         END -%]
+[%-    END -%]
+>
 [% INCLUDE metaconfig/httpd/vhost.tt vhost=v.value FILTER indent %]
 </virtualhost>
 [% END %]
