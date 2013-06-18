@@ -7,7 +7,7 @@ remap => [% desc.remap ? "true" : "false" %]
 add_field => [ "[% f.key %]", "[% f.value %]" ]
 [%     END -%]
 [%-    IF desc.exists('host') -%]
-host => [% desc.host %]
+host => "[% desc.host %]"
 [%    END -%]
 [%- END -%]
 }
