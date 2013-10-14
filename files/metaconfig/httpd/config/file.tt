@@ -1,0 +1,5 @@
+<file [% desc.name %]>
+
+[% INCLUDE metaconfig/httpd/config/file_basic.tt FILTER indent %]
+
+</file>

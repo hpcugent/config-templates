@@ -1,7 +1,0 @@
-[% INCLUDE metaconfig/httpd/system.tt %]
-
-[% FOREACH incl in includes -%] 
-Include [% incl %]
-[% END -%]
-
-[% INCLUDE metaconfig/httpd/log.tt desc=log %]

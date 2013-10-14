@@ -1,4 +1,4 @@
-[% INCLUDE metaconfig/httpd/system.tt %]
+[% INCLUDE metaconfig/httpd/config/system.tt %]
 
 [% FOREACH v IN vhosts.pairs %]
 <virtualhost
@@ -8,6 +8,6 @@
 [%-         END -%]
 [%-    END -%]
 >
-[% INCLUDE metaconfig/httpd/vhost.tt vhost=v.value FILTER indent %]
+[% INCLUDE metaconfig/httpd/config/vhost.tt vhost=v.value FILTER indent %]
 </virtualhost>
 [% END %]

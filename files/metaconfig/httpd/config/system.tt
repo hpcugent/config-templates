@@ -1,4 +1,4 @@
-[% INCLUDE metaconfig/httpd/global.tt %]
+[% INCLUDE metaconfig/httpd/config/global.tt %]
 
 [%- FOREACH e IN encodings -%]
 addencoding [% e.mime %] [% e.extensions.join(' ') %]
@@ -12,7 +12,7 @@ loadmodule [% m.key %] [% m.value %]
 Listen [% l %]
 [% END -%]
 
-[% INCLUDE metaconfig/httpd/alias %]
+[% INCLUDE metaconfig/httpd/config/alias %]
 
 [%- IF !$dirs_render -%]
 [%-     dirs_render = "metaconfig/httpd/directory.tt" -%]

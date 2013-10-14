@@ -17,7 +17,7 @@ railsbaseuri [% uri %]
 [%-     IF vhost.value.exists('RailsEnv') %]
 railsenv [% vhost.value.RailsEnv %]
 [%-     END -%]
-[%-     INCLUDE metaconfig/httpd/vhost.tt vhost = vhost.value  %]
+[%-     INCLUDE metaconfig/httpd/config/vhost.tt vhost = vhost.value  %]
 [%- END %]
 </virtualhost>
 [% END -%]
