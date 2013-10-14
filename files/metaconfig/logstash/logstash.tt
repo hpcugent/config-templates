@@ -9,6 +9,9 @@ input {
 [%-   FOREACH i IN input.amqp -%]
 [%      INCLUDE metaconfig/logstash/input/amqp.tt desc=i %]
 [%   END -%]
+[%-   FOREACH i IN input.syslog -%]
+[%      INCLUDE metaconfig/logstash/input/syslog.tt desc=i %]
+[%    END -%]
 [%- END -%]
 }
 
@@ -33,6 +36,9 @@ output {
 [%  END -%]
 [%-  FOREACH o IN  output.elasticsearch -%]
 [%     INCLUDE metaconfig/logstash/output/elasticsearch.tt desc=o %]
+[%  END -%]
+[%   FOREACH o IN output.elasticsearch_http -%]
+[%     INCLUDE metaconfig/logstash/output/elasticsearch_http.tt desc=o %]
 [%  END -%]
 [%- END -%]
 }

@@ -1,0 +1,10 @@
+elasticsearch_http {
+[% FILTER indent -%]
+[%- INCLUDE metaconfig/logstash/output/base.tt -%]
+host => "[% desc.host %]"
+port => [% desc.port %]
+flush_size => [% desc.flush_size %]
+index => "[% desc.index %]"
+index_type => "[% desc.index_type %]"
+[% END -%]
+}
