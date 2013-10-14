@@ -1,0 +1,7 @@
+[%- FOREACH pair in desc.pairs %]
+WSGI[% pair.key -%]
+[%-     SWITCH pair.key -%]
+[%-         CASE -%]
+ [%             pair.value %]
+[%      END -%]
+[%- END -%]

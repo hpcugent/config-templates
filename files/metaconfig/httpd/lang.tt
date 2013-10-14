@@ -1,0 +1,8 @@
+[%- IF desc.exists('Default') -%]
+DefaultLanguage [% desc.Default %]
+[%- END -%]
+[%- IF desc.exists('Add') -%]
+[%-     FOREACH l IN desc.Add -%]
+AddLanguage [% l.lang %] [% i.names.join(' ') %]
+[%      END -%]
+[%- END -%]

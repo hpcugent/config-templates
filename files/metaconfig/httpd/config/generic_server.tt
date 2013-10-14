@@ -1,6 +1,5 @@
-[% FOREACH m IN modules.pairs %]
-loadmodule [% m.key %] [% m.value %]
-[% END %]
+[% INCLUDE metaconfig/httpd/system.tt %]
+
 [% FOREACH v IN vhosts.pairs %]
 <virtualhost
 [%-    FOREACH ip IN v.value.ip -%]
@@ -12,8 +11,3 @@ loadmodule [% m.key %] [% m.value %]
 [% INCLUDE metaconfig/httpd/vhost.tt vhost=v.value FILTER indent %]
 </virtualhost>
 [% END %]
-[% FOREACH a IN aliases %]
-alias [% a.url %] [% a.destination %]
-[% END %]
-wsgiscriptalias [% scriptalias.url %] [% scriptalias.destination %]
-wsgipythonpath [% pythonpath %]

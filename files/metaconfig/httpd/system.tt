@@ -1,0 +1,29 @@
+[% INCLUDE metaconfig/httpd/global.tt %]
+
+[%- FOREACH e IN encodings -%]
+addencoding [% e.mime %] [% e.extensions.join(' ') %]
+[% END -%]
+
+[% FOREACH m IN modules.pairs -%]
+loadmodule [% m.key %] [% m.value %]
+[% END -%]
+
+[%- FOREACH l IN listen -%]
+Listen [% l %]
+[% END -%]
+
+[% INCLUDE metaconfig/httpd/alias %]
+
+[%- IF !$dirs_render -%]
+[%-     dirs_render = "metaconfig/httpd/directory.tt" -%]
+[%- END -%]
+[%- FOREACH dir IN directories -%]
+[%      INCLUDE $dirs_render desc=dir %]
+[%  END -%]
+
+[%- IF !$files_render -%]
+[%-     files_render = "metaconfig/httpd/file.tt" -%]
+[%- END -%]
+[%- FOREACH file IN files -%]
+[%      INCLUDE $files_render desc=file %]
+[%  END -%]

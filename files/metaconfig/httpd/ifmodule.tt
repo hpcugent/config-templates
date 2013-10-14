@@ -1,0 +1,16 @@
+[%- FOREACH pair in desc.pairs %]
+[%-     SWITCH pair.key -%]
+[%-         CASE "ifmodules" -%]
+[%-             FOREACH ifmodpair in pair.value %]
+<IfModule [% ifmodpair.key %]>
+[%                  INCLUDE metaconfig/httpd/ifmodule.tt desc=ifmodpair.value FILTER indent %]
+</IfModule>
+[%             END -%]
+[%-         CASE "directories" -%]
+[%-             FOREACH dir in pair.value %]
+[%                  INCLUDE metaconfig/httpd/directory.tt desc=dir.value FILTER indent %]
+[%             END -%]
+[%-         CASE -%]
+[%              pair.key -%] [% pair.value %]
+[%      END -%]
+[%- END -%]

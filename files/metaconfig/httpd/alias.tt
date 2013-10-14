@@ -1,0 +1,3 @@
+[% FOREACH a IN aliases %]
+[%a.type%]alias [% a.url %] [% a.destination %]
+[% END %]

@@ -1,0 +1,18 @@
+[%- booleans = ["KeepAlive", "ExtendedStatus", "UseCanonicalName",
+                "EnableSendfile", "EnableMMAP", "ServerSignature",
+                "HostnameLookups", 
+                ]
+-%]
+[%- lists = ["DirectoryIndex", "IndexOptions", "IndexIgnore"] -%]
+[%- FOREACH pair IN global.pairs %]
+[%      pair.key -%]
+[%-     SWITCH pair.key -%]
+[%-         CASE booleans -%]
+ [%             pair.value ? 'On' : 'Off' %]
+[%-         CASE lists -%]
+ [%             pair.value.join(" ") %]
+[%-         CASE -%]
+ [%             pair.value %]
+[%      END -%]
+[%- END -%]
+
