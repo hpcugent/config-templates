@@ -1,6 +1,6 @@
 [%- IF desc.exists('Default') -%]
 DefaultIcon [% desc.Default %]
-[%- END -%]
+[% END -%]
 [%- IF desc.exists('AddByType') -%]
 [%-     FOREACH i IN desc.AddByType -%]
 AddIconByType [% i.icon %] [% i.names.join(' ') %]

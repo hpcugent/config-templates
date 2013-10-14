@@ -1,3 +1,4 @@
-<directory [% desc.name %]>
-[% INCLUDE metaconfig/httpd/config/dirinternals.tt FILTER indent %]
-</directory>
+<Directory [% desc.regex ? "~ " : "" %][% desc.quotes %][% desc.name %][% desc.quotes %]>
+[% INCLUDE metaconfig/httpd/config/dirinternals.tt FILTER indent -%]
+</Directory>
+[%- -%]

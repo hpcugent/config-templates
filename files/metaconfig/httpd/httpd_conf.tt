@@ -1,7 +1,11 @@
 [% INCLUDE metaconfig/httpd/config/system.tt %]
-
-[% FOREACH incl in includes -%] 
+[%- FOREACH incl IN includes -%] 
 Include [% incl %]
 [% END -%]
-
+[% INCLUDE metaconfig/httpd/config/handler.tt desc=handler %]
+[% INCLUDE metaconfig/httpd/config/type.tt desc=type %]
 [% INCLUDE metaconfig/httpd/config/log.tt desc=log %]
+[% INCLUDE metaconfig/httpd/config/lang.tt desc=lang %]
+[% INCLUDE metaconfig/httpd/config/icon.tt desc=icon %]
+[% INCLUDE metaconfig/httpd/config/outputfilter.tt desc=outputfilter %]
+[% INCLUDE metaconfig/httpd/config/browsermatch.tt desc=BrowserMatch %]

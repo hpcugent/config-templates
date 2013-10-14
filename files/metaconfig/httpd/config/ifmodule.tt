@@ -1,16 +1,8 @@
-[%- FOREACH pair in desc.pairs %]
-[%-     SWITCH pair.key -%]
-[%-         CASE "ifmodules" -%]
-[%-             FOREACH ifmodpair in pair.value %]
-<IfModule [% ifmodpair.key %]>
-[%                  INCLUDE metaconfig/httpd/config/ifmodule.tt desc=ifmodpair.value FILTER indent %]
+[%- IF desc.exists('ifmodules') -%]
+[%-     FOREACH ifmodnd IN desc.ifmodules -%]
+<IfModule [% ifmodnd.name %]>
+[%                  INCLUDE metaconfig/httpd/config/ifmodule_norecursion.tt descnd=ifmodnd FILTER indent %]
 </IfModule>
-[%             END -%]
-[%-         CASE "directories" -%]
-[%-             FOREACH dir in pair.value %]
-[%                  INCLUDE metaconfig/httpd/config/directory.tt desc=dir.value FILTER indent %]
-[%             END -%]
-[%-         CASE -%]
-[%              pair.key -%] [% pair.value %]
 [%      END -%]
 [%- END -%]
+[%-  INCLUDE metaconfig/httpd/config/ifmodule_norecursion.tt descnd=desc FILTER indent -%]
