@@ -6,6 +6,8 @@
 [%-             FOREACH dir IN pair.value -%]
 [%-                  INCLUDE metaconfig/httpd/config/directory.tt desc=dir FILTER indent -%]
 [%             END -%]
+[%-         CASE "modules" -%]
+[%              INCLUDE metaconfig/httpd/config/modules.tt desc=pair.value %]
 [%-         CASE -%]
 [%-              pair.key %] [% pair.value %]
 [%-      END %]

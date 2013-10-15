@@ -2,9 +2,7 @@
 [% FOREACH e IN encodings -%]
 AddEncoding [% e.mime %] [% e.extensions.join(' ') %]
 [% END -%]
-[% FOREACH m IN modules.pairs -%]
-LoadModule [% m.key %] [% m.value %]
-[% END -%]
+[% INCLUDE metaconfig/httpd/config/modules.tt desc=modules %]
 [%- FOREACH ifmod IN ifmodules -%]
 <IfModule [% ifmod.name %]>
 [%      INCLUDE metaconfig/httpd/config/ifmodule.tt desc=ifmod FILTER indent -%]

@@ -1,0 +1,3 @@
+[%- FOREACH m IN desc.pairs -%]
+LoadModule [% m.key %] [% m.value %]
+[% END -%]
