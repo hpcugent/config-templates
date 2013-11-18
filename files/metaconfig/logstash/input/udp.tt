@@ -1,0 +1,6 @@
+udp {
+[% FILTER indent -%]
+[%-    INCLUDE metaconfig/logstash/input/base.tt -%]
+port => [% desc.port %]
+[%- END -%]
+}
