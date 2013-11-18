@@ -1,0 +1,9 @@
+udp {
+[% FILTER indent -%]
+[%-    INCLUDE metaconfig/logstash/input/base.tt -%]
+port => [% desc.port %]
+[%-    IF desc.exists('host') -%]
+host => "[% desc.host %]"
+[%     END -%]
+[%- END %]
+}
