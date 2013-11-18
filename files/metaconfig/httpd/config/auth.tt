@@ -1,11 +1,10 @@
-[%- IF desc.requires.exists('user') -%]
-require user [% desc.requires.user.join(' ') %]
-[%- ELSIF desc.requires.exists('group') -%]
-require group [% desc.requires.group.join(' ') %]
-[%- ELSE -%]
-require valid-user
-[% END %]
-
-authname "[% desc.name %]"
-authuserfile [% desc.userfile %]
-authtype [% desc.type %]
+[%- FOR pair IN desc.pairs -%]
+[%      SWITCH pair.key %]
+[%-         CASE 'Require' %]
+Require [% pair.value.Type -%] [% pair.value.who.join(' ') %]
+[%-         CASE 'Name' %]
+Auth[% pair.key %] "[% pair.value %]"
+[%-         CASE %]
+Auth[% pair.key %] [% pair.value %]
+[%-     END %]
+[%- END %]
