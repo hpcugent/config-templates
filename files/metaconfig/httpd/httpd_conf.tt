@@ -3,7 +3,6 @@
 Include [% incl %]
 [% END -%]
 [% INCLUDE metaconfig/httpd/config/handler.tt desc=handler %]
-[% INCLUDE metaconfig/httpd/config/type.tt desc=type %]
 [% INCLUDE metaconfig/httpd/config/log.tt desc=log %]
 [% INCLUDE metaconfig/httpd/config/lang.tt desc=lang %]
 [% INCLUDE metaconfig/httpd/config/icon.tt desc=icon %]
