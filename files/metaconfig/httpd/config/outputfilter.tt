@@ -2,4 +2,4 @@
 [%-     FOREACH h IN desc.Add -%]
 AddOutputFilter [% h.name %] [% h.target.join(' ') %]
 [%      END -%]
-[%-      END -%]
+[%- END -%]
