@@ -1,9 +1,6 @@
 [% INCLUDE metaconfig/httpd/config/system.tt %]
-[% IF NameVirtualHost %]
-NameVirtualHost [% NameVirtualHost.ip -%]
-[%-      IF NameVirtualHost.exists('port') -%]
-:[% NameVirtualHost.port %]
-[%      END -%]
+[% IF NameVirtualHost.defined %]
+NameVirtualHost [% NameVirtualHost.ip -%][%- NameVirtualHost.exists('port') ? ':' : '' -%][% NameVirtualHost.port %]
 [%- END %]
 [% FOREACH v IN vhosts.pairs %]
 <VirtualHost
