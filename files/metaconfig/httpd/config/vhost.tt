@@ -2,7 +2,7 @@ ServerName [% vhost.ServerName %]
 DocumentRoot "[% vhost.DocumentRoot %]"
 HostnameLookups [% vhost.HostnameLookups ? "on" : "off" %]
 
-[%- to_process = ['ssl', 'env', 'aliases', 'rewrite', 'perl', 'wsgi', 'log'] -%] 
+[%- to_process = ['ssl', 'env', 'aliases', 'rewrite', 'perl', 'wsgi', 'log', 'rails'] -%] 
 [%- FOREACH p IN  to_process -%]
 [%-      IF vhost.exists(p) -%] 
 [%-         template = "metaconfig/httpd/config/" _ p.lower _ ".tt" -%]

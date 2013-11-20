@@ -1,4 +1,4 @@
-[%- to_process = ['global', 'encodings', 'modules', 'ssl', 'env', 'aliases', 'type'] -%] 
+[%- to_process = ['global', 'encodings', 'modules', 'ssl', 'env', 'aliases', 'type', 'passenger'] -%] 
 [%- FOREACH p IN  to_process -%]
 [%-      IF ${p}.defined -%] 
 [%-         template = "metaconfig/httpd/config/" _ p.lower _ ".tt" -%]
