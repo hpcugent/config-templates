@@ -1,5 +1,7 @@
 ServerName [% vhost.ServerName %]
+[% IF vhost.exists('DocumentRoot') -%]
 DocumentRoot "[% vhost.DocumentRoot %]"
+[% END -%]
 HostnameLookups [% vhost.HostnameLookups ? "on" : "off" %]
 
 [%- to_process = ['ssl', 'env', 'aliases', 'rewrite', 'perl', 'wsgi', 'log', 'rails'] -%] 
