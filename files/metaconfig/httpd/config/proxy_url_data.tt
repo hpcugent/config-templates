@@ -1,0 +1,6 @@
+Proxy[% name -%]
+[%- ud.Match or ud.exists('regex') ? 'Match ' : '' %][% ud.regex -%]
+[%- ud.exists('url') ? ' ' : '' %][% ud.url -%]
+[%- FOREACH d IN ud.data.pairs -%]
+ [%     d.key %]=[% d.value -%]
+[%- END -%]

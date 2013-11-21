@@ -1,0 +1,3 @@
+<Proxy[% desc.Match ? "Match" : "" %] [% desc.name %]>
+[% INCLUDE metaconfig/httpd/config/proxy.tt desc=desc.proxy FILTER indent -%]
+</Proxy[% desc.Match ? "Match" : "" %]>
