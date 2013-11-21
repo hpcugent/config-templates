@@ -16,6 +16,7 @@ HostnameLookups [% vhost.HostnameLookups ? "on" : "off" %]
         'directories' = 'directory'
         'files' = 'file'
         'locations' = 'location'
+        'proxies' = 'proxy_directive'
     } -%]
 [%- FOREACH pair IN to_process.pairs -%]
 [%-     template = "metaconfig/httpd/config/" _ pair.value.lower _ ".tt" -%]
