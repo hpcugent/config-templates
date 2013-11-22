@@ -1,6 +1,6 @@
 amqp {
 [% FILTER indent -%]
-[%-  INCLUDE metaconfig/logstash/input/base.tt -%]
+[%-  INCLUDE metaconfig/logstash/legacy_format11/input/base.tt -%]
 arguments => [ [% FOREACH a IN desc.arguments %] "[% a %]", [% END %] ]
 [%  IF desc.auto_delete %]
 auto_delete => [% IF desc.auto_delete %] true [% ELSE %] false [% END %]

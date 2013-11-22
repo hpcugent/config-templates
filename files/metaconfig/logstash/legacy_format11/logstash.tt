@@ -1,6 +1,6 @@
 input {
 [% FOREACH t IN ['gelf', 'file', 'amqp' ,'tcp', 'udp'] -%]
-[%-     template = "metaconfig/logstash/input/" _ t _ ".tt" -%]
+[%-     template = "metaconfig/logstash/legacy_format11/input/" _ t _ ".tt" -%]
 [%-     FOREACH i IN input.$t %]
 [%          INCLUDE $template desc=i FILTER indent %]
 [%      END %]
@@ -9,7 +9,7 @@ input {
 
 filter {
 [% FOREACH t IN ['grok', 'grep', 'date', 'mutate'] -%]
-[%-     template = "metaconfig/logstash/filters/" _ t _ ".tt" -%]
+[%-     template = "metaconfig/logstash/legacy_format11/filters/" _ t _ ".tt" -%]
 [%-     FOREACH f IN filters.$t %]
 [%          INCLUDE $template desc=f FILTER indent %]
 [%      END %]
@@ -18,7 +18,7 @@ filter {
 
 output {
 [% FOREACH t IN ['gelf', 'elasticsearch', 'stdout', 'elasticsearch_http'] -%]
-[%-     template = "metaconfig/logstash/output/" _ t _ ".tt" -%]
+[%-     template = "metaconfig/logstash/legacy_format11/output/" _ t _ ".tt" -%]
 [%-     FOREACH o IN output.$t %]
 [%          INCLUDE $template desc=o FILTER indent %]
 [%      END %]

@@ -1,6 +1,6 @@
 grok {
 [% FILTER indent -%]
-[%  INCLUDE metaconfig/logstash/filters/basic.tt -%]
+[%  INCLUDE metaconfig/logstash/legacy_format11/filters/basic.tt -%]
 [%  FOREACH m IN desc.match -%]
 match => [ "[% m.name %]", "[% m.pattern %]" ]
 [%  END -%]

@@ -1,6 +1,6 @@
 elasticsearch_http {
 [% FILTER indent -%]
-[%- INCLUDE metaconfig/logstash/output/base.tt -%]
+[%- INCLUDE metaconfig/logstash/legacy_format11/output/base.tt -%]
 host => "[% desc.host %]"
 port => [% desc.port %]
 flush_size => [% desc.flush_size %]

@@ -1,6 +1,6 @@
 gelf {
 [% FILTER indent -%]
-[%-    INCLUDE metaconfig/logstash/input/base.tt -%]
+[%-    INCLUDE metaconfig/logstash/legacy_format11/input/base.tt -%]
 port => [% desc.port %]
 remap => [% desc.remap ? "true" : "false" %]
 [%    FOREACH f IN desc.add_field -%]

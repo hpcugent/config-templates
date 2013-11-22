@@ -1,6 +1,6 @@
 tcp {
 [% FILTER indent -%]
-[%-    INCLUDE metaconfig/logstash/input/base.tt -%]
+[%-    INCLUDE metaconfig/logstash/legacy_format11/input/base.tt -%]
 port => [% desc.port %]
 [%-    IF desc.exists('host') -%]
 host => "[% desc.host %]"
