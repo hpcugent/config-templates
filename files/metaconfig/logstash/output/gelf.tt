@@ -1,0 +1,5 @@
+[%- global.plugin.boolean = ['ship_metadata'] -%]
+[%- global.plugin.stringarray = ['level'] -%]
+[%- global.plugin.stringhash = ['custom_fields'] -%]
+[%- global.plugin.string = ['facility', 'sender'] -%]
+[%- global.plugin.other = ['port'] -%]

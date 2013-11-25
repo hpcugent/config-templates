@@ -1,0 +1,4 @@
+[%- global.plugin.boolean = ['embedded'] -%] 
+[%- global.plugin.string = ['bind_host', 'cluster', 'index', 'index_type'] -%] 
+[%- global.plugin.stringrange = ['port'] -%]
+[%- global.plugin.other = ['flush_size'] -%] 
