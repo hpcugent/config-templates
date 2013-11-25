@@ -1,0 +1,33 @@
+[% key %] => 
+[%-     SWITCH key %]
+[%-         CASE global.base.boolean -%]
+ [%             value ? 'true' : 'false' %]
+[%-         CASE global.base.stringarray -%]
+ [ "[%           value.join('", "') %]" ]
+[%-          CASE global.base.stringhash -%]
+{
+[%-             FOREACH p IN value.pairs -%]
+ "[%                  p.key %]" => "[% p.value %]", 
+[%-             END -%]
+}
+[%-          CASE global.base.multilinestringhash -%]
+{
+[%-             FOREACH p IN value.pairs %]
+ "[%                  p.key %]" => "[% p.value %]"
+[%              END -%]
+}
+[%-         CASE global.base.name_pattern -%]
+{
+[%-             FOREACH p IN value -%]
+ "[%                  p.name %]" => "[% p.pattern %]", 
+[%-             END -%]
+}
+[%-         CASE global.base.name_patternlist -%]
+ [ "[%           value.name %]", "[% value.pattern.join('", "') %]" ]
+[%-         CASE global.base.stringrange -%]
+ "[%            value.join('-') %]"
+[%-         CASE global.base.string -%]
+ "[%            value %]"
+[%-         CASE -%]
+[%              value %]
+[%- END -%] 
