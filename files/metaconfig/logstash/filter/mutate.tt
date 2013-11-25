@@ -1,0 +1,2 @@
+[%- global.plugin.stringarray = ['exclude_tags'] -%]
+[%- global.plugin.name_pattern = ['replace'] -%]

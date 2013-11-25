@@ -1,0 +1,5 @@
+[%- global.plugin.boolean = [
+    'break_on_match', 'drop_if_match', 
+    'keep_empty_captures', 'named_captures_only'] -%]
+[%- global.plugin.stringarray = ['patterns_dir'] -%]
+[%- global.plugin.name_pattern = ['match'] -%]
