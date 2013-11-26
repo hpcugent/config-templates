@@ -16,7 +16,7 @@
 [%- global.base.boolean = [] -%]
 [%- global.base.stringarray = [] -%]
 [%- global.base.stringhash = [] -%]
-[%- global.base.mulitlinestringhash = [] -%]
+[%- global.base.multilinestringhash = [] -%]
 [%- global.base.name_pattern = [] -%]
 [%- global.base.name_patternlist = [] -%]
 [%- global.base.stringrange = [] -%]

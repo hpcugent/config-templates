@@ -12,15 +12,19 @@
 }
 [%-          CASE global.base.multilinestringhash -%]
 {
-[%-             FOREACH p IN value.pairs %]
- "[%                  p.key %]" => "[% p.value %]"
-[%              END -%]
+[%-             FILTER indent -%]
+[%-                 FOREACH p IN value.pairs %]
+"[%                     p.key %]" => "[% p.value %]"
+[%-                  END -%]
+[%-             END %]
 }
 [%-         CASE global.base.name_pattern -%]
 {
-[%-             FOREACH p IN value -%]
- "[%                  p.name %]" => "[% p.pattern %]", 
-[%-             END -%]
+[%-             FILTER indent -%]
+[%-                 FOREACH p IN value %]
+"[%                    p.name %]" => "[% p.pattern %]"
+[%-                 END -%]
+[%-             END %]
 }
 [%-         CASE global.base.name_patternlist -%]
  [ "[%           value.name %]", "[% value.pattern.join('", "') %]" ]
