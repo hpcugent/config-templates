@@ -1,9 +1,7 @@
-[%# These are plugin properties that are assumed to be the same for ALL plugins in this section.
-    If this is no longer the case, move them to the appropriate plugins. -%]
-[%- global.section.boolean = ['debug', 'ssl_enable', 'ssl_verify'] -%]
-[%- global.section.stringarray = ['tags', ] -%]
-[%- global.section.multilinestringhash = ['add_field', 'codec'] -%]
-[%- global.section.string = [
-    'type', 'host', 
-    'ssl_cacert', 'ssl_cert', 'ssl_key', 'ssl_key_passhrase'] -%]
-[%- global.section.other = [ 'workers'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="boolean" names=['debug', 'ssl_enable', 'ssl_verify'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="stringarray" names=['tags'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="stringhash" names=['add_field', 'codec'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="string" 
+        names=['type', 'host', 
+                'ssl_cacert', 'ssl_cert', 'ssl_key', 'ssl_key_passhrase'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="exact" names=['workers'] -%]

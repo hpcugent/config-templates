@@ -1,5 +1,3 @@
-[%# These are plugin properties that are assumed to be the same for ALL plugins in this section.
-    If this is no longer the case, move them to the appropriate plugins. -%]
-[%- global.section.boolean = ['negate', 'drop'] -%]
-[%- global.section.stringarray = ['add_tag', 'remove_tag', 'remove_field'] -%]
-[%- global.section.multilinestringhash = ['add_field'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="boolean" names=['negate', 'drop'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="stringarray" names=['add_tag', 'remove_tag', 'remove_field'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="stringhash" names=['add_field'] -%]

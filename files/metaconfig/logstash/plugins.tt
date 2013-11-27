@@ -2,7 +2,8 @@
 [%- # there should be only one plugin
         FOREACH p IN plugin.pairs -%]
 [%          p.key %] {
-[%          INCLUDE "metaconfig/logstash/plugin.tt" desc=p.value section=section plugin=p.key FILTER indent %]
+[%          INCLUDE "metaconfig/logstash/${section}/plugin.tt" desc=p.value FILTER indent %]
+[%          INCLUDE "metaconfig/logstash/${section}/${p.key}.tt" desc=p.value FILTER indent %]
 }
 [%     END -%]
 [%- END -%]

@@ -1,1 +1,1 @@
-[%- global.section.name_patternlist = ['match'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="name_patternlist" names=['match'] %]

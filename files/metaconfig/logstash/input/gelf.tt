@@ -1,1 +1,1 @@
-[%- global.plugin.boolean = ['remap'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="boolean" names=['remap'] -%]
