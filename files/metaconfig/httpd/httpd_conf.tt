@@ -2,7 +2,7 @@
 [%- to_process = ['includes', 'handler', 'log', 'lang', 'icon', 'outputfilter', 'browsermatch'] -%] 
 [%- FOREACH p IN  to_process -%]
 [%-      IF ${p}.defined -%] 
-[%-         template = "metaconfig/httpd/config/" _ p.lower _ ".tt" -%]
+[%-         template = "metaconfig/httpd/config/${p}.tt" -%]
 [%          INCLUDE $template desc=$p %]
 [%      END -%]
 [%- END %]

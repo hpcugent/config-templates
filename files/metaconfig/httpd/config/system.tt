@@ -1,7 +1,7 @@
 [%- to_process = ['global', 'encodings', 'modules', 'ssl', 'env', 'aliases', 'type', 'passenger'] -%] 
 [%- FOREACH p IN  to_process -%]
 [%-      IF ${p}.defined -%] 
-[%-         template = "metaconfig/httpd/config/" _ p.lower _ ".tt" -%]
+[%-         template = "metaconfig/httpd/config/${p}.tt" -%]
 [%          INCLUDE $template desc=$p %]
 [%      END -%]
 [%- END %]
@@ -13,7 +13,7 @@
         'locations' = 'location'
     } -%]
 [%- FOREACH pair IN to_process.pairs -%]
-[%-     template = "metaconfig/httpd/config/" _ pair.value.lower _ ".tt" -%]
+[%-     template = "metaconfig/httpd/config/${pair.value}.tt" -%]
 [%      FOREACH p IN ${pair.key} %]
 [%         INCLUDE $template desc=p %]
 [%      END -%]

@@ -1,4 +1,4 @@
-<Files [% desc.regex ? "~ " : "" %][% desc.quotes %][% desc.name %][% desc.quotes %]>
+<files [% desc.regex ? "~ " : "" %][% desc.quotes %][% desc.name %][% desc.quotes %]>
 [% INCLUDE metaconfig/httpd/config/file_basic.tt FILTER indent -%]
-</Files>
+</files>
 [%- -%]
