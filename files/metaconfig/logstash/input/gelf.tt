@@ -1,13 +1,1 @@
-gelf {
-[% FILTER indent -%]
-[%-    INCLUDE metaconfig/logstash/input/base.tt -%]
-port => [% desc.port %]
-remap => [% desc.remap ? "true" : "false" %]
-[%    FOREACH f IN desc.add_field -%]
-add_field => [ "[% f.key %]", "[% f.value %]" ]
-[%     END -%]
-[%-    IF desc.exists('host') -%]
-host => "[% desc.host %]"
-[%    END -%]
-[%- END -%]
-}
+[%- INCLUDE "metaconfig/logstash/type.tt" type="boolean" names=['remap'] -%]

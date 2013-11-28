@@ -1,12 +1,4 @@
-elasticsearch {
-[% FILTER indent -%]
-[%- INCLUDE metaconfig/logstash/output/base.tt -%]
-host => "[% desc.host %]"
-port => [% desc.port %]
-[%  IF desc.exists('max_inflight_requests') %]
-max_inflight_requests => [% desc.max_inflight_requests %]
-[%  END %]
-index => "[% desc.index %]"
-embedded => [% desc.embedded ? "true" : "false" %]
-[% END -%]
-}
+[%- INCLUDE "metaconfig/logstash/type.tt" type="boolean" names=['embedded'] -%] 
+[%- INCLUDE "metaconfig/logstash/type.tt" type="string" names=['bind_host', 'cluster', 'index', 'index_type'] -%] 
+[%- INCLUDE "metaconfig/logstash/type.tt" type="stringrange" names=['port'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="exact" names=['flush_size'] -%] 

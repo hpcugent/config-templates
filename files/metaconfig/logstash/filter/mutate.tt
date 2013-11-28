@@ -1,0 +1,2 @@
+[%- INCLUDE "metaconfig/logstash/type.tt" type="stringarray" names=['exclude_tags'] -%]
+[%- INCLUDE "metaconfig/logstash/type.tt" type="name_pattern" names=['replace'] -%]
