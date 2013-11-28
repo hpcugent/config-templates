@@ -1,5 +1,5 @@
 [% INCLUDE metaconfig/httpd/config/system.tt %]
-[%- to_process = ['includes', 'handler', 'log', 'lang', 'icon', 'outputfilter', 'BrowserMatch'] -%] 
+[%- to_process = ['includes', 'handler', 'log', 'lang', 'icon', 'outputfilter', 'browsermatch'] -%] 
 [%- FOREACH p IN  to_process -%]
 [%-      IF ${p}.defined -%] 
 [%-         template = "metaconfig/httpd/config/" _ p.lower _ ".tt" -%]

@@ -1,4 +1,4 @@
 [%- FOREACH match IN desc -%]
-BrowserMatch "[% match.match %]" [% match.names.join(' ') %]
+browsermatch "[% match.match %]" [% match.names.join(' ') %]
 [% END -%]
  

@@ -1,10 +1,10 @@
 [%- FOR pair IN desc.pairs -%]
 [%      SWITCH pair.key %]
-[%-         CASE 'Require' %]
-Require [% pair.value.Type -%] [% pair.value.who.join(' ') %]
-[%-         CASE 'Name' %]
-Auth[% pair.key %] "[% pair.value %]"
+[%-         CASE 'require' %]
+require [% pair.value.type -%] [% pair.value.who.join(' ') %]
+[%-         CASE 'name' %]
+auth[% pair.key %] "[% pair.value %]"
 [%-         CASE %]
-Auth[% pair.key %] [% pair.value %]
+auth[% pair.key %] [% pair.value %]
 [%-     END %]
 [%- END %]

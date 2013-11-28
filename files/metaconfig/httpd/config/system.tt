@@ -20,7 +20,7 @@
 [%- END %]
 
 [%- FOREACH ifmod IN ifmodules -%]
-<IfModule [% ifmod.name %]>
+<ifmodule [% ifmod.name %]>
 [%      INCLUDE metaconfig/httpd/config/ifmodule.tt desc=ifmod FILTER indent -%]
-</IfModule>
+</ifmodule>
 [% END -%] 
