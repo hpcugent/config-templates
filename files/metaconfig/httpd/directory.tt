@@ -1,3 +1,0 @@
-<directory [% desc.name %]>
-[% INCLUDE metaconfig/httpd/dirinternals.tt FILTER indent %]
-</directory>
