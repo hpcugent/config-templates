@@ -2,8 +2,7 @@
 [%- to_process = ['access'] -%] 
 [%- FOREACH p IN  to_process -%]
 [%-      IF desc.exists(p) -%] 
-[%-         template = "metaconfig/httpd/config/" _ p.lower _ ".tt" %]
-[%          INCLUDE $template desc=desc.$p FILTER indent %]
+[%          INCLUDE "metaconfig/httpd/config/${p}.tt" desc=desc.$p FILTER indent %]
 [%-      END -%]
 [%- END %]
 </limit[% desc.except ? "except" : "" %]>
