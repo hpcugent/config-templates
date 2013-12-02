@@ -2,9 +2,7 @@
 [%-     FOREACH pair IN ${base}.pairs %]
 [%          base %].[% pair.key %]:
 [%-         IF base == 'relay' and pair.key == 'backends' -%]
-[%-             FOREACH be IN pair.value -%]
-[%                  be == pair.value.first ? " " : "    " %][% be %][% be == pair.value.last ? "" : " \" %]
-[%             END -%]
+ [% pair.value.join(" \\\n    ") %]
 [%-         ELSE -%]
  [%              pair.value %]
 [%-         END %]
