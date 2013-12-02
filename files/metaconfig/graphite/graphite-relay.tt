@@ -1,0 +1,12 @@
+[%- FOREACH base IN ['hash', 'relay', 'overflow'] -%]
+[%-     FOREACH pair IN ${base}.pairs %]
+[%          base %].[% pair.key %]:
+[%-         IF base == 'relay' and pair.key == 'backends' -%]
+[%-             FOREACH be IN pair.value -%]
+[%                  be == pair.value.first ? " " : "    " %][% be %][% be == pair.value.last ? "" : " \" %]
+[%             END -%]
+[%-         ELSE -%]
+ [%              pair.value %]
+[%-         END %]
+[%-     END -%]
+[%- END %]
