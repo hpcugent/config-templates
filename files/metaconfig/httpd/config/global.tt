@@ -4,7 +4,7 @@
                 ]
 -%]
 [%- lists = ["directoryindex", "indexoptions", "indexignore"] -%]
-[%- quotes = ["documentroot", "serverroot"] -%] 
+[%- quotes = ["serverroot"] -%] 
 [%- FOREACH pair IN desc.pairs -%]
 [%-     SWITCH pair.key -%]
 [%-         CASE "ssl" -%]
