@@ -1,7 +1,7 @@
 [%- list = ['options', 'switches'] -%]
 [%- FOREACH pair IN desc.pairs %]
 [%-     SWITCH pair.key -%]
-[%-         CASE 'modules -%]
+[%-         CASE 'modules' -%]
 [%              FOREACH m IN desc.modules %]
 perlmodule [%       m %]
 [%              END %]
