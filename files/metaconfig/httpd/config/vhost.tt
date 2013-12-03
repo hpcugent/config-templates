@@ -1,6 +1,6 @@
 servername [% vhost.servername %]
 [% IF vhost.exists('documentroot') -%]
-documentroot "[% vhost.documentroot %]"
+documentroot [% vhost.documentroot %]
 [% END -%]
 hostnamelookups [% vhost.hostnamelookups ? "on" : "off" %]
 
