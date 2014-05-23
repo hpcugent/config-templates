@@ -1,8 +1,0 @@
-Test simple kerberos client
----
-multiline
----
-^\[logging\]$
-^\[realms\]$
-^\[libdefaults\]$
-^\[domain_realms\]$
