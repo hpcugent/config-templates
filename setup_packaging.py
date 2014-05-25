@@ -1,30 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
 #
-# Copyright 2014-2014 Ghent University
+# Distributed under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
 #
-# This file is part of config-templates-metaconfig,
-# originally created by the HPC team of Ghent University (http://ugent.be/hpc/en),
-# with support of Ghent University (http://ugent.be/hpc),
-# the Flemish Supercomputer Centre (VSC) (https://vscentrum.be/nl/en),
-# the Hercules foundation (http://www.herculesstichting.be/in_English)
-# and the Department of Economy, Science and Innovation (EWI) (http://www.ewi-vlaanderen.be/en).
+#   http://www.apache.org/licenses/LICENSE-2.0
 #
-# http://github.com/hpcugent/config-templates-metaconfig
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
 #
-# config-templates-metaconfig is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation v2.
-#
-# config-templates-metaconfig is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with VSC-tools. If not, see <http://www.gnu.org/licenses/>.
-#
-"""Basic setup.py for building the config-templates-metaconfig"""
+"""
+Basic setup.py for building the config-templates-metaconfig
+
+@author: Stijn De Weirdt (Ghent University)
+"""
 
 import sys
 import os
@@ -51,10 +45,10 @@ setup(
     version="2.0.0",
     description="Templates for services configured with ncm-metaconfig and Template::Toolkit",
     long_description="""Skeletons of configuration files for services that will be configured with ncm-metaconfig.""",
-    license="LGPL",
+    license='Apache License 2.0',
     author="HPC UGent",
     author_email="hpc-admin@lists.ugent.be",
     data_files=gen_data_files('metaconfig'),
     scripts=["scripts/json2tt.pl"],
-    url="http://www.ugent.be/hpc",
+    url="https://github.com/hpcugent/config-templates",
 )
