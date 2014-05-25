@@ -15,7 +15,7 @@
 #
 #
 """
-Inspired by easybuild EnhancedTestCase from test.framework.utilities
+Custom TestCase 
 
 @author: Stijn De Weirdt (Ghent University)
 """

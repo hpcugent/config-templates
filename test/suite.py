@@ -17,8 +17,6 @@
 """
 Usage: "python -m test.suite" or "python test/suite.py"
 
-This is based on the easybuild-framework test suite (http://github.com/hpcugent/easybuild).
-
 @author: Stijn De Weirdt (Ghent University)
 """
 import glob
