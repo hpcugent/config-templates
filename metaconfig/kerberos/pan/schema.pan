@@ -1,4 +1,3 @@
-# TODO what namespace
 declaration template metaconfig/kerberos/schema;
 
 type krb5_logging = {
@@ -30,5 +29,3 @@ type krb5_conf_file = {
     "domain_realms" : type_fqdn{}
 };
 
-# TODO move stuff like this in a config.pan?
-bind "/software/components/metaconfig/services/{/etc/krb5.conf}/contents" = krb5_conf_file;
