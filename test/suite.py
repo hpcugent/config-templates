@@ -34,6 +34,7 @@ from vsc.utils import fancylogger
 
 log = None
 JSON2TT = None
+TEMPLATE_LIBRARY_CORE = None  # abs path to quattor template-libary-core
 
 OBJECT_PROFILE_REGEX = re.compile(r'^object\s+template\s+(?P<prof>\S+)\s*;\s*$', re.M)
 
@@ -170,7 +171,9 @@ def make_regexps_unittests(service, profpath, templatepath, regexps_map):
         'SERVICE': service,
         'PROFILEPATH': profpath,
         'TEMPLATEPATH': templatepath,
+        'METACONFIGPATH': os.path.dirname(templatepath),
         'JSON2TT': JSON2TT,
+        'TEMPLATE_LIBRARY_CORE': TEMPLATE_LIBRARY_CORE,
     }
 
     # create test cases
@@ -216,13 +219,19 @@ def make_tests(path):
 def validate(path=None):
     """Validate the directory structure and return the test modules suite() results"""
     if path is None:
-        testdir = os.path.dirname(__file__)
+        # use absolute path
+        testdir = os.path.dirname(os.path.abspath(__file__))
         basedir = os.path.dirname(testdir)
         path = os.path.join(basedir, 'metaconfig')
+        # assume a checkout of template-library-core in same workspace
+        quattortemplatecorepath = os.path.join(os.path.dirname(basedir), 'template-library-core')
 
         # set it
         global JSON2TT
         JSON2TT = os.path.join(basedir, 'scripts', 'json2tt.pl')
+
+        global TEMPLATE_LIBRARY_CORE
+        TEMPLATE_LIBRARY_CORE = quattortemplatecorepath
 
     res = []
     for service in os.listdir(path):

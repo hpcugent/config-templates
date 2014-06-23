@@ -45,22 +45,38 @@ class RegexpTestCase(TestCase):
     """Dedicated testcase class for handling regular expressions for config-templates-metaconfig"""
     SERVICE = None  # name of service
     PROFILEPATH = None  # absolute path of profiles folder
+    METACONFIGPATH = None  # absolute path to metaconfig subdir
     TEMPLATEPATH = None  # absolute path of templates folder
     JSON2TT = None  # absolute path to the json2tt.pl tool
+    TEMPLATE_LIBRARY_CORE = None  # abs path to template library core (mainly for pan/types etc)
 
     def setUp(self):
         """Set up testcase."""
+        self.servicepath = os.path.join(self.METACONFIGPATH, self.SERVICE)
         self.tmpdir = tempfile.mkdtemp()
+        self.profilesdir = os.path.join(self.tmpdir, '_profiles')
+        self.extradir = os.path.join(self.tmpdir, '_extra')
+        # copy all profiles and pan dir in _profiles dir (allows to include and test the schema)
+        pandir = os.path.join(self.extradir, 'metaconfig', self.SERVICE)
+        # makes self.profilesdir
+        shutil.copytree(self.PROFILEPATH, self.profilesdir)
+        shutil.copytree(self.TEMPLATE_LIBRARY_CORE, self.extradir)
+        shutil.copytree(os.path.join(self.servicepath, 'pan'), pandir)
 
     def makeResult(self, profile):
         """Compile the profile from SERVICE and run the template toolkit on it"""
         tmpdir = self.tmpdir
 
-        # stupid bug in panc
         cwd = os.getcwd()
-        os.chdir(self.PROFILEPATH)
+        os.chdir(self.profilesdir)
 
-        cmd = ['panc', '--formats' , 'json', '--output-dir', tmpdir, "%s.pan" % profile]
+        cmd = [
+            'panc',
+            '--formats' , 'json',
+            '--include-path', os.pathsep.join([self.profilesdir, self.extradir]),
+            '--output-dir', tmpdir,
+            "%s.pan" % profile
+            ]
         ec, out = run_asyncloop(cmd)
 
         # change back
@@ -70,7 +86,7 @@ class RegexpTestCase(TestCase):
         if not os.path.exists(jsonfile):
             logging.error("No json file found for service %s and profile %s. cmd %s output %s" % (self.SERVICE, profile, cmd, out))
 
-        cmd = ['perl', self.JSON2TT, '--json', jsonfile, '--unittest', '--includepath', self.TEMPLATEPATH]
+        cmd = ['perl', self.JSON2TT, '--json', jsonfile, '--unittest', '--includepath', self.METACONFIGPATH]
         ec, out = run_asyncloop(cmd)
         if ec > 0:
             logging.error("json2tt exited with non-zero ec %s: %s" % (ec, out))
