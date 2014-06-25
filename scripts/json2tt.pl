@@ -212,9 +212,10 @@ if ($ut && $mcs) {
 
     if ($reljson->{module}) {
         my $ttname = $reljson->{module};
-        $tt="$ttname.tt";
+        # assumed relative from metaconfig as in the metaconfig component
+        $tt="metaconfig/$ttname.tt";
     } else {
-        $this_app->error("No module defined for metaconfigservice %s",$this_app->option("metaconfigservice"));
+        $this_app->error("No module defined for metaconfigservice ", $this_app->option("metaconfigservice"));
     };
     # redefine the json contents
     $json=$reljson->{contents};
