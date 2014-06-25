@@ -112,12 +112,17 @@ def parse_regexp(fn):
     flags = [x.strip() for x in blocks[1].strip().split("\n") if x.strip()]
     regexps_strs = [x.strip() for x in blocks[2].strip().split("\n") if x.strip()]
 
+    extra_flags = {}
+
     re_flags = 0
     for flag in flags:
-        if not flag in REGEXPS_SUPPORTED_FLAGS:
-            log.error('Unknown flag %s (supported: %s). Ignoring' % (flag, REGEXPS_SUPPORTED_FLAGS.keys()))
+        if flag.startswith('metaconfigservice='):
+            extra_flags['mode'] = ('--' + flag).split('=')
+        elif flag in REGEXPS_SUPPORTED_FLAGS:
+            re_flags |= REGEXPS_SUPPORTED_FLAGS[flag]
+        else:
+            log.error('Unknown flag %s (supported: %s). Ignoring' % (flag, REGEXPS_SUPPORTED_FLAGS.keys() + ['metaconfigservice=']))
             continue
-        re_flags |= REGEXPS_SUPPORTED_FLAGS[flag]
 
     regexps_compiled = []
     for regexps_str in regexps_strs:
@@ -127,7 +132,7 @@ def parse_regexp(fn):
             log.error("Failed to compile regexps_str %s with flags %s: %s" % (regexps_str, re_flags, e))
         regexps_compiled.append(r)
 
-    return description, regexps_compiled
+    return description, regexps_compiled, extra_flags
 
 
 def parse_regexps(fns):
@@ -181,7 +186,15 @@ def make_regexps_unittests(service, profpath, templatepath, regexps_map):
     #     one testfunction per profile
     #     one test per regexps
     for profile, regexps_tuples in sorted(regexps_map.items()):
-        attrs["test_%s" % profile] = gen_test_func(profile, regexps_tuples)
+        # a bit messy: make_result_extra_falgs are shared
+        # so only need to set them in one regexp file
+        # since they all cover the same profile
+        make_result_extra_flags = {}
+        for extra_flags in [x[2] for x in regexps_tuples]:
+            make_result_extra_flags.update(extra_flags)
+        if make_result_extra_flags:
+            log.info('make_result_extra_flags for profile %s: %s' % (profile, make_result_extra_flags))
+        attrs["test_%s" % profile] = gen_test_func(profile, [x[:2] for x in regexps_tuples], **make_result_extra_flags)
 
     # type is class factory
     testclass = type(class_name, (RegexpTestCase,), attrs)
@@ -253,7 +266,7 @@ def validate(path=None):
         tests = make_tests(abs_service)
         res.append(tests)
 
-    return tests
+    return res
 
 if __name__ == '__main__':
     # make sure temporary files can be created/used

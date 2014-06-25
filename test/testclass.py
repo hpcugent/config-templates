@@ -30,10 +30,10 @@ from unittest import TestCase
 from vsc.utils.run import run_asyncloop
 
 
-def gen_test_func(profile, regexps_tuples):
+def gen_test_func(profile, regexps_tuples, **make_result_extra_flags):
     """Test function generator"""
     def test_func(self):
-        self.makeResult(profile)
+        self.makeResult(profile, **make_result_extra_flags)
         for descr, compiled_regexps in regexps_tuples:
             for idx, compiled_regexp in enumerate(compiled_regexps):
                 msg = "%s (%03d) pattern %s output\n%s" % (descr, idx, compiled_regexp.pattern, self.result)
@@ -63,7 +63,7 @@ class RegexpTestCase(TestCase):
         shutil.copytree(self.TEMPLATE_LIBRARY_CORE, self.extradir)
         shutil.copytree(os.path.join(self.servicepath, 'pan'), pandir)
 
-    def makeResult(self, profile):
+    def makeResult(self, profile, mode=None):
         """Compile the profile from SERVICE and run the template toolkit on it"""
         tmpdir = self.tmpdir
 
@@ -86,7 +86,13 @@ class RegexpTestCase(TestCase):
         if not os.path.exists(jsonfile):
             logging.error("No json file found for service %s and profile %s. cmd %s output %s" % (self.SERVICE, profile, cmd, out))
 
-        cmd = ['perl', self.JSON2TT, '--json', jsonfile, '--unittest', '--includepath', self.METACONFIGPATH]
+        if mode is None:
+            mode = ['--unittest']
+        cmd = [
+            'perl', self.JSON2TT,
+            '--json', jsonfile,
+            '--includepath', os.path.dirname(self.METACONFIGPATH)
+            ] + mode
         ec, out = run_asyncloop(cmd)
         if ec > 0:
             logging.error("json2tt exited with non-zero ec %s: %s" % (ec, out))
