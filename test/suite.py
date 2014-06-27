@@ -30,7 +30,9 @@ import unittest
 from unittest import TestLoader
 
 from test.testclass import RegexpTestCase, gen_test_func
+from vsc.utils.generaloption import simple_option
 from vsc.utils import fancylogger
+
 
 log = None
 JSON2TT = None
@@ -201,7 +203,7 @@ def make_regexps_unittests(service, profpath, templatepath, regexps_map):
     return TestLoader().loadTestsFromTestCase(testclass)
 
 
-def make_tests(path):
+def make_tests(path, tests):
     """Make the tests for each profile"""
     testsdir = os.path.join(path, 'tests')
     if not (os.path.exists(testsdir) and os.path.isdir(testsdir)):
@@ -220,16 +222,28 @@ def make_tests(path):
 
     # get the object templates from the profiles dir
     profiles = get_object_profiles(profilesdir)
+
+    if tests:
+        # filter out the non-matching profiles from regexps map
+        newprofiles = []
+        for prof in profiles:
+            if prof in tests:
+                newprofiles.append(prof)
+            else:
+                log.debug('Skipping profile %s, not in tests %s' % (prof, tests))
+        profiles = newprofiles
+
     # dict with profile as key and list of tuples with descritoin and list of compiled regexps
     regexps_map = get_regexps(regexpsdir, profiles)
+
     # is there a regexp for each profile?
     if not len(regexps_map) == len(profiles):
-        log.error("Number of regexps_map entries %s is not equal to number of profiles %s" % (len(regexps_map), len(profiles)))
+        log.error("Number of regexps_map entries %s is not equal to total number of profiles %s" % (len(regexps_map), len(profiles)))
 
     return make_regexps_unittests(os.path.basename(path), profilesdir, path, regexps_map)
 
 
-def validate(path=None):
+def validate(service=None, tests=None, path=None):
     """Validate the directory structure and return the test modules suite() results"""
     if path is None:
         # use absolute path
@@ -247,29 +261,45 @@ def validate(path=None):
         TEMPLATE_LIBRARY_CORE = quattortemplatecorepath
 
     res = []
-    for service in os.listdir(path):
-        abs_service = os.path.join(path, service)
-        if not os.path.isdir(abs_service):
-            log.error('Found non-directory %s in path %s. Ignoring.' % (service, path))
+    for srvc in os.listdir(path):
+        if service and not srvc == service:
+            log.debug('Skipping srvc %s (service %s set)' % (srvc, service))
+            continue
+
+        abs_srvc = os.path.join(path, srvc)
+        if not os.path.isdir(abs_srvc):
+            log.error('Found non-directory %s in path %s. Ignoring.' % (srvc, path))
             continue
 
         # any tt files?
-        ttfiles = find_tt_files(abs_service)
+        ttfiles = find_tt_files(abs_srvc)
         if not ttfiles:
-            log.error('Found no tt files for service %s in path %s. Ignoring.' % (service, path))
+            log.error('Found no tt files for service %s in path %s. Ignoring.' % (srvc, path))
             continue
 
         # is there a pan subdir with a schema.pan
-        if not check_pan(abs_service):
+        if not check_pan(abs_srvc):
+            log.error('check_pan failed for %s. Skipping' % srvc)
             continue
 
-        tests = make_tests(abs_service)
-        res.append(tests)
+        restests = make_tests(abs_srvc, tests)
+        res.append(restests)
 
     return res
 
 if __name__ == '__main__':
     # make sure temporary files can be created/used
+    opts = {
+        "service" : ("Select one service to test", None, "store", None, 's'),
+        "tests" : ("Select specific test for given service", "strlist", "store", None, 't'),
+    }
+    go = simple_option(opts)
+
+    # no tests without service
+    if go.options.tests and not go.options.service:
+        go.log.error('Tests specified but no service.')
+        sys.exit(1)
+
     fd, fn = tempfile.mkstemp()
     os.close(fd)
     os.remove(fn)
@@ -278,7 +308,7 @@ if __name__ == '__main__':
         try:
             open(fn, 'w').write('test')
         except IOError, err:
-            sys.stderr.write("ERROR: Can't write to temporary file %s, set $TMPDIR to a writeable directory (%s)" % (fn, err))
+            go.log.error("Can't write to temporary file %s, set $TMPDIR to a writeable directory (%s)" % (fn, err))
             sys.exit(1)
     os.remove(fn)
     shutil.rmtree(testdir)
@@ -290,7 +320,7 @@ if __name__ == '__main__':
     fancylogger.logToFile(log_fn)
     log = fancylogger.getLogger()
 
-    SUITE = unittest.TestSuite(validate())
+    SUITE = unittest.TestSuite(validate(service=go.options.service, tests=go.options.tests))
 
     # uses XMLTestRunner if possible, so we can output an XML file that can be supplied to Jenkins
     xml_msg = ""
