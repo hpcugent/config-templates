@@ -25,12 +25,12 @@ type opennebula_datastore_ceph = {
 
 
 type vnet = {
-    "name" : string = 'node.cubone.os'
+    "name" : string
     "type" : string  = 'FIXED'
-    "bridge" : string =  'br100'
-    "gateway" : ip_ipv4 = '10.141.10.250' 
-    "dns" : string = '10.141.10.250' with match(SELF,'^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})')
-    "network" : string = '255.255.0.0' with match(SELF,'^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})')
+    "bridge" : string
+    "gateway" : ip_ipv4 
+    "dns" : ip_ipv4
+    "network_mask" : ip_ipv4
 };
 
 

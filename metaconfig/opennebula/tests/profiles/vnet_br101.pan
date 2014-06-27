@@ -12,5 +12,4 @@ prefix "/metaconfig/contents/vnet";
 "bridge" = "br101";
 "gateway" = "10.141.10.250";
 "dns" = "10.141.10.250";
-"network" = "255.255.0.0";
-
+"network_mask" = "255.255.0.0";

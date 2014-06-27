@@ -1,3 +1,9 @@
+[%- FOR pair IN vnet_br100.pairs -%]
+[%     pair.key.upper %] = "[%               pair.value %]"
+[%- END -%]
+
+
+
 NAME    = [% vnet.name %]
 TYPE    = [% vnet.type %]
 BRIDGE  = [% vnet.bridge %]
