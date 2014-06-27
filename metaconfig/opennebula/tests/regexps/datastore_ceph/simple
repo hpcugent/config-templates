@@ -1,0 +1,6 @@
+Simple ceph datastore test
+---
+multiline
+---
+^NAME\s?=\s?".+"\s*$
+

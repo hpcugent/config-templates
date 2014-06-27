@@ -1,0 +1,7 @@
+[%- digits = ['port'] -%]
+[% entries = ['pool_name', 'host', 'ceph_user', 'staging_dir', 'rbd_format'] -%]
+[%- FOR entry IN entries -%]
+[%-     IF ${entry}.defined -%]
+[%     	  entry.upper %] = "[% $entry %]" 
+[%     END -%]
+[%- END %]

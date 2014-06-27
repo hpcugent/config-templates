@@ -1,0 +1,6 @@
+NAME    = [% vnet.name %]
+TYPE    = [% vnet.type %]
+BRIDGE  = [% vnet.bridge %]
+GATEWAY = [% vnet.gateway %]
+DNS     = [% vnet.dns %]
+NETWORK_MASK = [% vnet.network %]

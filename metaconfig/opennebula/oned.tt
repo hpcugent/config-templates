@@ -1,0 +1,20 @@
+[%- digits = ['port'] -%]
+DB = [
+[% FILTER indent -%]
+[%- 	  FOR pair IN database.pairs -%]
+[% 	      pair.key %] = 
+[%-	      SWITCH pair.key -%]
+[%-	      	     CASE digits -%]
+ [% 		     	  pair.value %],
+[%                   CASE -%] 
+ "[% 		     	  pair.value %]",
+[%  	       END -%]
+[%- 	  END -%]
+[%- END -%]
+]
+[% entries = ['default_device_prefix', 'onegate_endpoint', 'somethingelse'] -%]
+[%- FOR entry IN entries -%]
+[%-     IF ${entry}.defined -%]
+[%     	  entry.upper %] = "[% $entry %]" 
+[%     END -%]
+[%- END %]
