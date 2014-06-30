@@ -34,10 +34,10 @@ type opennebula_vnet = {
 };
 
 
-type remoteconf_ceph = {
-    "pool_name" : string = 'one'
-    "host" : string = 'hyp004.cubone.os'
-    "ceph_user" : string = 'libvirt'
-    "staging_dir" : string = '/var/tmp' with match(SELF,'[^/]+/?$')
+type opennebula_remoteconf_ceph = {
+    "pool_name" : string
+    "host" : string
+    "ceph_user" ? string
+    "staging_dir" ? string = '/var/tmp' with match(SELF,'[^/]+/?$')
     "rbd_format" ? long(2)
 };
