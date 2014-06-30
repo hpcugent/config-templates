@@ -1,0 +1,15 @@
+[%- digits = ['port', 'debug_level'] -%]
+[
+[% FILTER indent -%]
+[%- 	  FOR pair IN data.pairs -%]
+[% 	      pair.key %] = 
+[%-	      SWITCH pair.key -%]
+[%-	      	     CASE digits -%]
+ [% 		     	  pair.value %]
+[%-                   CASE -%] 
+ "[% 		     	  pair.value %]"
+[%-  	       END %]
+[%- 	       data.pairs.last.key == pair.key ? "" : "," %]
+[% 	  END -%]
+[%- END -%]
+]

@@ -1,20 +1,15 @@
-[%- digits = ['port'] -%]
-DB = [
-[% FILTER indent -%]
-[%- 	  FOR pair IN database.pairs -%]
-[% 	      pair.key %] = 
-[%-	      SWITCH pair.key -%]
-[%-	      	     CASE digits -%]
- [% 		     	  pair.value %],
-[%                   CASE -%] 
- "[% 		     	  pair.value %]",
-[%  	       END -%]
-[%- 	  END -%]
+[%- nlist_template = ['database', 'log'] -%]
+[%- booleans = ['datastore_capacity_check'] -%]
+[%- digits = ['monitoring_interval', 'monitoring_threads', 'port', 'vnc_base_port', 'network_size', 'session_expiration_time', 'default_umask'] -%]
+[%- FOR pair IN oned.pairs -%]
+[%-    SWITCH pair.key -%]
+[%            CASE nlist_template -%]              
+[%     pair.key.upper %] = [% INCLUDE 'metaconfig/opennebula/oned_level1.tt' data=oned.${pair.key} %]
+[%            CASE booleans -%]                 
+[%     pair.key.upper %] = "[%               pair.value ? "yes" : "no" %]"
+[%            CASE digits -%]                 
+[%     pair.key.upper %] = [%               pair.value %]
+[%            CASE -%]
+[%     pair.key.upper %] = "[%               pair.value %]"
+[%      END -%]
 [%- END -%]
-]
-[% entries = ['default_device_prefix', 'onegate_endpoint', 'somethingelse'] -%]
-[%- FOR entry IN entries -%]
-[%-     IF ${entry}.defined -%]
-[%     	  entry.upper %] = "[% $entry %]" 
-[%     END -%]
-[%- END %]

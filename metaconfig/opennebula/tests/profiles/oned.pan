@@ -1,9 +1,12 @@
 object template oned;
 
+include 'metaconfig/opennebula/schema';
+
+bind "/metaconfig/contents/oned" = opennebula_oned;
+
 "/metaconfig/module" = "opennebula/oned";
 
-prefix "/metaconfig/contents";
-
+prefix "/metaconfig/contents/oned";
 "database" = nlist(
            "backend", "mysql",
            "server", "localhost",
@@ -12,7 +15,5 @@ prefix "/metaconfig/contents";
            "passwd", "my-fancy-pass",
            "db_name", "opennebula",
 );
-
 "default_device_prefix" = "vd";
-"onegate_endpoint" = "http://localhost:5030";
-
+"onegate_endpoint" = "http://hyp004.cubone.os:5030";
