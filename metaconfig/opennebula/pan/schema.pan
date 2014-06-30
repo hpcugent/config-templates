@@ -24,7 +24,7 @@ type opennebula_datastore_ceph = {
 
 
 
-type vnet = {
+type opennebula_vnet = {
     "name" : string
     "type" : string  = 'FIXED'
     "bridge" : string

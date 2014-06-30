@@ -1,12 +1,3 @@
-[%- FOR pair IN vnet_br100.pairs -%]
+[% FOR pair IN vnet.pairs -%]
 [%     pair.key.upper %] = "[%               pair.value %]"
-[%- END -%]
-
-
-
-NAME    = [% vnet.name %]
-TYPE    = [% vnet.type %]
-BRIDGE  = [% vnet.bridge %]
-GATEWAY = [% vnet.gateway %]
-DNS     = [% vnet.dns %]
-NETWORK_MASK = [% vnet.network %]
+[% END -%]
