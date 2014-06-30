@@ -8,7 +8,7 @@ type opennebula_datastore = {
     "name" : string 
 };
 
-type opennebula_database = {
+type opennebula_db = {
     "backend" : string 
     "server" : string
     "port" : long(0..)
@@ -58,7 +58,7 @@ type opennebula_remoteconf_ceph = {
 };
 
 type opennebula_oned = {
-    "database" : opennebula_database
+    "db" : opennebula_db
     "default_device_prefix" ? string = 'hd'
     "onegate_endpoint" ? string
     "monitoring_interval" : long = 60

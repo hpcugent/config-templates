@@ -1,10 +1,10 @@
-[%- nlist_template = ['database', 'log'] -%]
+[%- nlist_template = ['db', 'log'] -%]
 [%- booleans = ['datastore_capacity_check'] -%]
 [%- digits = ['monitoring_interval', 'monitoring_threads', 'port', 'vnc_base_port', 'network_size', 'session_expiration_time', 'default_umask'] -%]
 [%- FOR pair IN oned.pairs -%]
 [%-    SWITCH pair.key -%]
 [%            CASE nlist_template -%]              
-[%     pair.key.upper %] = [% INCLUDE 'metaconfig/opennebula/oned_level1.tt' data=oned.${pair.key} %]
+[%     pair.key.upper %] = [% INCLUDE 'metaconfig/opennebula/oned_level1.tt' data=oned.${pair.key} -%]
 [%            CASE booleans -%]                 
 [%     pair.key.upper %] = "[%               pair.value ? "yes" : "no" %]"
 [%            CASE digits -%]                 

@@ -7,7 +7,7 @@ bind "/metaconfig/contents/oned" = opennebula_oned;
 "/metaconfig/module" = "opennebula/oned";
 
 prefix "/metaconfig/contents/oned";
-"database" = nlist(
+"db" = nlist(
            "backend", "mysql",
            "server", "localhost",
            "port", 0,
