@@ -150,23 +150,22 @@ type opennebula_oned = {
     "default_umask" : long = 177
     "im_mad" : opennebula_im_mad
     "vm_mad" : opennebula_vm_mad
-#    "vm_mad_kvm" : opennebula_vm_mad_kvm
-#    "vm_mad_xen" : opennebula_vm_mad_xen
     "tm_mad" : opennebula_tm_mad
     "datastore_mad" : opennebula_datastore_mad
     "hm_mad" : opennebula_hm_mad
     "auth_mad" : opennebula_auth_mad
-    "tm_mad_conf" : opennebula_tm_mad_conf[] = list(nlist(), nlist("name", "somethingelse"))
-    "vm_restricted_attr" : string = 'CONTEXT/FILES'
-#    "vm_restricted_attr" : string = 'NIC/MAC'
-#    "vm_restricted_attr" : string = 'NIC/VLAN_ID'
-#    "vm_restricted_attr" : string = 'NIC/BRIDGE'
+    "tm_mad_conf" : opennebula_tm_mad_conf[] = list(
+    		  nlist(), 
+		  nlist("name", "lvm", "clone_target", "SELF"), 
+		  nlist("name", "shared"), 
+		  nlist("name", "fs_lvm", "ln_target", "SYSTEM"), 
+		  nlist("name", "qcow2"), 
+		  nlist("name", "ssh", "ln_target", "SYSTEM", "shared", false), 
+		  nlist("name", "vmfs"), 
+		  nlist("name", "ceph", "clone_target", "SELF")
+		  )
+    "vm_restricted_attr" : string[] = list("CONTEXT/FILES", "NIC/MAC", "NIC/VLAN_ID", "NIC/BRIDGE")
     "image_restricted_attr" : string = 'SOURCE'
-    "inherit_datastore_attr" : string = 'CEPH_HOST'
-#    "inherit_datastore_attr" : string = 'CEPH_SECRET'
-#    "inherit_datastore_attr" : string = 'CEPH_USER'
-#    "inherit_datastore_attr" : string = 'RBD_FORMAT'
-#    "inherit_datastore_attr" : string = 'GLUSTER_HOST'
-#    "inherit_datastore_attr" : string = 'GLUSTER_VOLUME'
-#    "inherit_vnet_attr" : string = 'VLAN_TAGGED_ID'
+    "inherit_datastore_attr" : string[] = list("CEPH_HOST", "CEPH_SECRET", "CEPH_USER", "RBD_FORMAT", "GLUSTER_HOST", "GLUSTER_VOLUME")
+     "inherit_vnet_attr" : string = 'VLAN_TAGGED_ID'
 };
