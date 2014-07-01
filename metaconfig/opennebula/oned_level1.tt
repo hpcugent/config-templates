@@ -1,6 +1,12 @@
-[%- digits = ['port', 'debug_level'] -%]
+[%- digits = ['port', 'debug_level', 'zone_id'] -%]
 [
 [% FILTER indent -%]
+[% 	  IF name.defined -%]
+name = "[% name %]",
+[%	  END %]
+[%-       IF type.defined -%]
+type = "[% type %]",
+[%        END %]
 [%- 	  FOR pair IN data.pairs -%]
 [% 	      pair.key %] = 
 [%-	      SWITCH pair.key -%]
