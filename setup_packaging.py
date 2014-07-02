@@ -24,7 +24,7 @@ import sys
 import os
 from distutils.core import setup
 
-BASE_DIR = "/usr/share/templates/quattor/metaconfig"
+BASE_DIR = "/usr/share/templates/quattor"
 
 
 def gen_data_files(*ttdirs):
@@ -36,9 +36,18 @@ def gen_data_files(*ttdirs):
             tts = [os.path.join(root, f) for f in files if f.endswith('.tt')]
             if tts:
                 data.extend(tts)
-
     return data
 
+
+def gen_tt_files_metaconfig():
+    "Copied from http://stackoverflow.com/questions/3596979/manifest-in-ignored-on-python-setup-py-install-no-data-files-installed"
+    data = []
+
+    for root, dirs, files in os.walk('metaconfig'):
+        tts = [os.path.join(root, f) for f in files if f.endswith('.tt')]
+        if tts:
+            data.append([os.path.join(BASE_DIR, root), tts])
+    return data
 
 setup(
     name="config-templates-metaconfig",
@@ -48,7 +57,7 @@ setup(
     license='Apache License 2.0',
     author="HPC UGent",
     author_email="hpc-admin@lists.ugent.be",
-    data_files=gen_data_files('metaconfig'),
+    data_files=gen_tt_files_metaconfig(),
     scripts=["scripts/json2tt.pl"],
     url="https://github.com/hpcugent/config-templates",
 )

@@ -34,6 +34,17 @@ def gen_test_func(profile, regexps_tuples, **make_result_extra_flags):
     """Test function generator"""
     def test_func(self):
         self.makeResult(profile, **make_result_extra_flags)
+
+        # make this a test in case of failure for proper reporting
+        # -> all other tests will fail anyway
+        if not self.pancout is None:
+            self.assertTrue(False, 'No json for %s (panc failed: %s)' % (profile, self.pancout))
+            return
+
+        if not self.json2ttout is None:
+            self.assertTrue(False, 'No tt output for %s (json2tt failed: %s)' % (profile, self.json2ttout))
+            return
+
         for descr, compiled_regexps in regexps_tuples:
             for idx, compiled_regexp in enumerate(compiled_regexps):
                 msg = "%s (%03d) pattern %s output\n%s" % (descr, idx, compiled_regexp.pattern, self.result)
@@ -66,6 +77,8 @@ class RegexpTestCase(TestCase):
     def makeResult(self, profile, mode=None):
         """Compile the profile from SERVICE and run the template toolkit on it"""
         tmpdir = self.tmpdir
+        self.pancout = None
+        self.json2ttout = None
 
         cwd = os.getcwd()
         os.chdir(self.profilesdir)
@@ -78,13 +91,14 @@ class RegexpTestCase(TestCase):
             "%s.pan" % profile
             ]
         ec, out = run_asyncloop(cmd)
-
         # change back
         os.chdir(cwd)
 
         jsonfile = os.path.join(tmpdir, "%s.json" % profile)
         if not os.path.exists(jsonfile):
-            logging.error("No json file found for service %s and profile %s. cmd %s output %s" % (self.SERVICE, profile, cmd, out))
+            logging.debug("No json file found for service %s and profile %s. cmd %s output %s" % (self.SERVICE, profile, cmd, out))
+            self.pancout = out
+            return
 
         if mode is None:
             mode = ['--unittest']
@@ -95,10 +109,11 @@ class RegexpTestCase(TestCase):
             ] + mode
         ec, out = run_asyncloop(cmd)
         if ec > 0:
-            logging.error("json2tt exited with non-zero ec %s: %s" % (ec, out))
+            logging.debug("json2tt exited with non-zero ec %s: %s" % (ec, out))
+            self.json2ttout = out
+            return
 
         self.result = out
-
 
     def tearDown(self):
         """Clean up after running testcase."""

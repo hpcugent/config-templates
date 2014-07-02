@@ -108,7 +108,7 @@ def parse_regexp(fn):
     # look for 2 separators, everything after the 2nd are regexpes
     blocks = REGEXPS_SEPARATOR_REGEX.split(open(fn).read())
     if not len(blocks) == REGEXPS_EXPECTED_BLOCKS:
-        log.error('Found %s blocks, more then number of expected blocks %s' % (len(blocks), REGEXPS_EXPECTED_BLOCKS))
+        log.error('Found %s blocks, more/less then number of expected blocks %s' % (len(blocks), REGEXPS_EXPECTED_BLOCKS))
 
     description = blocks[0].strip().replace("\n", " "*2)  # make single line
     flags = [x.strip() for x in blocks[1].strip().split("\n") if x.strip()]
