@@ -10,15 +10,15 @@ type = "[% type %]",
 [%     END %]
 [%-    FOR pair IN data.pairs -%]
 [%        pair.key %] =
-[%-    SWITCH pair.key -%]
-[%-        CASE digits -%]
- [%            pair.value %]
-[%-        CASE booleans -%]
- "[%           pair.value ? "yes" : "no" %]"
-[%-        CASE -%]
- "[%           pair.value %]"
+[%-        SWITCH pair.key -%]
+[%-            CASE digits -%]
+ [%                pair.value %]
+[%-            CASE booleans -%]
+ "[%               pair.value ? "yes" : "no" %]"
+[%-            CASE -%]
+ "[%               pair.value %]"
 [%-        END %]
-[%-    data.pairs.last.key == pair.key ? "" : "," %]
-[%     END -%]
-[%- END -%]
+[%-       data.pairs.last.key == pair.key ? "" : "," %]
+[%        END -%]
+[%-    END -%]
 ]
