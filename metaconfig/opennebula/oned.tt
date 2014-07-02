@@ -16,7 +16,7 @@
 [%                 END -%]
 [%            CASE 'tm_mad_conf' -%]
 [%-           	   FOREACH item IN oned.${pair.key} -%]
-TM_MAD_CONF = [% INCLUDE 'metaconfig/opennebula/oned_level1.tt' data=item -%]
+[%                         pair.key.upper %] = [% INCLUDE 'metaconfig/opennebula/oned_level1.tt' data=item -%]
 [%            	   END -%]
 [%            CASE oned_attr_list -%]
 [%-                FOREACH item IN oned.${pair.key} -%]
