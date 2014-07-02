@@ -1,8 +1,19 @@
 declaration template metaconfig/opennebula/schema;
 
+function is_ipv4 = {
+ terms = split('\.', ARGV[0]);
+ foreach (index; term; terms) {
+   i = to_long(term);
+   if (i < 0 || i > 255) {
+     return(false);
+   };
+ };
+ true;
+};
+
 type uuid = string with match(SELF,'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
 
-type ip_ipv4 = string with match(SELF,'^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})');
+type ip_ipv4 = string with is_ipv4(SELF);
 
 type directory = string with match(SELF,'[^/]+/?$');
 
