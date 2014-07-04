@@ -244,7 +244,10 @@ def make_tests(path, tests):
 
 
 def validate(service=None, tests=None, path=None):
-    """Validate the directory structure and return the test modules suite() results"""
+    """Validate the directory structure and return the test modules suite() results.
+    @param service: only process the specified service, when None, process all services
+    @param tests: only process the specified tests, when None, process all tests
+    """
     res = []
     for srvc in os.listdir(path):
         if service and not srvc == service:
@@ -284,8 +287,8 @@ if __name__ == '__main__':
     quattortemplatecorepath = os.path.join(os.path.dirname(basedir), 'template-library-core')
 
     opts = {
-        "service" : ("Select one service to test", None, "store", None, 's'),
-        "tests" : ("Select specific test for given service", "strlist", "store", None, 't'),
+        "service" : ("Select one service to test (when not specified, run all services)", None, "store", None, 's'),
+        "tests" : ("Select specific test for given service (when not specified, run all tests)", "strlist", "store", None, 't'),
         "json2tt": ("Path to json2tt.pl script", None, "store", json2tt, 'j'),
         "core" : ("Path to clone of template-library-core repo", None, "store", quattortemplatecorepath, 'C')
     }
