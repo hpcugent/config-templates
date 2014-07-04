@@ -46,9 +46,21 @@ def gen_test_func(profile, regexps_tuples, **make_result_extra_flags):
             return
 
         for descr, compiled_regexp_tuples in regexps_tuples:
-            for idx, (op, compiled_regexp) in enumerate(compiled_regexp_tuples):
-                msg = "%s regexp (%03d) %spattern %s output\n%s" % (descr, idx, op[1], compiled_regexp.pattern, self.result)
-                self.assertTrue(op[0](compiled_regexp.search(self.result)), msg)
+            for idx, (op, compiled_regexp, count) in enumerate(compiled_regexp_tuples):
+                if count is None:
+                    to_check = compiled_regexp.search(self.result)
+                    extra_msg = ''
+                else:
+                    # what to do with op if count is set?
+                    all_matches = compiled_regexp.findall(self.result)
+                    count_matches = len(all_matches)
+                    to_check = count_matches == count
+                    extra_msg = " COUNT set: expected %s matches, all matches (%s): %s" % (count, count_matches, all_matches)
+
+                msg = "%s regexp (%03d) %spattern %s%s\noutput:\n%s"
+                tup = (descr, idx, op[1], compiled_regexp.pattern, extra_msg, self.result)
+                self.assertTrue(op[0](to_check), msg % tup)
+
     return test_func
 
 

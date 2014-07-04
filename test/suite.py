@@ -51,6 +51,12 @@ REGEXPS_SUPPORTED_FLAGS = {
     'I': re.I,
 }
 
+# parse each reguar expression line
+# if count is not None, the regular expression has to match exactly this number
+# (count can be 0 to negate a single regexp)
+REGEXP_REGEXP = re.compile('^\s*(?P<regex>.*?)\s*(?:\s#{3}\sCOUNT\s(?P<count>\d+))?$')
+
+
 # some help / documentation
 # format is key : (help, is_prefix)
 SUPPORTED_FLAGS = {
@@ -169,12 +175,19 @@ def parse_regexp(fn):
             re_flags |= REGEXPS_SUPPORTED_FLAGS[flag]
 
     regexps_compiled = []
-    for regexps_str in regexps_strs:
+    for line in regexps_strs:
+        r_line = REGEXP_REGEXP.search(line)
+        if not r_line:
+            # how did we get here?
+            log.error("Invalid regular expression line %s. Skipping." % line)
+            continue
+
+        regexps_str = r_line.groupdict()['regex']
         try:
             r = re.compile(regexps_str, re_flags)
         except Exception, e:
             log.error("Failed to compile regexps_str %s with flags %s: %s" % (regexps_str, re_flags, e))
-        regexps_compiled.append([op, r])
+        regexps_compiled.append([op, r, r_line.groupdict().get('count', None)])
 
     return description, regexps_compiled, extra_flags
 
