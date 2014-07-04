@@ -20,6 +20,7 @@ Usage: "python -m test.suite" or "python test/suite.py"
 @author: Stijn De Weirdt (Ghent University)
 """
 import glob
+import operator
 import os
 import re
 import shutil
@@ -58,6 +59,7 @@ SUPPORTED_FLAGS = {
     'caseinsensitive': ('Perform case-insensitive matches', False),
     'I': ('alias for "caseinsensitive"', False),
     'metaconfigservice=': ('Look for module/contents in the expected metaconfig component path for the service', True),
+    'negate': ('Negate all regexps (none of the regexps can match)', False),
 }
 
 
@@ -148,6 +150,10 @@ def parse_regexp(fn):
 
     extra_flags = {}
 
+    # operator tuple: the operator, and message incase of failure of the test
+    # test is assertTrue(op(regexp.search(output)))
+    # message is put before the regexp pattern
+    op = [operator.truth, '']
     re_flags = 0
     for flag in flags:
         # extra check
@@ -157,6 +163,8 @@ def parse_regexp(fn):
 
         if flag.startswith('metaconfigservice='):
             extra_flags['mode'] = ('--' + flag).split('=')
+        elif flag == 'negate':
+            op = [operator.not_, 'negated ']
         elif flag in REGEXPS_SUPPORTED_FLAGS:
             re_flags |= REGEXPS_SUPPORTED_FLAGS[flag]
 
@@ -166,7 +174,7 @@ def parse_regexp(fn):
             r = re.compile(regexps_str, re_flags)
         except Exception, e:
             log.error("Failed to compile regexps_str %s with flags %s: %s" % (regexps_str, re_flags, e))
-        regexps_compiled.append(r)
+        regexps_compiled.append([op, r])
 
     return description, regexps_compiled, extra_flags
 

@@ -45,10 +45,10 @@ def gen_test_func(profile, regexps_tuples, **make_result_extra_flags):
             self.assertTrue(False, 'No tt output for %s (json2tt failed: %s)' % (profile, self.json2ttout))
             return
 
-        for descr, compiled_regexps in regexps_tuples:
-            for idx, compiled_regexp in enumerate(compiled_regexps):
-                msg = "%s (%03d) pattern %s output\n%s" % (descr, idx, compiled_regexp.pattern, self.result)
-                self.assertTrue(compiled_regexp.search(self.result), msg)
+        for descr, compiled_regexp_tuples in regexps_tuples:
+            for idx, (op, compiled_regexp) in enumerate(compiled_regexp_tuples):
+                msg = "%s regexp (%03d) %spattern %s output\n%s" % (descr, idx, op[1], compiled_regexp.pattern, self.result)
+                self.assertTrue(op[0](compiled_regexp.search(self.result)), msg)
     return test_func
 
 
