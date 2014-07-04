@@ -245,21 +245,6 @@ def make_tests(path, tests):
 
 def validate(service=None, tests=None, path=None):
     """Validate the directory structure and return the test modules suite() results"""
-    if path is None:
-        # use absolute path
-        testdir = os.path.dirname(os.path.abspath(__file__))
-        basedir = os.path.dirname(testdir)
-        path = os.path.join(basedir, 'metaconfig')
-        # assume a checkout of template-library-core in same workspace
-        quattortemplatecorepath = os.path.join(os.path.dirname(basedir), 'template-library-core')
-
-        # set it
-        global JSON2TT
-        JSON2TT = os.path.join(basedir, 'scripts', 'json2tt.pl')
-
-        global TEMPLATE_LIBRARY_CORE
-        TEMPLATE_LIBRARY_CORE = quattortemplatecorepath
-
     res = []
     for srvc in os.listdir(path):
         if service and not srvc == service:
@@ -288,12 +273,26 @@ def validate(service=None, tests=None, path=None):
     return res
 
 if __name__ == '__main__':
-    # make sure temporary files can be created/used
+    # use absolute path
+    testdir = os.path.dirname(os.path.abspath(__file__))
+    basedir = os.path.dirname(testdir)
+    path = os.path.join(basedir, 'metaconfig')
+
+    # default: use json2tt.pl from this release
+    json2tt = os.path.join(basedir, 'scripts', 'json2tt.pl')
+    # default: assume a checkout of template-library-core in same workspace
+    quattortemplatecorepath = os.path.join(os.path.dirname(basedir), 'template-library-core')
+
     opts = {
         "service" : ("Select one service to test", None, "store", None, 's'),
         "tests" : ("Select specific test for given service", "strlist", "store", None, 't'),
+        "json2tt": ("Path to json2tt.pl script", None, "store", json2tt, 'j'),
+        "core" : ("Path to clone of template-library-core repo", None, "store", quattortemplatecorepath, 'C')
     }
     go = simple_option(opts)
+
+    JSON2TT = go.options.json2tt
+    TEMPLATE_LIBRARY_CORE = go.options.core
 
     # no tests without service
     if go.options.tests and not go.options.service:
@@ -302,6 +301,7 @@ if __name__ == '__main__':
 
     # TODO test panc version. has to be 10.1 (panc has no --version?)
 
+    # make sure temporary files can be created/used
     fd, fn = tempfile.mkstemp()
     os.close(fd)
     os.remove(fn)
@@ -322,7 +322,7 @@ if __name__ == '__main__':
     fancylogger.logToFile(log_fn)
     log = fancylogger.getLogger()
 
-    SUITE = unittest.TestSuite(validate(service=go.options.service, tests=go.options.tests))
+    SUITE = unittest.TestSuite(validate(path=path, service=go.options.service, tests=go.options.tests))
 
     # uses XMLTestRunner if possible, so we can output an XML file that can be supplied to Jenkins
     xml_msg = ""
