@@ -300,6 +300,8 @@ if __name__ == '__main__':
         go.log.error('Tests specified but no service.')
         sys.exit(1)
 
+    # TODO test panc version. has to be 10.1 (panc has no --version?)
+
     fd, fn = tempfile.mkstemp()
     os.close(fd)
     os.remove(fn)

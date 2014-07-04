@@ -37,11 +37,11 @@ def gen_test_func(profile, regexps_tuples, **make_result_extra_flags):
 
         # make this a test in case of failure for proper reporting
         # -> all other tests will fail anyway
-        if not self.pancout is None:
+        if self.pancout is not None:
             self.assertTrue(False, 'No json for %s (panc failed: %s)' % (profile, self.pancout))
             return
 
-        if not self.json2ttout is None:
+        if self.json2ttout is not None:
             self.assertTrue(False, 'No tt output for %s (json2tt failed: %s)' % (profile, self.json2ttout))
             return
 
@@ -62,16 +62,17 @@ class RegexpTestCase(TestCase):
     TEMPLATE_LIBRARY_CORE = None  # abs path to template library core (mainly for pan/types etc)
 
     def setUp(self):
-        """Set up testcase."""
+        """Set up testcase. This makes a copy of the templates under service/pan 
+        (like the schema.pan) and puts them in the expected namespace 
+        metaconfig/<service>/.
+        No other copies are made, but this requires panc 10.1 to work.
+        """
         self.servicepath = os.path.join(self.METACONFIGPATH, self.SERVICE)
         self.tmpdir = tempfile.mkdtemp()
-        self.profilesdir = os.path.join(self.tmpdir, '_profiles')
         self.extradir = os.path.join(self.tmpdir, '_extra')
-        # copy all profiles and pan dir in _profiles dir (allows to include and test the schema)
+        # copy pan dir in _extra dir (allows to include and test the schema)
+        # this is create a correct namespace (templates in pan are in metaconfig/<service>/ namespace)
         pandir = os.path.join(self.extradir, 'metaconfig', self.SERVICE)
-        # makes self.profilesdir
-        shutil.copytree(self.PROFILEPATH, self.profilesdir)
-        shutil.copytree(self.TEMPLATE_LIBRARY_CORE, self.extradir)
         shutil.copytree(os.path.join(self.servicepath, 'pan'), pandir)
 
     def makeResult(self, profile, mode=None):
@@ -80,19 +81,16 @@ class RegexpTestCase(TestCase):
         self.pancout = None
         self.json2ttout = None
 
-        cwd = os.getcwd()
-        os.chdir(self.profilesdir)
+        includepaths = [self.PROFILEPATH, self.extradir, self.TEMPLATE_LIBRARY_CORE]
 
         cmd = [
             'panc',
             '--formats' , 'json',
-            '--include-path', os.pathsep.join([self.profilesdir, self.extradir]),
+            '--include-path', os.pathsep.join(includepaths),
             '--output-dir', tmpdir,
-            "%s.pan" % profile
+            os.path.join(self.PROFILEPATH, "%s.pan" % profile)
             ]
         ec, out = run_asyncloop(cmd)
-        # change back
-        os.chdir(cwd)
 
         jsonfile = os.path.join(tmpdir, "%s.json" % profile)
         if not os.path.exists(jsonfile):
