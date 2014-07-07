@@ -130,6 +130,26 @@ type opennebula_remoteconf_ceph = {
     "qemu_img_convert_args" ? string
 };
 
+type opennebula_vmtemplate_vnet = string{} with {
+     # check if all entries in the map have a network interface
+     foreach (k;v;SELF) {
+     	     if (! exists("/system/network/interfaces/"+k)) {
+	     	return(false);
+	     };
+     };
+     # check if all interfaces have an entry in the map
+     foreach (k;v;value("/system/network/interfaces")) {
+     	     if (! exists(SELF[k])) {
+	     	return(false);
+	     };
+     };
+     return(true);
+};
+
+type opennebula_vmtemplate = {
+     "vnet" : opennebula_vmtemplate_vnet
+};
+
 type opennebula_oned = {
     "db" : opennebula_db
     "default_device_prefix" ? string = 'hd'

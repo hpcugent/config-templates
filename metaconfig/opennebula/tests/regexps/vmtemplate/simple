@@ -1,0 +1,5 @@
+OpenNebula simple vm template test
+---
+multiline
+---
+^NAME\s?=\s?".+"\s*$
