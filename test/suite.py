@@ -65,7 +65,7 @@ SUPPORTED_FLAGS = {
     'caseinsensitive': ('Perform case-insensitive matches', False),
     'I': ('alias for "caseinsensitive"', False),
     'metaconfigservice=': ('Look for module/contents in the expected metaconfig component path for the service', True),
-    'negate': ('Negate all regexps (none of the regexps can match)', False),
+    'negate': ('Negate all regexps (none of the regexps can match) (not applicable when COUNT is set for individual regexp)', False),
 }
 
 

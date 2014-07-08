@@ -21,6 +21,7 @@ Custom TestCase
 """
 
 import logging
+import operator
 import os
 import shutil
 import tempfile
@@ -51,11 +52,16 @@ def gen_test_func(profile, regexps_tuples, **make_result_extra_flags):
                     to_check = compiled_regexp.search(self.result)
                     extra_msg = ''
                 else:
-                    # what to do with op if count is set?
                     all_matches = compiled_regexp.findall(self.result)
                     count_matches = len(all_matches)
                     to_check = count_matches == count
                     extra_msg = " COUNT set: expected %s matches, all matches (%s): %s" % (count, count_matches, all_matches)
+
+                    # The negate flag is ignored when count is set.
+                    # Stating regexp foo must not appear exactly three times is overengineering this.
+                    if not op == operator.truth:
+                        extra_msg += ' (forcing operator.truth; thus ignoring flag (e.g. negate))'
+                        op = operator.truth
 
                 msg = "%s regexp (%03d) %spattern %s%s\noutput:\n%s"
                 tup = (descr, idx, op[1], compiled_regexp.pattern, extra_msg, self.result)
