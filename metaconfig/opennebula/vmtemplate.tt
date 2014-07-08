@@ -17,8 +17,8 @@ MAC = "[% system.hardware.cards.nic.${pair.key}.hwaddr %]",
 TARGET = "[% pair.key %]",
 MODEL = "virtio",
 NETWORK = "[% system.opennebula.vnet.${pair.key} %]",
-NETWORK_UNAME = "oneadmin" 
-[%-     END -%]
+NETWORK_UNAME = "oneadmin"
+[%-     END %]
 ]
 [%- END %]
 NAME = "[%- fqdn -%]"
@@ -26,29 +26,29 @@ CONTEXT = [
 [%     FILTER indent -%]
 NETWORK = "YES",
 HOSTNAME = "[%- fqdn %]",
-TOKEN = "YES" 
-[%-    END -%]
+TOKEN = "YES"
+[%-    END %]
 ]
 CPU = "[% cpus %]"
-DESCRIPTION="[% system.hardware.model %] [% fqdn %]"
+DESCRIPTION = "[% system.hardware.model %] [% fqdn %]"
 [%-    FOR pair IN system.hardware.harddisks.pairs %]
 DISK = [
 [%     FILTER indent -%]
 IMAGE = "[%- fqdn %]_[% pair.key %]",
 TARGET = "[% pair.key %]",
-IMAGE_UNAME = "oneadmin" 
-[%-    END -%]
+IMAGE_UNAME = "oneadmin"
+[%-    END %]
 ]
 [%- END %]
 GRAPHICS = [
 [%     FILTER indent -%]
 LISTEN = "0.0.0.0",
-TYPE = "VNC" 
-[%-    END -%]
+TYPE = "VNC"
+[%-    END %]
 ]
 MEMORY = "[% memory %]"
 OS = [
 [%     FILTER indent -%]
-BOOT = "network,hd" 
-[%-    END -%]
+BOOT = "network,hd"
+[%-    END %]
 ]

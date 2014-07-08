@@ -147,7 +147,7 @@ type opennebula_vmtemplate_vnet = string{} with {
 };
 
 type opennebula_vmtemplate = {
-     "vnet" : opennebula_vmtemplate_vnet
+    "vnet" : opennebula_vmtemplate_vnet
 };
 
 type opennebula_oned = {
