@@ -30,10 +30,13 @@ import unittest
 from unittest import TestLoader
 
 from test.testclass import RegexpTestCase, gen_test_func
+from vsc.utils.generaloption import simple_option
 from vsc.utils import fancylogger
+
 
 log = None
 JSON2TT = None
+TEMPLATE_LIBRARY_CORE = None  # abs path to quattor template-libary-core
 
 OBJECT_PROFILE_REGEX = re.compile(r'^object\s+template\s+(?P<prof>\S+)\s*;\s*$', re.M)
 
@@ -105,18 +108,23 @@ def parse_regexp(fn):
     # look for 2 separators, everything after the 2nd are regexpes
     blocks = REGEXPS_SEPARATOR_REGEX.split(open(fn).read())
     if not len(blocks) == REGEXPS_EXPECTED_BLOCKS:
-        log.error('Found %s blocks, more then number of expected blocks %s' % (len(blocks), REGEXPS_EXPECTED_BLOCKS))
+        log.error('Found %s blocks, more/less then number of expected blocks %s' % (len(blocks), REGEXPS_EXPECTED_BLOCKS))
 
     description = blocks[0].strip().replace("\n", " "*2)  # make single line
     flags = [x.strip() for x in blocks[1].strip().split("\n") if x.strip()]
     regexps_strs = [x.strip() for x in blocks[2].strip().split("\n") if x.strip()]
 
+    extra_flags = {}
+
     re_flags = 0
     for flag in flags:
-        if not flag in REGEXPS_SUPPORTED_FLAGS:
-            log.error('Unknown flag %s (supported: %s). Ignoring' % (flag, REGEXPS_SUPPORTED_FLAGS.keys()))
+        if flag.startswith('metaconfigservice='):
+            extra_flags['mode'] = ('--' + flag).split('=')
+        elif flag in REGEXPS_SUPPORTED_FLAGS:
+            re_flags |= REGEXPS_SUPPORTED_FLAGS[flag]
+        else:
+            log.error('Unknown flag %s (supported: %s). Ignoring' % (flag, REGEXPS_SUPPORTED_FLAGS.keys() + ['metaconfigservice=']))
             continue
-        re_flags |= REGEXPS_SUPPORTED_FLAGS[flag]
 
     regexps_compiled = []
     for regexps_str in regexps_strs:
@@ -126,7 +134,7 @@ def parse_regexp(fn):
             log.error("Failed to compile regexps_str %s with flags %s: %s" % (regexps_str, re_flags, e))
         regexps_compiled.append(r)
 
-    return description, regexps_compiled
+    return description, regexps_compiled, extra_flags
 
 
 def parse_regexps(fns):
@@ -170,7 +178,9 @@ def make_regexps_unittests(service, profpath, templatepath, regexps_map):
         'SERVICE': service,
         'PROFILEPATH': profpath,
         'TEMPLATEPATH': templatepath,
+        'METACONFIGPATH': os.path.dirname(templatepath),
         'JSON2TT': JSON2TT,
+        'TEMPLATE_LIBRARY_CORE': TEMPLATE_LIBRARY_CORE,
     }
 
     # create test cases
@@ -178,14 +188,22 @@ def make_regexps_unittests(service, profpath, templatepath, regexps_map):
     #     one testfunction per profile
     #     one test per regexps
     for profile, regexps_tuples in sorted(regexps_map.items()):
-        attrs["test_%s" % profile] = gen_test_func(profile, regexps_tuples)
+        # a bit messy: make_result_extra_falgs are shared
+        # so only need to set them in one regexp file
+        # since they all cover the same profile
+        make_result_extra_flags = {}
+        for extra_flags in [x[2] for x in regexps_tuples]:
+            make_result_extra_flags.update(extra_flags)
+        if make_result_extra_flags:
+            log.info('make_result_extra_flags for profile %s: %s' % (profile, make_result_extra_flags))
+        attrs["test_%s" % profile] = gen_test_func(profile, [x[:2] for x in regexps_tuples], **make_result_extra_flags)
 
     # type is class factory
     testclass = type(class_name, (RegexpTestCase,), attrs)
     return TestLoader().loadTestsFromTestCase(testclass)
 
 
-def make_tests(path):
+def make_tests(path, tests):
     """Make the tests for each profile"""
     testsdir = os.path.join(path, 'tests')
     if not (os.path.exists(testsdir) and os.path.isdir(testsdir)):
@@ -204,49 +222,88 @@ def make_tests(path):
 
     # get the object templates from the profiles dir
     profiles = get_object_profiles(profilesdir)
+
+    if tests:
+        # filter out the non-matching profiles from regexps map
+        newprofiles = []
+        for prof in profiles:
+            if prof in tests:
+                newprofiles.append(prof)
+            else:
+                log.debug('Skipping profile %s, not in tests %s' % (prof, tests))
+        profiles = newprofiles
+
     # dict with profile as key and list of tuples with descritoin and list of compiled regexps
     regexps_map = get_regexps(regexpsdir, profiles)
+
     # is there a regexp for each profile?
     if not len(regexps_map) == len(profiles):
-        log.error("Number of regexps_map entries %s is not equal to number of profiles %s" % (len(regexps_map), len(profiles)))
+        log.error("Number of regexps_map entries %s is not equal to total number of profiles %s" % (len(regexps_map), len(profiles)))
 
     return make_regexps_unittests(os.path.basename(path), profilesdir, path, regexps_map)
 
 
-def validate(path=None):
-    """Validate the directory structure and return the test modules suite() results"""
-    if path is None:
-        testdir = os.path.dirname(__file__)
-        basedir = os.path.dirname(testdir)
-        path = os.path.join(basedir, 'metaconfig')
-
-        # set it
-        global JSON2TT
-        JSON2TT = os.path.join(basedir, 'scripts', 'json2tt.pl')
-
+def validate(service=None, tests=None, path=None):
+    """Validate the directory structure and return the test modules suite() results.
+    @param service: only process the specified service, when None, process all services
+    @param tests: only process the specified tests, when None, process all tests
+    """
     res = []
-    for service in os.listdir(path):
-        abs_service = os.path.join(path, service)
-        if not os.path.isdir(abs_service):
-            log.error('Found non-directory %s in path %s. Ignoring.' % (service, path))
+    for srvc in os.listdir(path):
+        if service and not srvc == service:
+            log.debug('Skipping srvc %s (service %s set)' % (srvc, service))
+            continue
+
+        abs_srvc = os.path.join(path, srvc)
+        if not os.path.isdir(abs_srvc):
+            log.error('Found non-directory %s in path %s. Ignoring.' % (srvc, path))
             continue
 
         # any tt files?
-        ttfiles = find_tt_files(abs_service)
+        ttfiles = find_tt_files(abs_srvc)
         if not ttfiles:
-            log.error('Found no tt files for service %s in path %s. Ignoring.' % (service, path))
+            log.error('Found no tt files for service %s in path %s. Ignoring.' % (srvc, path))
             continue
 
         # is there a pan subdir with a schema.pan
-        if not check_pan(abs_service):
+        if not check_pan(abs_srvc):
+            log.error('check_pan failed for %s. Skipping' % srvc)
             continue
 
-        tests = make_tests(abs_service)
-        res.append(tests)
+        restests = make_tests(abs_srvc, tests)
+        res.append(restests)
 
-    return tests
+    return res
 
 if __name__ == '__main__':
+    # use absolute path
+    testdir = os.path.dirname(os.path.abspath(__file__))
+    basedir = os.path.dirname(testdir)
+    path = os.path.join(basedir, 'metaconfig')
+
+    # default: use json2tt.pl from this release
+    json2tt = os.path.join(basedir, 'scripts', 'json2tt.pl')
+    # default: assume a checkout of template-library-core in same workspace
+    quattortemplatecorepath = os.path.join(os.path.dirname(basedir), 'template-library-core')
+
+    opts = {
+        "service" : ("Select one service to test (when not specified, run all services)", None, "store", None, 's'),
+        "tests" : ("Select specific test for given service (when not specified, run all tests)", "strlist", "store", None, 't'),
+        "json2tt": ("Path to json2tt.pl script", None, "store", json2tt, 'j'),
+        "core" : ("Path to clone of template-library-core repo", None, "store", quattortemplatecorepath, 'C')
+    }
+    go = simple_option(opts)
+
+    JSON2TT = go.options.json2tt
+    TEMPLATE_LIBRARY_CORE = go.options.core
+
+    # no tests without service
+    if go.options.tests and not go.options.service:
+        go.log.error('Tests specified but no service.')
+        sys.exit(1)
+
+    # TODO test panc version. has to be 10.1 (panc has no --version?)
+
     # make sure temporary files can be created/used
     fd, fn = tempfile.mkstemp()
     os.close(fd)
@@ -256,7 +313,7 @@ if __name__ == '__main__':
         try:
             open(fn, 'w').write('test')
         except IOError, err:
-            sys.stderr.write("ERROR: Can't write to temporary file %s, set $TMPDIR to a writeable directory (%s)" % (fn, err))
+            go.log.error("Can't write to temporary file %s, set $TMPDIR to a writeable directory (%s)" % (fn, err))
             sys.exit(1)
     os.remove(fn)
     shutil.rmtree(testdir)
@@ -268,7 +325,7 @@ if __name__ == '__main__':
     fancylogger.logToFile(log_fn)
     log = fancylogger.getLogger()
 
-    SUITE = unittest.TestSuite(validate())
+    SUITE = unittest.TestSuite(validate(path=path, service=go.options.service, tests=go.options.tests))
 
     # uses XMLTestRunner if possible, so we can output an XML file that can be supplied to Jenkins
     xml_msg = ""

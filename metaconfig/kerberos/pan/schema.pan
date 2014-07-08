@@ -1,5 +1,7 @@
 declaration template metaconfig/kerberos/schema;
 
+include 'pan/types';
+
 type krb5_logging = {
     "default" : string = "FILE:/var/log/krb5libs.log"
     "kdc" : string = "FILE:/var/log/krb5kdc.log"
