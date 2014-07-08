@@ -70,8 +70,9 @@ class RegexpTestCase(TestCase):
         self.servicepath = os.path.join(self.METACONFIGPATH, self.SERVICE)
         self.tmpdir = tempfile.mkdtemp()
         self.extradir = os.path.join(self.tmpdir, '_extra')
-        # copy pan dir in _extra dir (allows to include and test the schema)
-        # this is create a correct namespace (templates in pan are in metaconfig/<service>/ namespace)
+        # copy metaconfig/<service>/pan directory in self.extradir directory
+        # (allows to include and test the schema) this creates the correct namespace
+        # (templates in the pan directory are in metaconfig/<service>/ namespace)
         pandir = os.path.join(self.extradir, 'metaconfig', self.SERVICE)
         shutil.copytree(os.path.join(self.servicepath, 'pan'), pandir)
 
