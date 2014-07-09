@@ -205,17 +205,6 @@ def parse_regexps(fns):
     return res
 
 
-def is_valid_regexp_file(absfn):
-    """Run a test on a regexp file to see if it is valid or not. Return boolean, to be used with filter"""
-    fn = os.path.basename(absfn)
-    if fn.startswith('.') or fn.startswith('#') or fn.endswith('~'):
-        # eg the vi  .filename.swp files
-        # also emacs files
-        log.debug('Ignoring editor file %s' % fn)
-        return False
-    return True
-
-
 def get_regexps(path, profs):
     """Get the regular expressions for each profile as a dict."""
     res = {}
@@ -236,7 +225,7 @@ def get_regexps(path, profs):
             log.error('unsupported regexp %s (should be file or directory)' % abs_regexp)
             continue
 
-        res[regexp_name] = parse_regexps(filter(is_valid_regexp_file, regexp_files))
+        res[regexp_name] = parse_regexps(regexp_files)
 
     return res
 
