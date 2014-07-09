@@ -21,6 +21,7 @@ Custom TestCase
 """
 
 import logging
+import operator
 import os
 import shutil
 import tempfile
@@ -45,10 +46,27 @@ def gen_test_func(profile, regexps_tuples, **make_result_extra_flags):
             self.assertTrue(False, 'No tt output for %s (json2tt failed: %s)' % (profile, self.json2ttout))
             return
 
-        for descr, compiled_regexps in regexps_tuples:
-            for idx, compiled_regexp in enumerate(compiled_regexps):
-                msg = "%s (%03d) pattern %s output\n%s" % (descr, idx, compiled_regexp.pattern, self.result)
-                self.assertTrue(compiled_regexp.search(self.result), msg)
+        for descr, compiled_regexp_tuples in regexps_tuples:
+            for idx, (op, compiled_regexp, count) in enumerate(compiled_regexp_tuples):
+                if count is None:
+                    to_check = compiled_regexp.search(self.result)
+                    extra_msg = ''
+                else:
+                    all_matches = compiled_regexp.findall(self.result)
+                    count_matches = len(all_matches)
+                    to_check = count_matches == count
+                    extra_msg = " COUNT set: expected %s matches, all matches (%s): %s" % (count, count_matches, all_matches)
+
+                    # The negate flag is ignored when count is set.
+                    # Stating regexp foo must not appear exactly three times is overengineering this.
+                    if not op == operator.truth:
+                        extra_msg += ' (forcing operator.truth; thus ignoring flag (e.g. negate))'
+                        op = operator.truth
+
+                msg = "%s regexp (%03d) %spattern %s%s\noutput:\n%s"
+                tup = (descr, idx, op[1], compiled_regexp.pattern, extra_msg, self.result)
+                self.assertTrue(op[0](to_check), msg % tup)
+
     return test_func
 
 

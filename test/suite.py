@@ -20,6 +20,7 @@ Usage: "python -m test.suite" or "python test/suite.py"
 @author: Stijn De Weirdt (Ghent University)
 """
 import glob
+import operator
 import os
 import re
 import shutil
@@ -50,6 +51,45 @@ REGEXPS_SUPPORTED_FLAGS = {
     'I': re.I,
 }
 
+# parse each reguar expression line
+# if count is not None, the regular expression has to match exactly this number
+# (count can be 0 to negate a single regexp)
+REGEXP_REGEXP = re.compile('^\s*(?P<regex>.*?)\s*(?:\s#{3}\sCOUNT\s(?P<count>\d+))?$')
+
+
+# some help / documentation
+# format is key : (help, is_prefix)
+SUPPORTED_FLAGS = {
+    'multiline': ('Treat all regexps as multiline regexps', False),
+    'M': ('shorthand for "multiline"', False),
+    'caseinsensitive': ('Perform case-insensitive matches', False),
+    'I': ('alias for "caseinsensitive"', False),
+    'metaconfigservice=': ('Look for module/contents in the expected metaconfig component path for the service', True),
+    'negate': ('Negate all regexps (none of the regexps can match) (not applicable when COUNT is set for individual regexp)', False),
+}
+
+
+def valid_flag(flag):
+    """Check if flag is a valid flag"""
+    exact = [flag == k for k, v in SUPPORTED_FLAGS.items() if not v[0]]
+    prefix = [flag.startswith(k) for k, v in SUPPORTED_FLAGS.items() if v[0]]
+    # assuming python 2.6
+    return any(exact + prefix)
+
+
+def flag_help(supported=False):
+    """Return some flag help. If supported, then return the list of supported flags"""
+    flags = SUPPORTED_FLAGS.keys()
+    flags.sort()
+    supported_txt = "supported flags: %s" % ', '.join(flags)
+    if supported:
+        return supported_txt
+
+    txt = "%s\n" % supported_txt
+    for flag in flags:
+        descr = SUPPORTED_FLAGS[flag][0]
+        txt += "%s%s: %s\n" % (' ' * 4, flag, descr)
+    return txt
 
 def find_tt_files(path):
     """Return list of relative path to .tt files"""
@@ -116,23 +156,38 @@ def parse_regexp(fn):
 
     extra_flags = {}
 
+    # operator tuple: the operator, and message incase of failure of the test
+    # test is assertTrue(op(regexp.search(output)))
+    # message is put before the regexp pattern
+    op = [operator.truth, '']
     re_flags = 0
     for flag in flags:
-        if flag.startswith('metaconfigservice='):
-            extra_flags['mode'] = ('--' + flag).split('=')
-        elif flag in REGEXPS_SUPPORTED_FLAGS:
-            re_flags |= REGEXPS_SUPPORTED_FLAGS[flag]
-        else:
-            log.error('Unknown flag %s (supported: %s). Ignoring' % (flag, REGEXPS_SUPPORTED_FLAGS.keys() + ['metaconfigservice=']))
+        # extra check
+        if not valid_flag(flag):
+            log.error('Unknown flag %s (%s). Ignoring' % (flag, flag_help(supported=True)))
             continue
 
+        if flag.startswith('metaconfigservice='):
+            extra_flags['mode'] = ('--' + flag).split('=')
+        elif flag == 'negate':
+            op = [operator.not_, 'negated ']
+        elif flag in REGEXPS_SUPPORTED_FLAGS:
+            re_flags |= REGEXPS_SUPPORTED_FLAGS[flag]
+
     regexps_compiled = []
-    for regexps_str in regexps_strs:
+    for line in regexps_strs:
+        r_line = REGEXP_REGEXP.search(line)
+        if not r_line:
+            # how did we get here?
+            log.error("Invalid regular expression line %s. Skipping." % line)
+            continue
+
+        regexps_str = r_line.groupdict()['regex']
         try:
             r = re.compile(regexps_str, re_flags)
-        except Exception, e:
-            log.error("Failed to compile regexps_str %s with flags %s: %s" % (regexps_str, re_flags, e))
-        regexps_compiled.append(r)
+            regexps_compiled.append([op, r, r_line.groupdict().get('count', None)])
+        except re.error, e:
+            log.error("Failed to compile regexps_str %s with flags %s: %s. Skipping." % (regexps_str, re_flags, e))
 
     return description, regexps_compiled, extra_flags
 
@@ -290,9 +345,14 @@ if __name__ == '__main__':
         "service" : ("Select one service to test (when not specified, run all services)", None, "store", None, 's'),
         "tests" : ("Select specific test for given service (when not specified, run all tests)", "strlist", "store", None, 't'),
         "json2tt": ("Path to json2tt.pl script", None, "store", json2tt, 'j'),
-        "core" : ("Path to clone of template-library-core repo", None, "store", quattortemplatecorepath, 'C')
+        "core" : ("Path to clone of template-library-core repo", None, "store", quattortemplatecorepath, 'C'),
+        "showflags": ("Show the flags and description and exit", None, "store_true", None),
     }
     go = simple_option(opts)
+
+    if go.options.showflags:
+        print flag_help()
+        sys.exit(0)
 
     JSON2TT = go.options.json2tt
     TEMPLATE_LIBRARY_CORE = go.options.core
