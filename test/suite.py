@@ -209,7 +209,7 @@ def get_regexps(path, profs):
     """Get the regular expressions for each profile as a dict."""
     res = {}
     for regexp_name in os.listdir(path):
-        if not regexp_name in profs:
+        if egexp_name not in profs:
             log.error('Regexp file/dir %s found that has no profile. ignoring' % regexp_name)
             continue
 
