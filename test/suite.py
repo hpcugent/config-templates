@@ -149,6 +149,7 @@ def parse_regexp(fn):
     blocks = REGEXPS_SEPARATOR_REGEX.split(open(fn).read())
     if not len(blocks) == REGEXPS_EXPECTED_BLOCKS:
         log.error('Found %s blocks, more/less then number of expected blocks %s' % (len(blocks), REGEXPS_EXPECTED_BLOCKS))
+        return
 
     description = blocks[0].strip().replace("\n", " "*2)  # make single line
     flags = [x.strip() for x in blocks[1].strip().split("\n") if x.strip()]
@@ -196,22 +197,26 @@ def parse_regexps(fns):
     """Parse each regex, returns a list of tuples with description and list of compiled regexpes"""
     res = []
     for fn in fns:
-        res.append(parse_regexp(fn))
+        result = parse_regexp(fn)
+        if result is None:
+            log.error("Failed to parse regexp file %s. Skipping." % fn)
+        else:
+            res.append(result)
     return res
 
 
 def get_regexps(path, profs):
     """Get the regular expressions for each profile as a dict."""
     res = {}
-    for regexp in os.listdir(path):
-        if not regexp in profs:
-            log.error('Regexp file/dir %s found that has no profile. ignoring' % regexp)
+    for regexp_name in os.listdir(path):
+        if regexp_name not in profs:
+            log.error('Regexp file/dir %s found that has no profile. ignoring' % regexp_name)
             continue
 
-        # regexp is now name of profile
+        # regexp_name is now name of profile
 
         regexp_files = []
-        abs_regexp = os.path.join(path, regexp)
+        abs_regexp = os.path.join(path, regexp_name)
         if os.path.isfile(abs_regexp):
             regexp_files.append(abs_regexp)
         elif os.path.isdir(abs_regexp):
@@ -220,7 +225,7 @@ def get_regexps(path, profs):
             log.error('unsupported regexp %s (should be file or directory)' % abs_regexp)
             continue
 
-        res[regexp] = parse_regexps(regexp_files)
+        res[regexp_name] = parse_regexps(regexp_files)
 
     return res
 
