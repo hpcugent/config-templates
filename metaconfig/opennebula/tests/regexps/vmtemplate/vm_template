@@ -31,6 +31,11 @@ multiline
 ^\s{4}TARGET\s?=\s?"vda",$
 ^\s{4}IMAGE_UNAME\s?=\s?"oneadmin"$
 ^\]$
+^DISK\s?=\s?\[$
+^\s{4}IMAGE\s?=\s?"node630.cubone.os_vdb",$
+^\s{4}TARGET\s?=\s?"vdb",$
+^\s{4}IMAGE_UNAME\s?=\s?"oneadmin"$
+^\]$
 ^GRAPHICS\s?=\s?\[$
 ^\s{4}LISTEN\s?=\s?"0.0.0.0",$
 ^\s{4}TYPE\s?=\s?"VNC"$

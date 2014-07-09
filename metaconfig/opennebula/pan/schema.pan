@@ -20,14 +20,19 @@ type opennebula_db = {
 };
 
 type opennebula_log = {
-    "system" : string = 'file'
-    "debug_level" : long = 3
+    "system" : string = 'file' with match (SELF, 'file|syslog')
+    "debug_level" : long(0..3) = 3
 } = nlist();
 
 type opennebula_federation = {
-    "mode" : string = 'STANDALONE'
+    "mode" : string = 'STANDALONE' with match (SELF, 'STANDALONE|MASTER|SLAVE')
     "zone_id" : long = 0
     "master_oned" : string = ''
+} = nlist();
+
+type opennebula_im = {
+    "executable" : string = 'one_im_ssh'
+    "arguments" : string
 } = nlist();
 
 type opennebula_im_mad_collectd = {
@@ -36,14 +41,12 @@ type opennebula_im_mad_collectd = {
 } = nlist();
 
 type opennebula_im_mad_kvm = {
-    "executable" : string = 'one_im_ssh'
-    "arguments" : string =  '-r 3 -t 15 kvm'
-} = nlist();
+    include opennebula_im
+} = nlist("arguments", '-r 3 -t 15 kvm');
 
 type opennebula_im_mad_xen = {
-    "executable" : string = 'one_im_ssh'
-    "arguments" : string =  '-r 3 -t 15 xen4'
-} = nlist();
+    include opennebula_im
+} = nlist("arguments", '-r 3 -t 15 xen4');
 
 type opennebula_im_mad = {
     "collectd" : opennebula_im_mad_collectd
@@ -51,21 +54,19 @@ type opennebula_im_mad = {
     "xen" : opennebula_im_mad_xen
 } = nlist();
 
-type opennebula_vm_mad_kvm = {
-    #"name" : string = 'kvm'
+type opennebula_vm = {
     "executable" : string = 'one_vmm_exec'
-    "arguments" : string = '-t 15 -r 0 kvm'
-    "default" : string = 'vmm_exec/vmm_exec_kvm.conf'
-    #"type" : string = 'kvm'
+    "arguments" : string
+    "default" : string
 } = nlist();
 
+type opennebula_vm_mad_kvm = {
+    include opennebula_vm
+} = nlist("arguments", '-t 15 -r 0 kvm', "default", 'vmm_exec/vmm_exec_kvm.conf');
+
 type opennebula_vm_mad_xen = {
-    #"name" : string = 'xen'
-    "executable" : string = 'one_vmm_exec'
-    "arguments" : string = '-t 15 -r 0 xen4'
-    "default" : string = 'vmm_exec/vmm_exec_xen4.conf'
-    #"type" : string = 'xen'       
-} = nlist();
+    include opennebula_vm
+} = nlist("arguments", '-t 15 -r 0 xen4', "default", 'vmm_exec/vmm_exec_xen4.conf');
 
 type opennebula_vm_mad = {
     "kvm" : opennebula_vm_mad_kvm
@@ -146,8 +147,25 @@ type opennebula_vmtemplate_vnet = string{} with {
      return(true);
 };
 
+type opennebula_vmtemplate_datastore = string{} with {
+    # check is all entries in the map have a hardrive
+    foreach (k;v;SELF) {
+             if (! exists("/system/hardware/harddisks/"+k)) {
+                return(false);
+             };
+     };
+     # check if all interfaces have an entry in the map
+     foreach (k;v;value("/system/hardware/harddisks")) {
+             if (! exists(SELF[k])) {
+                return(false);
+             };
+     };
+     return(true);
+};
+
 type opennebula_vmtemplate = {
     "vnet" : opennebula_vmtemplate_vnet
+    "datastore" : opennebula_vmtemplate_datastore
 };
 
 type opennebula_oned = {
@@ -186,6 +204,7 @@ type opennebula_oned = {
 		  )
     "vm_restricted_attr" : string[] = list("CONTEXT/FILES", "NIC/MAC", "NIC/VLAN_ID", "NIC/BRIDGE")
     "image_restricted_attr" : string = 'SOURCE'
-    "inherit_datastore_attr" : string[] = list("CEPH_HOST", "CEPH_SECRET", "CEPH_USER", "RBD_FORMAT", "GLUSTER_HOST", "GLUSTER_VOLUME")
-     "inherit_vnet_attr" : string = 'VLAN_TAGGED_ID'
+    "inherit_datastore_attr" : string[] = list("CEPH_HOST", "CEPH_SECRET", "CEPH_USER", 
+                                               "RBD_FORMAT", "GLUSTER_HOST", "GLUSTER_VOLUME")
+    "inherit_vnet_attr" : string = 'VLAN_TAGGED_ID'
 };

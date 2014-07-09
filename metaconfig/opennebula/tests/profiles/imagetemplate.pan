@@ -1,7 +1,7 @@
-object template vmtemplate;
+object template imagetemplate;
 
 include 'vm';
 
 # copy for unittests
-"/metaconfig/module" = "opennebula/vmtemplate";
+"/metaconfig/module" = "opennebula/imagetemplate";
 "/metaconfig/contents/system" = value("/system");
