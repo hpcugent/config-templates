@@ -194,7 +194,10 @@ def parse_regexp(fn):
         regexps_str = r_line.groupdict()['regex']
         try:
             r = re.compile(regexps_str, re_flags)
-            regexps_compiled.append([op, r, r_line.groupdict().get('count', None)])
+            count = r_line.groupdict().get('count', None)
+            if count is None:
+                count = -1
+            regexps_compiled.append([op, r, int(count)])
         except re.error, e:
             log.error("Failed to compile regexps_str %s with flags %s: %s. Skipping." % (regexps_str, re_flags, e))
 
