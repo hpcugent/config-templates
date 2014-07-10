@@ -276,7 +276,7 @@ object template simple;
 
 "/metaconfig/module" = "example/main";
 prefix "/metaconfig/contents";
-"hosts" = list("v.w", "x.y");
+"hosts" = list("server1", "server2");
 "port" = 800;
 "master" = false;
 "description" = "My example";
@@ -293,7 +293,7 @@ But the preferred way is to create a proper `config.pan` file and use that as de
 
 #### regular expression
 
-Make a 3 block text file, with `---` as block separator as follows
+Make a 3 block text file called `simple`, with `---` as block separator as follows
 
 ```
 Simple test
@@ -310,12 +310,119 @@ This will search the output for the words `name`, `hosts`, `port`, `master` and 
 
 This is good for illustrating the principle, but is a lousy unittest. Check the `config` unittest below for proper testing.
 
+The filename `simple` has to match the object template you want to test with (in this case the `simple.pan` template).
+
+#### verify
+
+You can verify this single unittest for the `example` service using
+```bash
+python test/suite.py --service example --tests simple
+```
 
 ### config based unittest
 
 It is better to use a full blown template as will be used in the actual profiles. The added 
 advantage here is the `config.pan` and `schema.pan` are tested as well.
 
+#### profile
+
+The profile is similar to the simple one (it are the same values after all we want to set), but by targetting `metaconfig` usage,
+a different prefix is used.
+
+```
+object template config;
+
+include 'metaconfig/example/config';
+
+prefix "/software/components/metaconfig/services/{/etc/example/exampled.conf}/contents";
+"hosts" = list("server1", "server2");
+"port" = 800;
+"master" = false;
+"description" = "My example";
+
+```
+
+The type binding and definition of the TT module are part of the `config.pan` template, and this usage is very 
+close to actual usage in actual machine templates.
+
+#### regular expressions
+
+We will now make several regular expression tests, each in their own file and grouped in a directory called `config` (also matching the object profile name). The filenames in the directory are not relevant (but no addiditional directory structure is allowed).
+
+We need to set the `metaconfig=` flag to point the test infrastructure which metaconfig-controlled file this is supposed to test. 
+In principle only one of the templates should set it this path (and if multiple ones are set, they all have to be equal).
+
+Lets start with a regexp test identical to the `simple` test above, called `too_simple`:
+
+```
+Too simple test
+---
+metaconfigservice=/etc/example/exampled.conf
+---
+name
+hosts
+port
+master
+description
+```
+
+A 2nd better test uses the `multiline` flag, where the regular expressions are all interpreted as multiline regular expressions 
+
+```
+Basic multiline test
+---
+metaconfigservice=/etc/example/exampled.conf
+multiline
+---
+^name
+^\s{4}hosts
+^\s{4}port
+^\s{4}master
+^\s{4}description
+= ### COUNT 5
+```
+
+This test also uses the special directive ` ### COUNT X` (mind the leading space; X is number, can be 0 or more), where this regular 
+expression is expected to occur exactly X times (in this case, we expect 5 `=` characters).
+
+A 3rd test checks if certain regular expression do not match using the `negate` flag.
+
+```
+Basic negate test
+---
+metaconfigservice=/etc/example/exampled.conf
+multiline
+negate
+---
+^hosts
+^port
+^master
+^description
+```
+
+This tests that the expected fields can't start at the beginning of the line, 
+whitespace must be inserted before. 
+(The `FILTER indent` TT inserts 4 spaces, as tested with the `\s{4}` in the multiline regexp above.)
+
+If one only needs to check that a single regular expression does not occur, one can also use ` ### COUNT 0`.
+
+#### verify
+
+You can verify this single unittest for the `example` service using
+```bash
+python test/suite.py --service example --tests config
+```
+
+or both via
+```bash
+python test/suite.py --service example --tests config,simple
+```
+
+or all unittests of the `example` service with
+
+```bash
+python test/suite.py --service example
+```
 
 ## Result filestructure
 
