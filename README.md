@@ -406,6 +406,24 @@ whitespace must be inserted before.
 
 If one only needs to check that a single regular expression does not occur, one can also use ` ### COUNT 0`.
 
+A 4th test uses full value checks, which is interesting to have, but harder to maintain and review.
+
+```
+Basic value test
+---
+metaconfigservice=/etc/example/exampled.conf
+multiline
+---
+^name\s=\s\{
+^\s{4}hosts\s=\sserver1,server2$
+^\s{4}port\s=\s800$
+^\s{4}master\s=\sFALSE$
+^\s{4}description\s=\s"My description"$
+^}$
+```
+
+Mind that the order of occurrence is not tested.
+
 #### verify
 
 You can verify this single unittest for the `example` service using
