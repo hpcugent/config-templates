@@ -19,12 +19,20 @@ Usage: "python -m test.suite" or "python test/suite.py"
 
 @author: Stijn De Weirdt (Ghent University)
 """
+
+# set sys.path to avoid explicit PYTHONPATH setting in default use mode
+import os
+import sys
+_reldir = os.path.dirname(os.path.dirname(__file__))
+_absdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if not (_reldir in sys.path or _absdir in sys.path):
+    sys.path.insert(0, _absdir)
+
 import glob
 import operator
 import os
 import re
 import shutil
-import sys
 import tempfile
 import unittest
 
