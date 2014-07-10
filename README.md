@@ -26,7 +26,7 @@ pan schema and unittest data
 `json2tt.pl` script
 * test directory with the (Python) unittest code
 * setup_packaging.py a distultils packaging file for the new code (and only the new code)
-* NOTICE (file as per the Apache License
+* NOTICE (file as per the Apache License)
 
 Read the principles behind the structure of the metaconfig directory
 * https://github.com/hpcugent/config-templates/issues/40
@@ -36,7 +36,7 @@ Read the principles behind the structure of the metaconfig directory
 # Requirements
 
 For installation
-* perl `Template::Toolkit` version 2.25 or later (use CPAN or for src rpms on el5, el6 and el7, contact @stdweird)
+* perl `Template::Toolkit` (TT) version 2.25 or later (use CPAN or for src rpms on el5, el6 and el7, contact @stdweird)
 * perl `JSON::XS`
 * perl quattor modules `CAF`, `LC`
 
@@ -147,6 +147,8 @@ The service has also an optional fields `option`, also a quoted string.
 
 Upon changes of the config file, the `exampled` service needs to be restarted.
 
+This type of configuration is ideally suited for metaconfig and TT.
+
 ### Prepare
 
 Pick a good and relevant name for the service (in this case we will add the non-existing `example` service), and create 
@@ -184,7 +186,7 @@ git commit -a "initial structure for service $service"
 ```
 ## Create the schema
 
-The schema needs to be created in the `pan` subdirectory of the service directory `metaconfig/$service`.
+The schema needs to be created in the `pan` subdirectory of the service directory `metaconfig/$service`. The file should be called `schema.pan`.
 
 ```
 declaration template metaconfig/example/schema;
@@ -207,7 +209,7 @@ type example_service = {
 ## Create config template for metaconfig component (optional)
 
 A reference config file can now also be created, with e.g. the type binding to the correct path and configuration of the
-restart action and the TT module to load.
+restart action and the TT module to load. The file `config.pan` should be created in the same `pan` directory as `schema.pan`.
 
 ```
 unique template metaconfig/example/config;
@@ -226,7 +228,7 @@ This will expect the TT module with relative filename `example/main.tt`.
 
 ## Make TT file to match desired output
 
-Create the `main.tt` file with content
+Create the `main.tt` file with content in the `metaconfig/$service` directory
 
 ```
 name = {
@@ -243,10 +245,79 @@ option = "[% option %]"
 ```
 
 * `FILTER indent` creates the indentation
+* TT is known for newline issues, so be careful if the config files are sensitive to this.
 
 ## Add unittests
 
+Each unittest consists of 2 parts:
+* an object template that will generate the profile
+* one or more files that contain regular expressions that will be tested against the 
+output produced by the TT module and the profile.
+
+The object template is compiled and outputted in JSON format using the pan-compiler. 
+Then the `json2tt.pl` script is used to generate the output from the JSON and the TT module.
+
+The testsuite takes care of the actual compilation and generation of the output, and the 
+running of the tests.
+
 ### Flags
+
+### simple unittest
+
+The easiest example is a single object template with a single regexp file.
+
+#### profile
+
+By default, the expected pan path is under `/metaconfig`.
+
+Create the profile `tests/profiles/simple.pan` as follows:
+```
+object template simple;
+
+"/metaconfig/module" = "example/main";
+prefix "/metaconfig/contents";
+"hosts" = list("v.w", "x.y");
+"port" = 800;
+"master" = false;
+"description" = "My example";
+
+```
+
+* the schema is not validated in this `simple` template, but it can easily be done by adding 
+```
+include 'metaconfig/example/schema';
+bind "/metaconfig/example/contents" = example_service;
+```
+
+But the preferred way is to create a proper `config.pan` file and use that as described below.
+
+#### regular expression
+
+Make a 3 block text file, with `---` as block separator as follows
+
+```
+Simple test
+---
+---
+name
+hosts
+port
+master
+description
+```
+
+This will search the output for the words `name`, `hosts`, `port`, `master` and `description`.
+
+This is good for illustrating the principle, but is a lousy unittest. Check the `config` unittest below for proper testing.
+
+
+### config based unittest
+
+It is better to use a full blown template as will be used in the actual profiles. The added 
+advantage here is the `config.pan` and `schema.pan` are tested as well.
+
+
+## Result filestructure
 
 ## Usage with ncm-metaconfig
 
