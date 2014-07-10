@@ -108,21 +108,46 @@ supported flags: I, M, caseinsensitive, metaconfigservice=, multiline, negate
 # Development example
 
 Start with forking the upstream repository https://github.com/hpcugent/config-templates, and clone your personal fork in your workspace. 
-(replace `stdweird` with your own github username)
+(replace `stdweird` with your own github username). Also add the `upstream` repository (using `https` protocol).
 
 ```bash
 git clone git@github.com:stdweird/config-templates.git
+cd config-templates
+git remote add upstream https://github.com/hpcugent/config-templates
 ```
 
-Chekc you environment by running the unittests. No tests should fail when the environment is setup properly. 
+Check your environment by running the unittests. No tests should fail when the environment is setup properly. 
 (Open an issue on github in case there is a problem you can't resolve.)
 
 ```bash
-cd config-templates
 python test/suite.py
 ```
 
 ## Add new service
+
+### Target
+
+Our `example` service requires a text config file in `/etc/example/exampled.conf` and has following structure
+```
+name = {
+    hosts = server1,server2
+    port = 800
+    master = FALSE
+    description = "My example"
+}
+```
+
+where following fields are mandatory:
+* `hosts`: a comma separated list of hostnames
+* `port`: an integer
+* `master`: boolean with possible values `TRUE` or `FALSE` 
+* `description`: a quoted string 
+
+The service has also an optional fields `option`, also a quoted string.
+
+Upon changes of the config file, the `exampled` service needs to be restarted.
+
+### Prepare
 
 Pick a good and relevant name for the service (in this case we will add the non-existing `example` service), and create 
 ```bash
@@ -157,7 +182,67 @@ Commit this initial structure
 ```bash
 git commit -a "initial structure for service $service"
 ```
+## Create the schema
 
+The schema needs to be created in the `pan` subdirectory of the service directory `metaconfig/$service`.
+
+```
+declaration template metaconfig/example/schema;
+
+include 'pan/types';
+
+type example_service = {
+    'hosts' :  type_hostname[]
+    'port' : long(0..)
+    'master' : boolean
+    'description' : string
+    'option' ? string
+};
+
+```
+
+* `long`, `boolean` and `string` are pan builtin types (see the panbook for more info)
+* `type_hostname` is a type that is available from the main `pan/types` template as part of the core template library.
+
+## Create config template for metaconfig component (optional)
+
+A reference config file can now also be created, with e.g. the type binding to the correct path and configuration of the
+restart action and the TT module to load.
+
+```
+unique template metaconfig/example/config;
+
+include 'metaconfig/example/schema';
+
+bind "/software/components/metaconfig/services/{/etc/example/exampled.conf}/contents" = example_service;
+
+prefix "/software/components/metaconfig/services/{/etc/example/exampled.conf}";
+"daemon" = "exampled";
+"module" = "example/main";
+
+```
+
+This will expect the TT module with relative filename `example/main.tt`.
+
+## Make TT file to match desired output
+
+Create the `main.tt` file with content
+
+```
+name = {
+[% FILTER indent -%]
+hosts = [% hosts.join(',') %]
+port = [% port %]
+master = [% master ? "TRUE" : "FALSE %]
+description = "[% description %]"
+[%     IF option.defined -%]
+option = "[% option %]"
+[%     END -%]
+[% END -%]
+}
+```
+
+* `FILTER indent` creates the indentation
 
 ## Add unittests
 
