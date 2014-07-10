@@ -192,14 +192,14 @@ type opennebula_oned = {
     "hm_mad" : opennebula_hm_mad
     "auth_mad" : opennebula_auth_mad
     "tm_mad_conf" : opennebula_tm_mad_conf[] = list(
-            nlist(), 
-            nlist("name", "lvm", "clone_target", "SELF"), 
-            nlist("name", "shared"), 
-            nlist("name", "fs_lvm", "ln_target", "SYSTEM"), 
-            nlist("name", "qcow2"), 
-            nlist("name", "ssh", "ln_target", "SYSTEM", "shared", false), 
-            nlist("name", "vmfs"), 
-            nlist("name", "ceph", "clone_target", "SELF")
+        nlist(), 
+        nlist("name", "lvm", "clone_target", "SELF"), 
+        nlist("name", "shared"), 
+        nlist("name", "fs_lvm", "ln_target", "SYSTEM"), 
+        nlist("name", "qcow2"), 
+        nlist("name", "ssh", "ln_target", "SYSTEM", "shared", false), 
+        nlist("name", "vmfs"), 
+        nlist("name", "ceph", "clone_target", "SELF")
     )
     "vm_restricted_attr" : string[] = list("CONTEXT/FILES", "NIC/MAC", "NIC/VLAN_ID", "NIC/BRIDGE")
     "image_restricted_attr" : string = 'SOURCE'
