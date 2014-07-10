@@ -51,14 +51,14 @@ unittest suite
 
 From the base of the repository, run 
 ```bash
-PYTHONPATH=$PWD python $PWD/test/suite.py
+python test/suite.py
 ```
 to run all tests of all services.
 
 ## Unittest suite help 
 
 ```bash
-PYTHONPATH=$PWD python $PWD/test/suite.py -h
+python test/suite.py -h
 ```
 (try --help for long option names)
 
@@ -92,7 +92,7 @@ All long option names can be passed as environment variables. Variable name is S
 
 Queries the supproted flags via the `--showflags` option
 ```bash
-PYTHONPATH=$PWD python $PWD/test/suite.py --showflags
+python test/suite.py --showflags
 ```
 gives
 ```
@@ -114,6 +114,14 @@ Start with forking the upstream repository https://github.com/hpcugent/config-te
 git clone git@github.com:stdweird/config-templates.git
 ```
 
+Chekc you environment by running the unittests. No tests should fail when the environment is setup properly. 
+(Open an issue on github in case there is a problem you can't resolve.)
+
+```bash
+cd config-templates
+python test/suite.py
+```
+
 ## Add new service
 
 Pick a good and relevant name for the service (in this case we will add the non-existing `example` service), and create 
@@ -123,7 +131,6 @@ service=example
 
 Make a new branch where you will work in and that you will use to create the pull-request (PR) when finished
 ```bash
-cd config-templates
 git checkout -b example_service
 ```
 
@@ -134,6 +141,7 @@ mkdir -p metaconfig/$service/tests/{profiles,regexps} $service/pan
 
 Add some typical files (some of the files are not mandatory, 
 but are simply best practice).
+
 ```bash
 cd metaconfig/$service
 
@@ -147,7 +155,7 @@ echo -e 'Base test for config\n---\nmultiline\n---\n$wontmatch^\n' > tests/regex
 
 Commit this initial structure
 ```bash
-git commit -a "initial structure for servicce $service"
+git commit -a "initial structure for service $service"
 ```
 
 
