@@ -468,5 +468,7 @@ tests/profiles/simple.pan
 
 ```
 
+Also see https://github.com/hpcugent/config-templates/pull/50
+
 ## Usage with ncm-metaconfig
 
