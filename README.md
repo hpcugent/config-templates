@@ -55,6 +55,18 @@ python test/suite.py
 ```
 to run all tests of all services.
 
+To run all unittests of the `example` service use
+
+```bash
+python test/suite.py --service example
+```
+
+And to run only 2 (of possibly many others) unittests of the `example` service use
+
+```bash
+python test/suite.py --service example --tests config,simple
+```
+
 ## Unittest suite help 
 
 ```bash
@@ -151,26 +163,28 @@ This type of configuration is ideally suited for metaconfig and TT.
 
 ### Prepare
 
-Pick a good and relevant name for the service (in this case we will add the non-existing `example` service), and create 
+Pick a good and relevant name for the service (in this case we will add the non-existing `example` service), 
+and set the variable `service` in your shell (it is used in further command-line examples).
 ```bash
 service=example
 ```
 
 Make a new branch where you will work in and that you will use to create the pull-request (PR) when finished
 ```bash
-git checkout -b example_service
+git checkout -b ${service}_service
 ```
 
 Create the initial directory structure.
 ```bash
-mkdir -p metaconfig/$service/tests/{profiles,regexps} $service/pan
+cd metaconfig
+mkdir -p $service/tests/{profiles,regexps} $service/pan
 ```
 
 Add some typical files (some of the files are not mandatory, 
 but are simply best practice).
 
 ```bash
-cd metaconfig/$service
+cd $service
 
 echo -e "declaration template metaconfig/$service/schema;\n" > pan/schema.pan
 echo -e "unique template metaconfig/$service/config;\n\ninclude 'metaconfig/$service/schema';" > pan/config.pan
@@ -182,8 +196,10 @@ echo -e 'Base test for config\n---\nmultiline\n---\n$wontmatch^\n' > tests/regex
 
 Commit this initial structure
 ```bash
-git commit -a "initial structure for service $service"
+git add ./
+git commit -a -m "initial structure for service $service"
 ```
+
 ## Create the schema
 
 The schema needs to be created in the `pan` subdirectory of the service directory `metaconfig/$service`. The file should be called `schema.pan`.
@@ -235,7 +251,7 @@ name = {
 [% FILTER indent -%]
 hosts = [% hosts.join(',') %]
 port = [% port %]
-master = [% master ? "TRUE" : "FALSE %]
+master = [% master ? "TRUE" : "FALSE" %]
 description = "[% description %]"
 [%     IF option.defined -%]
 option = "[% option %]"
@@ -293,7 +309,7 @@ But the preferred way is to create a proper `config.pan` file and use that as de
 
 #### regular expression
 
-Make a 3 block text file called `simple`, with `---` as block separator as follows
+Make a 3 block text file `tests/regexps/simple`, with `---` as block separator as follows
 
 ```
 Simple test
@@ -316,7 +332,7 @@ The filename `simple` has to match the object template you want to test with (in
 
 You can verify this single unittest for the `example` service using
 ```bash
-python test/suite.py --service example --tests simple
+python ../../test/suite.py --service example --tests simple
 ```
 
 ### config based unittest
@@ -326,8 +342,9 @@ advantage here is the `config.pan` and `schema.pan` are tested as well.
 
 #### profile
 
-The profile is similar to the simple one (it are the same values after all we want to set), but by targetting `metaconfig` usage,
-a different prefix is used.
+The profile `tests/profiles/config.pan` is similar to the simple one 
+(it are the same values after all we want to set), 
+but by targetting `metaconfig` usage, a different prefix is required.
 
 ```
 object template config;
@@ -352,10 +369,10 @@ We will now make several regular expression tests, each in their own file and gr
 We need to set the `metaconfig=` flag to point the test infrastructure which metaconfig-controlled file this is supposed to test. 
 In principle only one of the templates should set it this path (and if multiple ones are set, they all have to be equal).
 
-Lets start with a regexp test identical to the `simple` test above, called `too_simple`:
+Lets start with a regexp test identical to the `simple` test above,  `tests/regexps/config/base`:
 
 ```
-Too simple test
+Simple base test
 ---
 metaconfigservice=/etc/example/exampled.conf
 ---
@@ -366,7 +383,8 @@ master
 description
 ```
 
-A 2nd better test uses the `multiline` flag, where the regular expressions are all interpreted as multiline regular expressions 
+
+A 2nd better regexp test `tests/regexps/config/not_so_simple` uses the `multiline` flag, where the regular expressions are all interpreted as multiline regular expressions 
 
 ```
 Basic multiline test
@@ -385,7 +403,7 @@ multiline
 This test also uses the special directive ` ### COUNT X` (mind the leading space; X is number, can be 0 or more), where this regular 
 expression is expected to occur exactly X times (in this case, we expect 5 `=` characters).
 
-A 3rd test checks if certain regular expression do not match using the `negate` flag.
+A 3rd regexp test `tests/regexps/config/neg` checks if certain regular expression do not match using the `negate` flag.
 
 ```
 Basic negate test
@@ -406,7 +424,7 @@ whitespace must be inserted before.
 
 If one only needs to check that a single regular expression does not occur, one can also use ` ### COUNT 0`.
 
-A 4th test uses full value checks, which is interesting to have, but harder to maintain and review.
+A 4th regexp test `tests/regexps/config/value` uses full value checks, which is interesting to have, but harder to maintain and review.
 
 ```
 Basic value test
@@ -418,7 +436,7 @@ multiline
 ^\s{4}hosts\s=\sserver1,server2$
 ^\s{4}port\s=\s800$
 ^\s{4}master\s=\sFALSE$
-^\s{4}description\s=\s"My description"$
+^\s{4}description\s=\s"My example"$
 ^}$
 ```
 
@@ -428,21 +446,27 @@ Mind that the order of occurrence is not tested.
 
 You can verify this single unittest for the `example` service using
 ```bash
-python test/suite.py --service example --tests config
+python ../../test/suite.py --service example --tests config
 ```
 
-or both via
-```bash
-python test/suite.py --service example --tests config,simple
-```
+(this will run all 4 regexps files)
 
-or all unittests of the `example` service with
-
-```bash
-python test/suite.py --service example
-```
 
 ## Result filestructure
+
+```
+main.tt
+pan/config.pan
+pan/schema.pan
+tests/regexps/simple
+tests/regexps/config/base
+tests/regexps/config/not_so_simple
+tests/regexps/config/value
+tests/regexps/config/neg
+tests/profiles/config.pan
+tests/profiles/simple.pan
+
+```
 
 ## Usage with ncm-metaconfig
 
