@@ -20,12 +20,12 @@ type opennebula_db = {
 };
 
 type opennebula_log = {
-    "system" : string = 'file' with match (SELF, 'file|syslog')
+    "system" : string = 'file' with match (SELF, '^(file|syslog)$')
     "debug_level" : long(0..3) = 3
 } = nlist();
 
 type opennebula_federation = {
-    "mode" : string = 'STANDALONE' with match (SELF, 'STANDALONE|MASTER|SLAVE')
+    "mode" : string = 'STANDALONE' with match (SELF, '^(STANDALONE|MASTER|SLAVE)$')
     "zone_id" : long = 0
     "master_oned" : string = ''
 } = nlist();
@@ -36,9 +36,8 @@ type opennebula_im = {
 } = nlist();
 
 type opennebula_im_mad_collectd = {
-    "executable" : string = 'collectd'
-    "arguments" : string =  '-p 4124 -f 5 -t 50 -i 20'
-} = nlist();
+    include opennebula_im
+} = nlist("executable", 'collectd', "arguments", '-p 4124 -f 5 -t 50 -i 20');
 
 type opennebula_im_mad_kvm = {
     include opennebula_im
@@ -132,35 +131,35 @@ type opennebula_remoteconf_ceph = {
 };
 
 type opennebula_vmtemplate_vnet = string{} with {
-     # check if all entries in the map have a network interface
-     foreach (k;v;SELF) {
-     	     if (! exists("/system/network/interfaces/"+k)) {
-	     	return(false);
-	     };
-     };
-     # check if all interfaces have an entry in the map
-     foreach (k;v;value("/system/network/interfaces")) {
-     	     if (! exists(SELF[k])) {
-	     	return(false);
-	     };
-     };
-     return(true);
+    # check if all entries in the map have a network interface
+    foreach (k;v;SELF) {
+        if (! exists("/system/network/interfaces/"+k)) {
+            return(false);
+        };
+    };
+    # check if all interfaces have an entry in the map
+    foreach (k;v;value("/system/network/interfaces")) {
+        if (! exists(SELF[k])) {
+            return(false);
+        };
+    };
+    return(true);
 };
 
 type opennebula_vmtemplate_datastore = string{} with {
     # check is all entries in the map have a hardrive
     foreach (k;v;SELF) {
-             if (! exists("/system/hardware/harddisks/"+k)) {
-                return(false);
-             };
-     };
-     # check if all interfaces have an entry in the map
-     foreach (k;v;value("/system/hardware/harddisks")) {
-             if (! exists(SELF[k])) {
-                return(false);
-             };
-     };
-     return(true);
+        if (! exists("/system/hardware/harddisks/"+k)) {
+            return(false);
+        };
+    };
+    # check if all interfaces have an entry in the map
+    foreach (k;v;value("/system/hardware/harddisks")) {
+        if (! exists(SELF[k])) {
+            return(false);
+        };
+    };
+    return(true);
 };
 
 type opennebula_vmtemplate = {
@@ -193,15 +192,15 @@ type opennebula_oned = {
     "hm_mad" : opennebula_hm_mad
     "auth_mad" : opennebula_auth_mad
     "tm_mad_conf" : opennebula_tm_mad_conf[] = list(
-    		  nlist(), 
-		  nlist("name", "lvm", "clone_target", "SELF"), 
-		  nlist("name", "shared"), 
-		  nlist("name", "fs_lvm", "ln_target", "SYSTEM"), 
-		  nlist("name", "qcow2"), 
-		  nlist("name", "ssh", "ln_target", "SYSTEM", "shared", false), 
-		  nlist("name", "vmfs"), 
-		  nlist("name", "ceph", "clone_target", "SELF")
-		  )
+            nlist(), 
+            nlist("name", "lvm", "clone_target", "SELF"), 
+            nlist("name", "shared"), 
+            nlist("name", "fs_lvm", "ln_target", "SYSTEM"), 
+            nlist("name", "qcow2"), 
+            nlist("name", "ssh", "ln_target", "SYSTEM", "shared", false), 
+            nlist("name", "vmfs"), 
+            nlist("name", "ceph", "clone_target", "SELF")
+    )
     "vm_restricted_attr" : string[] = list("CONTEXT/FILES", "NIC/MAC", "NIC/VLAN_ID", "NIC/BRIDGE")
     "image_restricted_attr" : string = 'SOURCE'
     "inherit_datastore_attr" : string[] = list("CEPH_HOST", "CEPH_SECRET", "CEPH_USER", 
