@@ -345,6 +345,15 @@ def validate(service=None, tests=None, path=None):
 
     return res
 
+
+def exportpan(path, exportpan):
+    """Create pan namespace for all services and copy all templates"""
+    log.info("Going to export the pan templates to directory %s" % exportpan)
+    for srvc in os.listdir(path):
+        pandir = os.path.join(exportpan, 'metaconfig', srvc)
+        shutil.copytree(os.path.join(path, srvc, 'pan'), pandir)
+
+
 if __name__ == '__main__':
     # use absolute path
     testdir = os.path.dirname(os.path.abspath(__file__))
@@ -355,17 +364,31 @@ if __name__ == '__main__':
     json2tt = os.path.join(basedir, 'scripts', 'json2tt.pl')
     # default: assume a checkout of template-library-core in same workspace
     quattortemplatecorepath = os.path.join(os.path.dirname(basedir), 'template-library-core')
+    # create tempdir for export (has to be removed when not used!)
+    export_tmpdir = tempfile.mkdtemp(prefix='exportpan_')
 
     opts = {
         "service" : ("Select one service to test (when not specified, run all services)", None, "store", None, 's'),
         "tests" : ("Select specific test for given service (when not specified, run all tests)", "strlist", "store", None, 't'),
         "json2tt": ("Path to json2tt.pl script", None, "store", json2tt, 'j'),
         "core" : ("Path to clone of template-library-core repo", None, "store", quattortemplatecorepath, 'C'),
-        "showjson": ("Show the generated profile JSON", None, "store_true", None),
-        "showtt": ("Show the generated TT output for each profile", None, "store_true", None),
+        "showjson": ("Show the generated profile JSON", None, "store_true", None, 'J'),
+        "showtt": ("Show the generated TT output for each profile", None, "store_true", None, 'T'),
         "showflags": ("Show the flags and description and exit", None, "store_true", None),
+        "exportpan": ("Export all services pan files in proper namespace", None, "store_or_None", export_tmpdir),
     }
     go = simple_option(opts)
+
+    if go.options.exportpan is None or go.options.exportpan != export_tmpdir:
+        # clean export_tmpdir up if not used
+        shutil.rmtree(export_tmpdir)
+
+    if go.options.exportpan:
+        # run all tests
+        if go.options.service or go.options.tests:
+            go.log.info('Running all tests of all services before export, ignoring selected services/tests')
+            go.options.service = None
+            go.options.tests = None
 
     if go.options.showflags:
         print flag_help()
@@ -416,15 +439,19 @@ if __name__ == '__main__':
         res = xmlrunner.XMLTestRunner(output=xml_dir, verbosity=1).run(SUITE)
         xml_msg = ", XML output of tests available in %s directory" % xml_dir
     except ImportError, err:
-        sys.stderr.write("WARNING: xmlrunner module not available, falling back to using unittest...\n\n")
+        log.warning("xmlrunner module not available, falling back to using unittest...\n\n")
         res = unittest.TextTestRunner().run(SUITE)
 
-    fancylogger.logToFile(log_fn, enable=False)
 
     if not res.wasSuccessful():
-        sys.stderr.write("ERROR: Not all tests were successful.\n")
-        print "Log available at %s" % log_fn, xml_msg
+        log.error("Not all tests were successful. Log available at %s" % (log_fn, xml_msg))
         sys.exit(2)
     else:
+        if go.options.exportpan:
+            exportpan(path, go.options.exportpan)
+            print "Pan files exported to directory %s" % go.options.exportpan
+
+        fancylogger.logToFile(log_fn, enable=False)
         for f in glob.glob('%s*' % log_fn):
             os.remove(f)
+
