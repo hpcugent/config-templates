@@ -290,7 +290,7 @@ python ../../test/suite.py --service example --tests simple
 ### config based unittest
 
 It is better to use a full blown template as will be used in the actual profiles. The added 
-advantage here is the `config.pan` and `schema.pan` are tested as well.
+advantage here is the `config.pan` and `schema.pan` from the `pan` directory are tested as well.
 
 #### profile
 
@@ -311,17 +311,19 @@ prefix "/software/components/metaconfig/services/{/etc/example/exampled.conf}/co
 
 ```
 
-The type binding and definition of the TT module are part of the `config.pan` template, and this usage is very 
+The type binding and definition of the TT module are part of the `pan/config.pan` template, and this usage is very 
 close to actual usage in actual machine templates.
 
 #### regular expressions
 
 We will now make several regular expression tests, each in their own file and grouped in a directory called `config` (also matching the object profile name). The filenames in the directory are not relevant (but no addiditional directory structure is allowed).
 
-We need to set the `metaconfig=` flag to point the test infrastructure which metaconfig-controlled file this is supposed to test. 
-In principle only one of the templates should set it this path (and if multiple ones are set, they all have to be equal).
+We need to set the `metaconfigservice=` flag to point the test infrastructure which metaconfig-controlled file this is supposed to test. 
 
-Lets start with a regexp test identical to the `simple` test above,  `tests/regexps/config/base`:
+In principle only one of the regexp tests should set this flag (and if multiple ones are set, they all have to be equal). 
+You cannot test different metaconfig file paths from the same profile.
+
+Lets start with a regexp test identical to the `simple` test above, `tests/regexps/config/base`:
 
 ```
 Simple base test
@@ -336,7 +338,7 @@ description
 ```
 
 
-A 2nd better regexp test `tests/regexps/config/not_so_simple` uses the `multiline` flag, where the regular expressions are all interpreted as multiline regular expressions 
+A 2nd better regexp test `tests/regexps/config/not_so_simple` uses the `multiline` flag, where the regular expressions are all interpreted as multiline regular expressions.
 
 ```
 Basic multiline test
@@ -374,7 +376,8 @@ This tests that the expected fields can't start at the beginning of the line,
 whitespace must be inserted before. 
 (The `FILTER indent` TT inserts 4 spaces, as tested with the `\s{4}` in the multiline regexp above.)
 
-If one only needs to check that a single regular expression does not occur, one can also use ` ### COUNT 0`.
+If one only needs to check that a single regular expression does not occur, one can also use ` ### COUNT 0`, without 
+having to make a separate regexp test with the negate flag.
 
 A 4th regexp test `tests/regexps/config/value` uses full value checks, which is interesting to have, but harder to maintain and review.
 
