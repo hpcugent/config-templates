@@ -44,8 +44,8 @@ from vsc.utils import fancylogger
 
 
 log = None
-JSON2TT = None
-TEMPLATE_LIBRARY_CORE = None  # abs path to quattor template-libary-core
+
+TEST_CLASS_ATTRS = None
 
 OBJECT_PROFILE_REGEX = re.compile(r'^object\s+template\s+(?P<prof>\S+)\s*;\s*$', re.M)
 
@@ -250,9 +250,8 @@ def make_regexps_unittests(service, profpath, templatepath, regexps_map):
         'PROFILEPATH': profpath,
         'TEMPLATEPATH': templatepath,
         'METACONFIGPATH': os.path.dirname(templatepath),
-        'JSON2TT': JSON2TT,
-        'TEMPLATE_LIBRARY_CORE': TEMPLATE_LIBRARY_CORE,
     }
+    attrs.update(TEST_CLASS_ATTRS)
 
     # create test cases
     #     one testcase class per service
@@ -362,6 +361,8 @@ if __name__ == '__main__':
         "tests" : ("Select specific test for given service (when not specified, run all tests)", "strlist", "store", None, 't'),
         "json2tt": ("Path to json2tt.pl script", None, "store", json2tt, 'j'),
         "core" : ("Path to clone of template-library-core repo", None, "store", quattortemplatecorepath, 'C'),
+        "showjson": ("Show the generated profile JSON", None, "store_true", None),
+        "showtt": ("Show the generated TT output for each profile", None, "store_true", None),
         "showflags": ("Show the flags and description and exit", None, "store_true", None),
     }
     go = simple_option(opts)
@@ -370,8 +371,12 @@ if __name__ == '__main__':
         print flag_help()
         sys.exit(0)
 
-    JSON2TT = go.options.json2tt
-    TEMPLATE_LIBRARY_CORE = go.options.core
+    TEST_CLASS_ATTRS = {
+        'JSON2TT': go.options.json2tt,
+        'TEMPLATE_LIBRARY_CORE': go.options.core,
+        'SHOWJSON' : go.options.showjson,
+        'SHOWTT' : go.options.showtt,
+    }
 
     # no tests without service
     if go.options.tests and not go.options.service:
