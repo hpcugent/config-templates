@@ -20,13 +20,13 @@ structured and tested repository, that at some day should be moved to
 the quattor project at https://github.com/quattor.
 
 The new structure consists of the following files/directories
-* the metaconfig directory hold all services, each with their TT files, 
+* the `metaconfig` directory holds all services, each with their TT files, 
 pan schema and unittest data
-* the scripts directory holds useful standalone scripts, in particular the 
+* the `scripts` directory holds useful standalone scripts, in particular the 
 `json2tt.pl` script
-* test directory with the (Python) unittest code
-* setup_packaging.py a distultils packaging file for the new code (and only the new code)
-* NOTICE (file as per the Apache License)
+* `test` directory with the (Python) unittest code
+* `setup_packaging.py` is a distultils packaging file for the new code (and only the new code)
+* `NOTICE` (file as per the Apache License)
 
 Read the principles behind the structure of the metaconfig directory
 * https://github.com/hpcugent/config-templates/issues/40
@@ -35,7 +35,7 @@ Read the principles behind the structure of the metaconfig directory
 
 # Requirements
 
-For installation
+For installation/usage:
 * perl `Template::Toolkit` (TT) version 2.25 or later (use CPAN or for src rpms on el5, el6 and el7, contact @stdweird)
 * perl `JSON::XS`
 * perl quattor modules `CAF`, `LC`
@@ -43,9 +43,9 @@ For installation
 For unit-testing/development
 * recent pan-compiler (10.1 or later), with `panc` in `$PATH`
 * python `vsc-base` (`easy_install vsc-base` (use `--user` on recent systems for local install), or ask @stdweird for rpms)
-* a local checkout of `template-library-core` repository (https://github.com/quattor/template-library-core); default 
-expects it in the same directory as the checkout of this repository, but it can be changed via the `--core` option of the 
-unittest suite
+* a local checkout of the `template-library-core` repository (https://github.com/quattor/template-library-core); by default
+ in the same directory as the checkout of this repository, but can be changed via the `--core` option of the 
+unittest suite (or the `SUITE_CORE` environment variable)
 
 # Running the tests
 
@@ -67,56 +67,6 @@ And to run only 2 (of possibly many others) unittests of the `example` service u
 python test/suite.py --service example --tests config,simple
 ```
 
-## Unittest suite help 
-
-```bash
-python test/suite.py -h
-```
-(try --help for long option names)
-
-```
-Usage: suite.py [options]
-
-
-  Usage: "python -m test.suite" or "python test/suite.py"
-
-  @author: Stijn De Weirdt (Ghent University)
-
-Options:
-  -h            show short help message and exit
-  -H            show full help message and exit
-
-  Main options (configfile section MAIN):
-    -C CORE     Path to clone of template-library-core repo (def /home/stdweird/.git/github.ugent/template-library-core)
-    -j JSON2TT  Path to json2tt.pl script (def /home/stdweird/.git/github.ugent/config-templates/scripts/json2tt.pl)
-    -s SERVICE  Select one service to test (when not specified, run all services)
-    -t TESTS    Select specific test for given service (when not specified, run all tests) (type comma-separated list)
-
-  Debug and logging options (configfile section MAIN):
-    -d          Enable debug log mode (def False)
-
-Boolean options support disable prefix to do the inverse of the action, e.g. option --someopt also supports --disable-someopt.
-
-All long option names can be passed as environment variables. Variable name is SUITE_<LONGNAME> eg. --some-opt is same as setting SUITE_SOME_OPT in the environment.
-```
-
-## Suported flags
-
-Queries the supproted flags via the `--showflags` option
-```bash
-python test/suite.py --showflags
-```
-gives
-```
-supported flags: I, M, caseinsensitive, metaconfigservice=, multiline, negate
-    I: alias for "caseinsensitive"
-    M: shorthand for "multiline"
-    caseinsensitive: Perform case-insensitive matches
-    metaconfigservice=: Look for module/contents in the expected metaconfig component path for the service
-    multiline: Treat all regexps as multiline regexps
-    negate: Negate all regexps (none of the regexps can match) (not applicable when COUNT is set for individual regexp)
-```
-
 # Development example
 
 Start with forking the upstream repository https://github.com/hpcugent/config-templates, and clone your personal fork in your workspace. 
@@ -136,6 +86,12 @@ python test/suite.py
 ```
 
 ## Add new service
+
+Pick a good and relevant name for the service (in this case we will add the non-existing `example` service), 
+and set the variable `service` in your shell (it is used in further command-line examples).
+```bash
+service=example
+```
 
 ### Target
 
@@ -162,12 +118,6 @@ Upon changes of the config file, the `exampled` service needs to be restarted.
 This type of configuration is ideally suited for metaconfig and TT.
 
 ### Prepare
-
-Pick a good and relevant name for the service (in this case we will add the non-existing `example` service), 
-and set the variable `service` in your shell (it is used in further command-line examples).
-```bash
-service=example
-```
 
 Make a new branch where you will work in and that you will use to create the pull-request (PR) when finished
 ```bash
@@ -221,6 +171,8 @@ type example_service = {
 
 * `long`, `boolean` and `string` are pan builtin types (see the panbook for more info)
 * `type_hostname` is a type that is available from the main `pan/types` template as part of the core template library.
+* the template namespace `metaconfig/example` does not match the location of the file, but this is intentional 
+and is resolved by the `suite.py` test.
 
 ## Create config template for metaconfig component (optional)
 
@@ -451,8 +403,16 @@ python ../../test/suite.py --service example --tests config
 
 (this will run all 4 regexps files)
 
+### other possible tests
+
+* a test for the optional `option` field: a new test profile is required that has 
+the optional field configured, and it also requires one or more regexp tests to verify
+at least the `option` field in the output, and possibly also the quoted value.
+
 
 ## Result filestructure
+
+Generating all files as discussed above generates following file tree in the `metaconfig/example` directory
 
 ```
 main.tt
@@ -465,10 +425,72 @@ tests/regexps/config/value
 tests/regexps/config/neg
 tests/profiles/config.pan
 tests/profiles/simple.pan
-
 ```
 
 Also see https://github.com/hpcugent/config-templates/pull/50
 
 ## Usage with ncm-metaconfig
+
+## Unittest suite help 
+
+```bash
+python test/suite.py -h
+```
+
+```
+Usage: suite.py [options]
+
+
+  Usage: "python -m test.suite" or "python test/suite.py"
+
+  @author: Stijn De Weirdt (Ghent University)
+
+Options:
+  -h            show short help message and exit
+  -H            show full help message and exit
+
+  Main options (configfile section MAIN):
+    -C CORE     Path to clone of template-library-core repo (def /home/stdweird/.git/github.ugent/template-library-core)
+    -j JSON2TT  Path to json2tt.pl script (def /home/stdweird/.git/github.ugent/config-templates/scripts/json2tt.pl)
+    -s SERVICE  Select one service to test (when not specified, run all services)
+    -t TESTS    Select specific test for given service (when not specified, run all tests) (type comma-separated list)
+
+  Debug and logging options (configfile section MAIN):
+    -d          Enable debug log mode (def False)
+
+Boolean options support disable prefix to do the inverse of the action, e.g. option --someopt also supports --disable-someopt.
+
+All long option names can be passed as environment variables. Variable name is SUITE_<LONGNAME> eg. --some-opt is same as setting SUITE_SOME_OPT in the environment.
+```
+
+* try --help for long option names
+* the defaults for `CORE` and `JSON2TT` are generated at runtime, so the output might be different on your system.
+
+
+## Suported flags
+
+Query the supported flags of the regexps files via the `--showflags` option
+```bash
+python test/suite.py --showflags
+```
+gives
+
+```
+supported flags: I, M, caseinsensitive, metaconfigservice=, multiline, negate
+    I: alias for "caseinsensitive"
+    M: shorthand for "multiline"
+    caseinsensitive: Perform case-insensitive matches
+    metaconfigservice=: Look for module/contents in the expected metaconfig component path for the service
+    multiline: Treat all regexps as multiline regexps
+    negate: Negate all regexps (none of the regexps can match) (not applicable when COUNT is set for individual regexp)
+```
+
+## TODO
+
+See https://github.com/hpcugent/config-templates/issues, in particular
+
+* easy access to the `schema.pan` of all services in proper namespace https://github.com/hpcugent/config-templates/issues/51
+* make the rpm without `egg-info` https://github.com/hpcugent/config-templates/issues/52
+* add option to show the generated output with having to run in `--debug` https://github.com/hpcugent/config-templates/issues/53
+
 
