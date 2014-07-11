@@ -375,7 +375,7 @@ if __name__ == '__main__':
         "showjson": ("Show the generated profile JSON", None, "store_true", None, 'J'),
         "showtt": ("Show the generated TT output for each profile", None, "store_true", None, 'T'),
         "showflags": ("Show the flags and description and exit", None, "store_true", None),
-        "exportpan": ("Export all services pan files in proper namespace", None, "store_or_None", export_tmpdir),
+        "exportpan": ("Export all services pan files in proper namespace", None, "store_or_None", export_tmpdir, 'E'),
     }
     go = simple_option(opts)
 
