@@ -47,8 +47,8 @@ def gen_data_files(*dirs):
     return data
 
 
-setup(name="config-templates-metaconfig",
-      version="1.39",
+setup(name="config-templates-metaconfig-ugent",
+      version="1.40",
       description="Templates for services configured with ncm-metaconfig and Template::Toolkit",
       long_description="""Skeletons of configuration files for services that will be configured
 with ncm-metaconfig.
@@ -56,6 +56,7 @@ with ncm-metaconfig.
       license="LGPL",
       author="HPC UGent",
       author_email="hpc-admin@lists.ugent.be",
-      data_files=gen_data_files("files/metaconfig"),
+      data_files=gen_data_files("files/metaconfig",),
       scripts=["files/json2tt.pl"],
-      url="http://www.ugent.be/hpc")
+      url="http://www.ugent.be/hpc",
+      )
