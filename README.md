@@ -154,7 +154,7 @@ git commit -a -m "initial structure for service $service"
 
 The schema needs to be created in the `pan` subdirectory of the service directory `metaconfig/$service`. The file should be called `schema.pan`.
 
-```
+```pan
 declaration template metaconfig/example/schema;
 
 include 'pan/types';
@@ -179,7 +179,7 @@ and is resolved by the `suite.py` test.
 A reference config file can now also be created, with e.g. the type binding to the correct path and configuration of the
 restart action and the TT module to load. The file `config.pan` should be created in the same `pan` directory as `schema.pan`.
 
-```
+```pan
 unique template metaconfig/example/config;
 
 include 'metaconfig/example/schema';
@@ -239,7 +239,7 @@ The easiest example is a single object template with a single regexp file.
 By default, the expected pan path is under `/metaconfig`.
 
 Create the profile `tests/profiles/simple.pan` as follows:
-```
+```pan
 object template simple;
 
 "/metaconfig/module" = "example/main";
@@ -252,7 +252,7 @@ prefix "/metaconfig/contents";
 ```
 
 * the schema is not validated in this `simple` template, but it can easily be done by adding 
-```
+```pan
 include 'metaconfig/example/schema';
 bind "/metaconfig/example/contents" = example_service;
 ```
@@ -298,7 +298,7 @@ The profile `tests/profiles/config.pan` is similar to the simple one
 (it are the same values after all we want to set), 
 but by targetting `metaconfig` usage, a different prefix is required.
 
-```
+```pan
 object template config;
 
 include 'metaconfig/example/config';
