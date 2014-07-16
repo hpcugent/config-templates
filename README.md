@@ -42,7 +42,8 @@ For installation/usage:
 
 For unit-testing/development
 * recent pan-compiler (10.1 or later), with `panc` in `$PATH`
-* python `vsc-base` (`easy_install vsc-base` (use `--user` on recent systems for local install), or ask @stdweird for rpms)
+* python `vsc-base` (`easy_install vsc-base` (use `--user` on recent systems for local install), 
+or build your own via https://github.com/hpcugent/vsc-base)
 * a local checkout of the `template-library-core` repository (https://github.com/quattor/template-library-core); by default
  in the same directory as the checkout of this repository, but can be changed via the `--core` option of the 
 unittest suite (or the `SUITE_CORE` environment variable)
