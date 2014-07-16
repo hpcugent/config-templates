@@ -1,6 +1,6 @@
 [%- lists = ['bridge_list', 'ceph_host'] -%]
 [%- booleans = ['datastore_capacity_check'] -%]
-[%- FOR pair IN datastore_ceph.pairs -%]
+[%- FOR pair IN datastore.pairs -%]
 [%    pair.key.upper %] =
 [%-        SWITCH pair.key -%]
 [%             CASE lists -%] 		  

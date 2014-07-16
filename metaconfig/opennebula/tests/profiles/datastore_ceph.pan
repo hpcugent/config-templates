@@ -2,11 +2,11 @@ object template datastore_ceph;
 
 include 'metaconfig/opennebula/schema';
 
-bind "/metaconfig/contents/datastore_ceph" = opennebula_datastore_ceph;
+bind "/metaconfig/contents/datastore" = opennebula_datastore_ceph;
 
 "/metaconfig/module" = "opennebula/datastore";
 
-prefix "/metaconfig/contents/datastore_ceph";
+prefix "/metaconfig/contents/datastore";
 "name" = "ceph";
 "bridge_list" = list("hyp004.cubone.os");
 "ceph_host" = list("ceph001.cubone.os","ceph002.cubone.os","ceph003.cubone.os");
