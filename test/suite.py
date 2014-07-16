@@ -19,12 +19,20 @@ Usage: "python -m test.suite" or "python test/suite.py"
 
 @author: Stijn De Weirdt (Ghent University)
 """
+
+# set sys.path to avoid explicit PYTHONPATH setting in default use mode
+import os
+import sys
+_reldir = os.path.dirname(os.path.dirname(__file__))
+_absdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if not (_reldir in sys.path or _absdir in sys.path):
+    sys.path.insert(0, _absdir)
+
 import glob
 import operator
 import os
 import re
 import shutil
-import sys
 import tempfile
 import unittest
 
@@ -186,7 +194,10 @@ def parse_regexp(fn):
         regexps_str = r_line.groupdict()['regex']
         try:
             r = re.compile(regexps_str, re_flags)
-            regexps_compiled.append([op, r, r_line.groupdict().get('count', None)])
+            count = r_line.groupdict().get('count', None)
+            if count is None:
+                count = -1
+            regexps_compiled.append([op, r, int(count)])
         except re.error, e:
             log.error("Failed to compile regexps_str %s with flags %s: %s. Skipping." % (regexps_str, re_flags, e))
 
