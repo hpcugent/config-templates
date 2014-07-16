@@ -57,6 +57,5 @@ with ncm-metaconfig.
       author="HPC UGent",
       author_email="hpc-admin@lists.ugent.be",
       data_files=gen_data_files("files/metaconfig",),
-      scripts=["files/json2tt.pl"],
       url="http://www.ugent.be/hpc",
       )
