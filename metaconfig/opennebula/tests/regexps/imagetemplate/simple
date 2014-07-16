@@ -10,3 +10,4 @@ multiline
 ^SIZE\s?=\s*\d+\s*$
 ^DESCRIPTION\s?=\s*".+"\s*$
 ^DATASTORE\s?=\s*".+"\s*$
+^QUATTOR\s?=\s?\d?\s*$

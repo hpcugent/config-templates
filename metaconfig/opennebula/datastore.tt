@@ -11,3 +11,4 @@
  "[%            pair.value %]"
 [%         END -%]
 [%- END -%]
+QUATTOR = 1

@@ -13,3 +13,4 @@ multiline
 ^POOL_NAME\s?=\s?".+"\s*$
 ^TM_MAD\s?=\s?".+"\s*$
 ^TYPE\s?=\s?".+"\s*$
+^QUATTOR\s?=\s?\d+\s*$

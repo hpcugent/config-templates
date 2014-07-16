@@ -44,3 +44,4 @@ multiline
 ^OS\s?=\s?\[$
 ^\s{4}BOOT\s?=\s?"network,hd"$
 ^\]$
+^QUATTOR\s?=\s?1$

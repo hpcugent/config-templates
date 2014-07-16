@@ -11,4 +11,5 @@ DESCRIPTION = "QUATTOR image for [% fqdn %]: [% pair.key %]"
 [% # If we have several disks we have to split vmtemplate in several files
    # Using DATASTORE line -%]
 DATASTORE = "[% system.opennebula.datastore.${pair.key} %]"
-[%- END -%]
+[%- END %]
+QUATTOR = 1

@@ -52,3 +52,4 @@ OS = [
 BOOT = "network,hd"
 [%-    END %]
 ]
+QUATTOR = 1
