@@ -10,5 +10,5 @@
 [%             CASE -%]
  "[%            pair.value %]"
 [%         END -%]
-QUATTOR = 1
 [%- END -%]
+QUATTOR = 1
