@@ -149,12 +149,12 @@ type opennebula_vmtemplate_vnet = string{} with {
 type opennebula_vmtemplate_datastore = string{} with {
     # check is all entries in the map have a hardrive
     foreach (k;v;SELF) {
-        if (! exists("/system/hardware/harddisks/"+k)) {
+        if (! exists("/hardware/harddisks/"+k)) {
             return(false);
         };
     };
     # check if all interfaces have an entry in the map
-    foreach (k;v;value("/system/hardware/harddisks")) {
+    foreach (k;v;value("/hardware/harddisks")) {
         if (! exists(SELF[k])) {
             return(false);
         };
