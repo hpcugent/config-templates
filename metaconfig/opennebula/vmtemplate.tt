@@ -1,11 +1,11 @@
 [%- tmphost = [ system.network.hostname, system.network.domainname ]; 
     fqdn = tmphost.join('.') -%]
 [%- cpus = 0 -%]
-[%- FOREACH item IN system.hardware.cpu -%]
+[%- FOREACH item IN hardware.cpu -%]
 [%-     cpus = cpus + item.cores -%]
 [%- END -%]
 [%- memory = 0 -%]
-[%- FOREACH item IN system.hardware.ram -%]
+[%- FOREACH item IN hardware.ram -%]
 [%- # size is the element, not the VMethod
     memory = memory + item.size -%]
 [%- END -%]
@@ -13,7 +13,7 @@
 NIC = [
 [%	FILTER indent -%]
 IP = "[% system.network.interfaces.${pair.key}.ip %]",
-MAC = "[% system.hardware.cards.nic.${pair.key}.hwaddr %]",
+MAC = "[% hardware.cards.nic.${pair.key}.hwaddr %]",
 TARGET = "[% pair.key %]",
 MODEL = "virtio",
 NETWORK = "[% system.opennebula.vnet.${pair.key} %]",
@@ -30,8 +30,8 @@ TOKEN = "YES"
 [%-    END %]
 ]
 CPU = "[% cpus %]"
-DESCRIPTION = "[% system.hardware.model %] [% fqdn %]"
-[%-    FOR pair IN system.hardware.harddisks.pairs %]
+DESCRIPTION = "[% hardware.model %] [% fqdn %]"
+[%-    FOR pair IN hardware.harddisks.pairs %]
 DISK = [
 [%     FILTER indent -%]
 IMAGE = "[%- fqdn %]_[% pair.key %]",
