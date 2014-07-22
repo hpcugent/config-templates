@@ -68,6 +68,13 @@ And to run only 2 (of possibly many others) unittests of the `example` service u
 python test/suite.py --service example --tests config,simple
 ```
 
+## Other options
+
+* print the generated JSON profile for each unittest using the `--showjson` option
+* print the generated TT output for each unittest using the `--showtt` option
+* export the pan schema and possible other files from the `metaconfig/$service/pan` directory 
+to a directory using the `--exportpan` option
+
 # Development example
 
 Start with forking the upstream repository https://github.com/hpcugent/config-templates, and clone your personal fork in your workspace. 
@@ -450,21 +457,25 @@ Usage: suite.py [options]
   @author: Stijn De Weirdt (Ghent University)
 
 Options:
-  -h            show short help message and exit
-  -H            show full help message and exit
+  -h              show short help message and exit
+  -H              show full help message and exit
 
   Main options (configfile section MAIN):
-    -C CORE     Path to clone of template-library-core repo (def /home/stdweird/.git/github.ugent/template-library-core)
-    -j JSON2TT  Path to json2tt.pl script (def /home/stdweird/.git/github.ugent/config-templates/scripts/json2tt.pl)
-    -s SERVICE  Select one service to test (when not specified, run all services)
-    -t TESTS    Select specific test for given service (when not specified, run all tests) (type comma-separated list)
+    -C CORE       Path to clone of template-library-core repo (def /home/stdweird/.git/github.ugent/template-library-core)
+    -E EXPORTPAN  Export all services pan files in proper namespace (def /tmp/exportpan_2TpwtB)
+    -j JSON2TT    Path to json2tt.pl script (def /home/stdweird/.git/github.ugent/config-templates/scripts/json2tt.pl)
+    -s SERVICE    Select one service to test (when not specified, run all services)
+    -J            Show the generated profile JSON
+    -T            Show the generated TT output for each profile
+    -t TESTS      Select specific test for given service (when not specified, run all tests) (type comma-separated list)
 
   Debug and logging options (configfile section MAIN):
-    -d          Enable debug log mode (def False)
+    -d            Enable debug log mode (def False)
 
 Boolean options support disable prefix to do the inverse of the action, e.g. option --someopt also supports --disable-someopt.
 
-All long option names can be passed as environment variables. Variable name is SUITE_<LONGNAME> eg. --some-opt is same as setting SUITE_SOME_OPT in the environment.
+All long option names can be passed as environment variables. Variable name is SUITE_<LONGNAME> eg. --some-opt is same as setting SUITE_SOME_OPT in
+the environment.
 ```
 
 * try --help for long option names
@@ -493,8 +504,6 @@ supported flags: I, M, caseinsensitive, metaconfigservice=, multiline, negate
 
 See https://github.com/hpcugent/config-templates/issues, in particular
 
-* easy access to the `schema.pan` of all services in proper namespace https://github.com/hpcugent/config-templates/issues/51
 * make the rpm without `egg-info` https://github.com/hpcugent/config-templates/issues/52
-* add option to show the generated output with having to run in `--debug` https://github.com/hpcugent/config-templates/issues/53
 
 
