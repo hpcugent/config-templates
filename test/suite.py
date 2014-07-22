@@ -444,7 +444,7 @@ if __name__ == '__main__':
 
 
     if not res.wasSuccessful():
-        log.error("Not all tests were successful. Log available at %s" % (log_fn, xml_msg))
+        log.error("Not all tests were successful. Log available at %s" % (log_fn))
         sys.exit(2)
     else:
         if go.options.exportpan:
