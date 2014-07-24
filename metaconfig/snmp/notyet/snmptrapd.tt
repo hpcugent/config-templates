@@ -1,0 +1,6 @@
+[% FOREACH name IN ['traphandle'] -%]
+[%-  FOREACH n IN $name -%]
+[%      name %] [% n %]
+[%  END -%]
+[%- END -%]
+[% INCLUDE 'metaconfig/snmp/main.tt' main=main %]
