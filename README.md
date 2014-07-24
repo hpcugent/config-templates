@@ -327,6 +327,7 @@ close to actual usage in actual machine templates.
 We will now make several regular expression tests, each in their own file and grouped in a directory called `config` (also matching the object profile name). The filenames in the directory are not relevant (but no addiditional directory structure is allowed).
 
 We need to set the `metaconfigservice=` flag to point the test infrastructure which metaconfig-controlled file this is supposed to test. 
+It is implied for each flag that starts with a `/` (seen as absolute path to the metaconfig-controlled file).
 
 In principle only one of the regexp tests should set this flag (and if multiple ones are set, they all have to be equal). 
 You cannot test different metaconfig file paths from the same profile.
@@ -336,7 +337,7 @@ Lets start with a regexp test identical to the `simple` test above, `tests/regex
 ```
 Simple base test
 ---
-metaconfigservice=/etc/example/exampled.conf
+/etc/example/exampled.conf
 ---
 name
 hosts
@@ -345,13 +346,15 @@ master
 description
 ```
 
+The tag `/etc/example/exampled.conf` is the equivalent of `metaconfigservice=/etc/example/exampled.conf`.
+
 
 A 2nd better regexp test `tests/regexps/config/not_so_simple` uses the `multiline` flag, where the regular expressions are all interpreted as multiline regular expressions.
 
 ```
 Basic multiline test
 ---
-metaconfigservice=/etc/example/exampled.conf
+/etc/example/exampled.conf
 multiline
 ---
 ^name
@@ -370,7 +373,7 @@ A 3rd regexp test `tests/regexps/config/neg` checks if certain regular expressio
 ```
 Basic negate test
 ---
-metaconfigservice=/etc/example/exampled.conf
+/etc/example/exampled.conf
 multiline
 negate
 ---
@@ -392,7 +395,7 @@ A 4th regexp test `tests/regexps/config/value` uses full value checks, which is 
 ```
 Basic value test
 ---
-metaconfigservice=/etc/example/exampled.conf
+/etc/example/exampled.conf
 multiline
 ---
 ^name\s=\s\{
