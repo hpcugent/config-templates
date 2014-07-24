@@ -1,0 +1,27 @@
+log file = [% log %]
+syslog facility = [% facility %]
+
+[% FOREACH i IN sections.pairs -%]
+[[%    i.key %]]
+[%     FILTER indent %]
+comment = [% i.value.comment %]
+use chroot = yes
+max connections = [% i.value.max_connections %]
+lock file = [% i.value.lock_file %]
+read only = yes
+list = no
+uid = rsyncd
+gid = rsyncd
+auth users = [% i.value.auth_users.join(",") %]
+secrets file = [% i.value.secrets %]
+strict modes = yes
+path = [% i.value.path %]
+hosts allow = [% i.value.hosts_allow.join(",") %]
+ignore errors = no
+ignore nonreadable = yes
+transfer logging = no
+timeout = 600
+refuse options = checksum dry-run delete
+dont compress = *.gz *.tgz *.zip *.z *.rpm *.deb *.iso *.bz2 *.tbz
+[%     END %]
+[% END %]
