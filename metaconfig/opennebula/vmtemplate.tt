@@ -14,7 +14,6 @@ NIC = [
 [%	FILTER indent -%]
 IP = "[% system.network.interfaces.${pair.key}.ip %]",
 MAC = "[% hardware.cards.nic.${pair.key}.hwaddr %]",
-TARGET = "[% pair.key %]",
 MODEL = "virtio",
 NETWORK = "[% system.opennebula.vnet.${pair.key} %]",
 NETWORK_UNAME = "oneadmin"
