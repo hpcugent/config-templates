@@ -51,4 +51,10 @@ OS = [
 BOOT = "network,hd"
 [%-    END %]
 ]
+RAW = [
+[%     FILTER indent -%]
+DATA = "<cpu mode='host-passthrough'/>",
+TYPE = "kvm"
+[%-    END %]
+]
 QUATTOR = 1

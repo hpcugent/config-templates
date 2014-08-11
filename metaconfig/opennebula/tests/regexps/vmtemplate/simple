@@ -5,7 +5,6 @@ multiline
 ^NIC\s?=\s?\[$
 ^\s*IP\s?=\s*".+",\s*$
 ^\s*MAC\s?=\s*".+",\s*$
-^\s*TARGET\s?=\s*".+",\s*$
 ^\s*MODEL\s?=\s*".+",\s*$
 ^\s*NETWORK\s?=\s*".+",\s*$
 ^\s*NETWORK_UNAME\s?=\s*".+"\s*$
@@ -28,3 +27,6 @@ multiline
 ^OS\s?=\s?\[$
 ^\s*BOOT\s?=\s*".+"\s*$
 ^QUATTOR\s?=\s?\d+\s*$
+^RAW\s?=\s?\[$
+^\s*DATA\s?=\s*".+",\s*$
+^\s*TYPE\s?=\s*".+"\s*$
