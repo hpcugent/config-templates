@@ -35,6 +35,7 @@ DISK = [
 [%     FILTER indent -%]
 IMAGE = "[%- fqdn %]_[% pair.key %]",
 TARGET = "[% pair.key %]",
+DEV_PREFIX = "vd",
 IMAGE_UNAME = "oneadmin"
 [%-    END %]
 ]
