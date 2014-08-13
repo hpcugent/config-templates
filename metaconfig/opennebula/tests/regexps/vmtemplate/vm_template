@@ -5,7 +5,6 @@ multiline
 ^NIC\s?=\s?\[$
 ^\s{4}IP\s?=\s?"10.141.8.30",$
 ^\s{4}MAC\s?=\s?"AA:00:00:80:01:00",$
-^\s{4}TARGET\s?=\s?"eth0",$
 ^\s{4}MODEL\s?=\s?"virtio",$
 ^\s{4}NETWORK\s?=\s?"br100",$
 ^\s{4}NETWORK_UNAME\s?=\s?"oneadmin"$
@@ -13,7 +12,6 @@ multiline
 ^NIC\s?=\s?\[$
 ^\s{4}IP\s?=\s?"172.24.8.30",$
 ^\s{4}MAC\s?=\s?"AA:00:00:80:01:01",$
-^\s{4}TARGET\s?=\s?"eth1",$
 ^\s{4}MODEL\s?=\s?"virtio",$
 ^\s{4}NETWORK\s?=\s?"br101",$
 ^\s{4}NETWORK_UNAME\s?=\s?"oneadmin"$
@@ -29,6 +27,7 @@ multiline
 ^DISK\s?=\s?\[$
 ^\s{4}IMAGE\s?=\s?"node630.cubone.os_vda",$
 ^\s{4}TARGET\s?=\s?"vda",$
+^\s{4}DEV_PREFIX\s?=\s?"vd",$
 ^\s{4}IMAGE_UNAME\s?=\s?"oneadmin"$
 ^\]$
 ^DISK\s?=\s?\[$
@@ -43,5 +42,9 @@ multiline
 ^MEMORY\s?=\s?"4096"$
 ^OS\s?=\s?\[$
 ^\s{4}BOOT\s?=\s?"network,hd"$
+^\]$
+^RAW\s?=\s?\[$
+^\s{4}DATA\s?=\s?"\<cpu\s{1}mode\=\'host-passthrough\'\/\>",$
+^\s{4}TYPE\s?=\s?"kvm"$
 ^\]$
 ^QUATTOR\s?=\s?1$

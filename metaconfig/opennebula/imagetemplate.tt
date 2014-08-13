@@ -8,8 +8,8 @@ NAME = "[%- fqdn %]_[% pair.key %]"
 TARGET = "[% pair.key %]"
 SIZE = [% hardware.harddisks.${pair.key}.capacity %]
 DESCRIPTION = "QUATTOR image for [% fqdn %]: [% pair.key %]"
+QUATTOR = 1
 [% # If we have several disks we have to split vmtemplate in several files
-   # Using DATASTORE line -%]
+   # Using DATASTORE line. THIS MUST BE THE LAST TT FILE LINE-%]
 DATASTORE = "[% system.opennebula.datastore.${pair.key} %]"
 [%- END %]
-QUATTOR = 1
