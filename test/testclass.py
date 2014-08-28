@@ -37,6 +37,10 @@ def gen_test_func(profile, regexps_tuples, **make_result_extra_flags):
 
         # make this a test in case of failure for proper reporting
         # -> all other tests will fail anyway
+        if not regexps_tuples:
+            self.assertTrue(False, 'No regexp tests for %s' % (profile))
+            return
+
         if self.pancout is not None:
             self.assertTrue(False, 'No json for %s (panc failed: %s)' % (profile, self.pancout))
             return

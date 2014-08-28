@@ -215,7 +215,13 @@ if ($ut && $mcs) {
         # assumed relative from metaconfig as in the metaconfig component
         $tt="metaconfig/$ttname.tt";
     } else {
-        $this_app->error("No module defined for metaconfigservice ", $this_app->option("metaconfigservice"));
+        my $errmsg="No TT module defined";
+        if ($ut) {
+            $errmsg .= " for unittest.";
+        } elsif ($mcs) {
+            $errmsg .= " for metaconfigservice $mcs.";
+        }
+        $this_app->error($errmsg);
     };
     # redefine the json contents
     $json=$reljson->{contents};

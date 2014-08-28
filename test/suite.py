@@ -81,6 +81,7 @@ def valid_flag(flag):
     """Check if flag is a valid flag"""
     exact = [flag == k for k, v in SUPPORTED_FLAGS.items() if not v[0]]
     prefix = [flag.startswith(k) for k, v in SUPPORTED_FLAGS.items() if v[0]]
+
     # assuming python 2.6
     return any(exact + prefix)
 
@@ -171,6 +172,12 @@ def parse_regexp(fn):
     op = [operator.truth, '']
     re_flags = 0
     for flag in flags:
+        # if flag starts with a /, interpret it as the absolute path of a metaconfigservice
+        # intentionally not using os.path.sep
+        if flag.startswith('/'):
+            log.info('Flag %s interpreted as absolute path for metaconfigservice')
+            flag = 'metaconfigservice=%s' % flag
+
         # extra check
         if not valid_flag(flag):
             log.error('Unknown flag %s (%s). Ignoring' % (flag, flag_help(supported=True)))
@@ -213,6 +220,16 @@ def parse_regexps(fns):
             log.error("Failed to parse regexp file %s. Skipping." % fn)
         else:
             res.append(result)
+
+    # sanity check on the extra_flags
+    # all extra_flags update the same dict later on
+    #  - only allow one mode
+    modes = [x[2]['mode'] for x in res if 'mode' in x[2]]
+    # check if all equal to first element
+    if modes and not all(map(lambda x: x == modes[0], modes)):
+        log.error("Not all modes are equal (or None): found %s" % modes)
+        return []
+
     return res
 
 
