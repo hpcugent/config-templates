@@ -26,7 +26,6 @@ import os
 import shutil
 import tempfile
 
-
 from unittest import TestCase
 from vsc.utils.run import run_asyncloop
 
@@ -76,8 +75,11 @@ class RegexpTestCase(TestCase):
     PROFILEPATH = None  # absolute path of profiles folder
     METACONFIGPATH = None  # absolute path to metaconfig subdir
     TEMPLATEPATH = None  # absolute path of templates folder
+
     JSON2TT = None  # absolute path to the json2tt.pl tool
     TEMPLATE_LIBRARY_CORE = None  # abs path to template library core (mainly for pan/types etc)
+    SHOWJSON = False  # print the generated JSON from profile compilation
+    SHOWTT = False  # print the generated output from JSON2TT
 
     def setUp(self):
         """Set up testcase. This makes a copy of the templates under service/pan 
@@ -117,6 +119,9 @@ class RegexpTestCase(TestCase):
             self.pancout = out
             return
 
+        if self.SHOWJSON:
+            print "profile %s JSON:\n%s" % (profile, open(jsonfile).read())
+
         if mode is None:
             mode = ['--unittest']
         cmd = [
@@ -131,6 +136,8 @@ class RegexpTestCase(TestCase):
             return
 
         self.result = out
+        if self.SHOWTT:
+            print "profile %s TT output:\n%s" % (profile, out)
 
     def tearDown(self):
         """Clean up after running testcase."""
