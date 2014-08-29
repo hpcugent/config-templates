@@ -23,6 +23,7 @@ multiline
 ^\s{4}TOKEN\s?=\s?"YES"$
 ^\]$
 ^CPU\s?=\s?"4"$
+^VCPU\s?=\s?"4"$
 ^DESCRIPTION\s?=\s?"KVM Virtual Machine node630.cubone.os"$
 ^DISK\s?=\s?\[$
 ^\s{4}IMAGE\s?=\s?"node630.cubone.os_vda",$
