@@ -10,3 +10,7 @@ multiline
 ^Nobody-User=nobody$
 ^\[Translation\]$
 ^Method=nsswitch$
+^\[Static\]$
+^user@firstrealm\s=\slocaluser$
+^otheruser@otherrealm\s=\ssamelocaluser$
+

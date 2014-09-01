@@ -44,7 +44,7 @@ type rpcidmapd_config = {
     "General" : rpcidmapd_general_config
     "Mapping" : rpcidmapd_mapping_config
     "Translation" : rpcidmapd_translation_config
-    "Static" ? string{}{} # nlist of nlists: 1st key = REAL, 2nd key someuser, value = localuser, converted in someuser@REALM = localuser
+    "Static" ? string{}{} # nlist of nlists: 1st key = REALM, 2nd key someuser, value = localuser, converted in someuser@REALM = localuser
     "UMICH_SCHEMA" ? rpcidmapd_umich_schema_config
 };
 
