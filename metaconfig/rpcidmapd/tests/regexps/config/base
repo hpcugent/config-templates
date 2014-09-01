@@ -1,6 +1,12 @@
 Base test for config
 ---
 multiline
+/etc/idmapd.conf
 ---
-$wontmatch^
-
+^\[General\]$
+^Domain=MyDomain$
+^\[Mapping\]$
+^Nobody-Group=nobody$
+^Nobody-User=nobody$
+^\[Translation\]$
+^Method=nsswitch$
