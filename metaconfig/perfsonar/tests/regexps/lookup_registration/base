@@ -1,0 +1,7 @@
+Base test for lookup_registration
+---
+multiline
+/opt/perfsonar_ps/ls_registration_daemon/etc/ls_registration_daemon.conf
+---
+$wontmatch^
+

@@ -1,0 +1,7 @@
+Base test for lookup_daemon
+---
+multiline
+/opt/perfsonar_ps/lookup_service/etc/daemon.conf
+---
+$wontmatch^
+

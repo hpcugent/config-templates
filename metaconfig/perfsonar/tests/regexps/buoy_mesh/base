@@ -1,0 +1,7 @@
+Base test for buoy_mesh
+---
+multiline
+/opt/perfsonar_ps/perfsonarbuoy_ma/etc/owmesh.conf
+---
+$wontmatch^
+

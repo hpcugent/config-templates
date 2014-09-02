@@ -1,0 +1,7 @@
+Base test for bwctl_bwctlrc
+---
+multiline
+/var/lib/bwctl/.bwctlrc
+---
+$wontmatch^
+

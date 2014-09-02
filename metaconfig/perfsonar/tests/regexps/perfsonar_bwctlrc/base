@@ -1,0 +1,7 @@
+Base test for perfsonar_bwctlrc
+---
+multiline
+/var/lib/perfsonar/.bwctlrc
+---
+$wontmatch^
+

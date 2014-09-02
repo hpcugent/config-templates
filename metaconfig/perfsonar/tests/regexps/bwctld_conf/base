@@ -1,0 +1,7 @@
+Base test for bwctld_conf
+---
+multiline
+/etc/bwctld/bwctld.conf
+---
+$wontmatch^
+

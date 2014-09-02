@@ -1,0 +1,7 @@
+Base test for buoy_daemon_config
+---
+multiline
+/opt/perfsonar_ps/perfsonarbuoy_ma/etc/daemon.conf
+---
+$wontmatch^
+
