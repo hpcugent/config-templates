@@ -1,3 +1,0 @@
-<HOST=[%name%]>
-NODE    [% desc.node %]
-</HOST>
