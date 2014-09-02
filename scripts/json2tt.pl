@@ -261,14 +261,14 @@ if ($mm eq "general") {
 } elsif ($tt) {
     $this_app->debug(3,"tt file $tt opts ", Dumper($template_opts));
     my $tpl = Template->new($template_opts);
-    if($tpl->process($tt, $json, $output)) {
+    if($tpl->process($tt, $json, \$output)) {
         $this_app->verbose("Succesful template processing.")
     } else {
         $this_app->error("Template processing failed : ", $tpl->error());
         exit(2);
     }
 } else {
-    $this_app->error("No template defined.");
+    $this_app->error("No template defined mm $mm tt $tt.");
     exit(5);
 }
 
