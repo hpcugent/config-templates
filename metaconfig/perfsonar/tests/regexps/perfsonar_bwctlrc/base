@@ -3,5 +3,6 @@ Base test for perfsonar_bwctlrc
 multiline
 /var/lib/perfsonar/.bwctlrc
 ---
-$wontmatch^
-
+^allow_unsync\s+1$
+^iperf_port\s+5001$
+^control_timeout\s+7200$

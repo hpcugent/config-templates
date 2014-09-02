@@ -3,5 +3,9 @@ Base test for bwctld_conf
 multiline
 /etc/bwctld/bwctld.conf
 ---
-$wontmatch^
-
+^control_timeout\s+7200$
+^nuttcp_port\s+5006$
+^allow_unsync\s+1$
+^user\s+bwctl$
+^iperf_port\s+5001$
+^group\s+bwctl$
