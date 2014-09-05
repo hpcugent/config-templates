@@ -1,4 +1,0 @@
-#%PAM-1.0
-[%  FOREACH group IN ['account', 'auth', 'password', 'session'] %]
-[%      group.control %] [% group.module %] [% group.options.join(' ') %]
-[%  END %]
