@@ -1,3 +1,0 @@
-[% FOREACH acc IN access %]
-[%  acc.permission ? '+' : '-' %]:[% acc.usergroups.join(' ') %]:[% acc.origins.join(' ') %]
-[% END %]
