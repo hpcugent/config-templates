@@ -1,4 +1,4 @@
-[% principal.primary -%]
+[%- principal.primary -%]
 [%- IF principal.exists('instance') -%]
 /[% principal.instance -%]
 [%- END -%]
