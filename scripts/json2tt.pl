@@ -134,6 +134,7 @@ use warnings;
 use JSON::XS;
 use Template 2.25;
 use Data::Dumper;
+use Config::General;
 
 use strict;
 use vars qw($this_app %SIG);
@@ -192,7 +193,7 @@ if ($this_app->option("includepath")) {
 }
 
 my $json = read_json();
-my $tt; 
+my ($tt, $mm); 
 
 # get the template and new json content from the json file
 my $ut=$this_app->option("unittest");
@@ -211,9 +212,8 @@ if ($ut && $mcs) {
     }
 
     if ($reljson->{module}) {
-        my $ttname = $reljson->{module};
-        # assumed relative from metaconfig as in the metaconfig component
-        $tt="metaconfig/$ttname.tt";
+        # metaconfig module
+        $mm = $reljson->{module};
     } else {
         my $errmsg="No TT module defined";
         if ($ut) {
@@ -244,22 +244,32 @@ if ($this_app->option("dumpjson")) {
     exit(0);
 }
 
+# assumed relative from metaconfig as in the metaconfig component
+$tt="metaconfig/$mm.tt";
 # template option as last, takes precedence
 if ($this_app->option("template")) {
     $tt = $this_app->option("template");
+    $mm = "FORCE_TT"; # force use of TT 
     $this_app->verbose("Use template $tt");
 }
 
-if ($tt) {
+my $output;
+if ($mm eq "general") {
+    $this_app->debug(3,"Config::General, ignoring TT opts ", Dumper($template_opts));
+    my $c = Config::General->new($json);
+    $output = $c->save_string();
+} elsif ($tt) {
     $this_app->debug(3,"tt file $tt opts ", Dumper($template_opts));
     my $tpl = Template->new($template_opts);
-    if($tpl->process($tt, $json)) {
+    if($tpl->process($tt, $json, \$output)) {
         $this_app->verbose("Succesful template processing.")
     } else {
         $this_app->error("Template processing failed : ", $tpl->error());
         exit(2);
     }
 } else {
-    $this_app->error("No template defined.");
+    $this_app->error("No template defined mm $mm tt $tt.");
     exit(5);
 }
+
+print $output;
