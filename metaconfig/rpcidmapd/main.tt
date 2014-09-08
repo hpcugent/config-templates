@@ -1,6 +1,6 @@
 [%- FOREACH sub IN ['General', 'Mapping', 'Translation' ] -%]
-[[% sub %]]
-[% INCLUDE metaconfig/rpcidmapd/attribute.tt value=$sub %]
+[[%     sub %]]
+[%      INCLUDE metaconfig/rpcidmapd/attribute.tt value=$sub %]
 [% END -%]
 
 [% IF Static -%]
@@ -14,7 +14,7 @@
 
 [% IF UMICH_SCHEMA -%]
 [UMICH_SCHEMA]
-[% INCLUDE metaconfig/rpcidmapd/attribute.tt value=UMICH_SCHEMA %]
+[%      INCLUDE metaconfig/rpcidmapd/attribute.tt value=UMICH_SCHEMA %]
 [%- END -%]
 
 
