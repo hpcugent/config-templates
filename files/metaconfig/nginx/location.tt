@@ -1,8 +1,0 @@
-location [% location.operator IF location.exists("operator") %] [% location.name %] {
-[%- IF location.root %]
-    root [% location.root %];
-[%- END -%]
-[%- IF location.exists("proxy") %]
-[% INCLUDE metaconfig/nginx/proxy.tt px=location.proxy FILTER indent %]
-[% END -%]
-}
