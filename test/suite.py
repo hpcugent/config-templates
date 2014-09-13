@@ -143,14 +143,14 @@ def get_object_profiles(path):
         if not r:
             log.error('No valid template line found in %s' % fn)
             continue
-        object = r.groupdict()['object']
+        object_tpl = r.groupdict()['object']
         prof = r.groupdict()['prof']
 
         if not rel_fn == "%s.pan" % prof:
             log.error("Profile name %s doesn't match filename %s" % (prof, rel_fn))
             continue
 
-        if object is None:
+        if object_tpl is None:
             log.debug("Template %s is not an object template (fn %s)" % (prof, rel_fn))
             continue
 
