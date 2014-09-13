@@ -1,0 +1,6 @@
+[%- FOREACH name IN names -%]
+[%-     IF desc.exists(name) -%]
+[%         typetempl="metaconfig/logstash/types/${type}.tt" %]
+[%          INCLUDE $typetempl key=name value=desc.${name} %]
+[%-     END -%]
+[%- END -%]
