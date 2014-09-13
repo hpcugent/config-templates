@@ -2,6 +2,6 @@
 [% FILTER indent -%]
 [%-     FOREACH p IN value.pairs -%]
 "[%         p.key %]" => "[% p.value %]"
-[%-     END -%]
+[%     END -%]
 [%- END %]
 }[%- -%]
