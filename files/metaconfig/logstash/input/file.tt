@@ -1,3 +1,0 @@
-[%- INCLUDE "metaconfig/logstash/type.tt" type="stringarray" names=['path', 'exclude'] -%]
-[%- INCLUDE "metaconfig/logstash/type.tt" type="string" names=['startposition', 'sincedb_path'] -%]
-[%- INCLUDE "metaconfig/logstash/type.tt" type="exact" names=['stat_interval', 'sincedb_write_interval'] -%]
