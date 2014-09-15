@@ -1,4 +1,4 @@
-unique template metaconfig/devicemapper/config;
+unique template metaconfig/devicemapper/multipath;
 
 include 'metaconfig/devicemapper/schema';
 

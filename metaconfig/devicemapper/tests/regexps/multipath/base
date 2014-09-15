@@ -1,7 +1,7 @@
 Base test for config
 ---
 multiline
-metaconfigservice=/etc/multipath.conf
+/etc/multipath.conf
 ---
 ^defaults \{$
 ^\s{4}detect_prio yes$
