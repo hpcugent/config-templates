@@ -38,6 +38,7 @@ Read the principles behind the structure of the metaconfig directory
 For installation/usage:
 * perl `Template::Toolkit` (TT) version 2.25 or later (use CPAN or for src rpms on el5, el6 and el7, contact @stdweird)
 * perl `JSON::XS`
+* perl `Config::Genral`
 * perl quattor modules `CAF`, `LC`
 
 For unit-testing/development
