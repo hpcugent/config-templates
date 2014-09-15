@@ -1,7 +1,7 @@
-declaration template metaconfig/device-mapper/schema;
+declaration template metaconfig/devicemapper/schema;
 
 @{
-    device-mapper multipath
+    devicemapper multipath
 }
 type multipath_defaults_path_selector = list with match(SELF[0], "^(round-robin|queue-length|service-time)$") &&
     is_long(SELF[1]) && SELF[1] == 0;

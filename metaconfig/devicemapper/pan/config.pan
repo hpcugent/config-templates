@@ -1,10 +1,10 @@
-unique template metaconfig/device-mapper/config;
+unique template metaconfig/devicemapper/config;
 
-include {'metaconfig/device-mapper/schema'};
+include 'metaconfig/devicemapper/schema';
 
 bind "/software/components/metaconfig/services/{/etc/multipath.conf}/contents" = multipath_config;
 
 prefix "/software/components/metaconfig/services/{/etc/multipath.conf}";
 "daemon/0" = "multipathd";
-"module" = "device-mapper/multipath";
+"module" = "devicemapper/multipath";
 

@@ -1,11 +1,11 @@
 [%- IF defaults -%]
 defaults {
 [%      FOREACH pair IN defaults.pairs %]
-[%-         INCLUDE metaconfig/multipath/attribute.tt FILTER indent %]
+[%-         INCLUDE metaconfig/devicemapper/multipath/attribute.tt FILTER indent %]
 [%      END -%]
 }
-[% END -%]
 
+[% END -%]
 [% IF multipaths -%]
 multipaths {
 [%-     FOREACH mp IN multipaths %]
@@ -13,33 +13,30 @@ multipaths {
 multipath {
 [%              FILTER indent -%]
 [%-                 FOREACH pair IN mp.pairs -%]
-[%-                     FILTER indent %]
-[%-                         SWITCH pair.key -%]
-[%                              CASE ['alias', 'wwid'] -%]
-[%                                  pair.key %] [% pair.value %]
-[%                              CASE -%]
-[%                                  INCLUDE metaconfig/multipath/attribute.tt -%]
-[%-                         END -%]
-[%                      END -%]
+[%-                     SWITCH pair.key -%]
+[%                          CASE ['alias', 'wwid'] -%]
+[%                              pair.key %] [% pair.value %]
+[%                          CASE -%]
+[%                              INCLUDE metaconfig/devicemapper/multipath/attribute.tt -%]
+[%-                     END -%]
 [%-                 END -%]
 [%              END -%]
 }
 [%-         END -%]
 [%      END %]
 }
-[% END -%]
 
+[% END -%]
 [% IF devices -%]
 devices {
 [%-     FOREACH device IN devices %]
 [%          FILTER indent -%]
-[%-             INCLUDE metaconfig/multipath/device.tt device=device -%]
+[%-             INCLUDE metaconfig/devicemapper/multipath/device.tt device=device -%]
 [%-         END -%]
 [%      END %]
 }
+
 [% END -%]
-
-
 [% IF blacklist -%]
 [%-     FOREACH bl IN blacklist %]
 blacklist {
@@ -48,7 +45,7 @@ blacklist {
 [%-                 FILTER indent %]
 [%-                     SWITCH pair.key -%]
 [%-                         CASE ['device'] -%]
-[%-                             INCLUDE metaconfig/multipath/device.tt device=pair.value -%]
+[%-                             INCLUDE metaconfig/devicemapper/multipath/device.tt device=pair.value -%]
 [%                          CASE -%]
 [%-                             pair.key %] [% pair.value -%]
 [%-                     END -%]
@@ -57,8 +54,8 @@ blacklist {
 [%          END -%]
 }
 [%      END %]
-[% END -%]
 
+[% END -%]
 [% IF blacklist_exceptions -%]
 [%-     FOREACH bl IN blacklist_exceptions %]
 blacklist_excpetions {
@@ -67,7 +64,7 @@ blacklist_excpetions {
 [%-                 FILTER indent %]
 [%-                     SWITCH pair.key -%]
 [%-                         CASE ['device'] -%]
-[%-                             INCLUDE metaconfig/multipath/device.tt device=pair.value -%]
+[%-                             INCLUDE metaconfig/devicemapper/multipath/device.tt device=pair.value -%]
 [%                          CASE -%]
 [%-                             pair.key %] [% pair.value -%]
 [%-                     END -%]
