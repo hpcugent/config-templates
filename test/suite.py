@@ -133,10 +133,14 @@ def get_object_profiles(path):
     """Return list of object profiles names"""
     res = []
     for rel_fn in os.listdir(path):
+        fn = os.path.join(path, rel_fn)
+        if not os.path.isfile(fn):
+            log.debug("Not a file: %s (%s)" % (rel_fn, fn))
+            continue
+
         if not rel_fn.endswith('.pan'):
             log.error('Found file %s in profilesdir %s without .pan extension' % (rel_fn, path))
             continue
-        fn = os.path.join(path, rel_fn)
 
         proftxt = open(fn).read()
         r = OBJECT_PROFILE_REGEX.search(proftxt)

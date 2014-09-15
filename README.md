@@ -237,7 +237,7 @@ The testsuite takes care of the actual compilation and generation of the output,
 running of the tests.
 
 Only templates with `.pan` extension and that are either `unique`, `structure` or `object` templates are considered,
-all other will get an (non-fatal) error message.
+all other will get an (non-fatal) error message. Subdirectories will not be checked for object templates.
 
 ### Flags
 
