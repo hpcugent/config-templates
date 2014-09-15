@@ -404,6 +404,7 @@ if __name__ == '__main__':
         "showtt": ("Show the generated TT output for each profile", None, "store_true", None, 'T'),
         "showflags": ("Show the flags and description and exit", None, "store_true", None),
         "exportpan": ("Export all services pan files in proper namespace", None, "store_or_None", export_tmpdir, 'E'),
+        "jenkins": ("Extra warnings related to jenkins (are ok on non-jenkins)", None, "store_true", None),
     }
     go = simple_option(opts)
 
@@ -467,7 +468,11 @@ if __name__ == '__main__':
         res = xmlrunner.XMLTestRunner(output=xml_dir, verbosity=1).run(SUITE)
         xml_msg = ", XML output of tests available in %s directory" % xml_dir
     except ImportError, err:
-        log.warning("xmlrunner module not available, falling back to using unittest...\n\n")
+        msg = "xmlrunner module not available, falling back to using unittest...\n\n"
+        if go.options.jenkins:
+            log.warning(msg)
+        else:
+            log.debug(msg)
         res = unittest.TextTestRunner().run(SUITE)
 
 
