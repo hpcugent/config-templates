@@ -1,8 +1,0 @@
-[%- IF desc.exists('set') -%]
-sethandler [% desc.set %]
-[% END -%]
-[%- IF desc.exists('add') -%]
-[%-     FOREACH h IN desc.add -%]
-addhandler [% h.name %] [% h.target.join(' ') %]
-[%      END -%]
-[%- END -%]
