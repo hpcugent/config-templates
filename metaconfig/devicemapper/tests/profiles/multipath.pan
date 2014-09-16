@@ -1,6 +1,6 @@
-object template config;
+object template multipath;
 
-include 'metaconfig/devicemapper/config';
+include 'metaconfig/devicemapper/multipath';
 
 prefix "/software/components/metaconfig/services/{/etc/multipath.conf}/contents/defaults";
 'path_checker' = 'hp_sw';
