@@ -6,7 +6,7 @@ hostnamelookups [% vhost.hostnamelookups ? "on" : "off" %]
 
 [%- to_process = ['ssl', 'nss', 'env', 'aliases', 'rewrite', 'perl', 'wsgi', 'log', 'rails'] -%] 
 [%- FOREACH p IN  to_process -%]
-[%-      IF vhost.exists(p) -%] 
+[%-      IF vhost.exists(p) -%]
 [%          INCLUDE "metaconfig/httpd/config/${p}.tt" desc=vhost.$p %]
 [%      END -%]
 [%- END %]

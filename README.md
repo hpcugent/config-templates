@@ -38,6 +38,7 @@ Read the principles behind the structure of the metaconfig directory
 For installation/usage:
 * perl `Template::Toolkit` (TT) version 2.25 or later (use CPAN or for src rpms on el5, el6 and el7, contact @stdweird)
 * perl `JSON::XS`
+* perl `Config::Genral`
 * perl quattor modules `CAF`, `LC`
 
 For unit-testing/development
@@ -237,7 +238,7 @@ The testsuite takes care of the actual compilation and generation of the output,
 running of the tests.
 
 Only templates with `.pan` extension and that are either `unique`, `structure` or `object` templates are considered,
-all other will get an (non-fatal) error message.
+all other will get an (non-fatal) error message. Subdirectories will not be checked for object templates.
 
 ### Flags
 

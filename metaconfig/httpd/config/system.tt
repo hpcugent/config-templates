@@ -1,6 +1,6 @@
 [%- to_process = ['global', 'encodings', 'modules', 'ssl', 'nss', 'env', 'aliases', 'type', 'passenger', 'handler'] -%] 
 [%- FOREACH p IN  to_process -%]
-[%-      IF ${p}.defined -%] 
+[%-      IF ${p}.defined -%]
 [%          INCLUDE "metaconfig/httpd/config/${p}.tt" desc=$p %]
 [%      END -%]
 [%- END %]
@@ -21,4 +21,4 @@
 <ifmodule [% ifmod.name %]>
 [%      INCLUDE metaconfig/httpd/config/ifmodule.tt desc=ifmod FILTER indent -%]
 </ifmodule>
-[% END -%] 
+[% END -%]
