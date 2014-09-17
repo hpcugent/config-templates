@@ -1,4 +1,4 @@
-template vm;
+unique template vm;
 
 prefix "/hardware";
 "bios" = nlist(

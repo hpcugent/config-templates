@@ -47,7 +47,7 @@ log = None
 
 TEST_CLASS_ATTRS = None
 
-OBJECT_PROFILE_REGEX = re.compile(r'^object\s+template\s+(?P<prof>\S+)\s*;\s*$', re.M)
+OBJECT_PROFILE_REGEX = re.compile(r'^(?:unique|(?P<object>object)|structure)\s+template\s+(?P<prof>\S+)\s*;\s*$', re.M)
 
 REGEXPS_SEPARATOR_REGEX = re.compile(r'^-{3}$', re.M)
 REGEXPS_EXPECTED_BLOCKS = 3
@@ -130,7 +130,7 @@ def check_pan(path):
 
 
 def get_object_profiles(path):
-    """Return list of pobject profiles names"""
+    """Return list of object profiles names"""
     res = []
     for rel_fn in os.listdir(path):
         if not rel_fn.endswith('.pan'):
@@ -141,12 +141,19 @@ def get_object_profiles(path):
         proftxt = open(fn).read()
         r = OBJECT_PROFILE_REGEX.search(proftxt)
         if not r:
-            log.error('No object template line found in %s' % fn)
+            log.error('No valid template line found in %s' % fn)
             continue
+        object_tpl = r.groupdict()['object']
         prof = r.groupdict()['prof']
+
         if not rel_fn == "%s.pan" % prof:
             log.error("Profile name %s doesn't match filename %s" % (prof, rel_fn))
             continue
+
+        if object_tpl is None:
+            log.debug("Template %s is not an object template (fn %s)" % (prof, rel_fn))
+            continue
+
         res.append(prof)
 
     return res

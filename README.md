@@ -236,6 +236,9 @@ Then the `json2tt.pl` script is used to generate the output from the JSON and th
 The testsuite takes care of the actual compilation and generation of the output, and the 
 running of the tests.
 
+Only templates with `.pan` extension and that are either `unique`, `structure` or `object` templates are considered,
+all other will get an (non-fatal) error message.
+
 ### Flags
 
 ### simple unittest
