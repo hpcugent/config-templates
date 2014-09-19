@@ -121,6 +121,12 @@ type opennebula_vnet = {
     "network_mask" : type_ipv4
 };
 
+type opennebula_user = {
+    "ssh_public_key" ? string
+    "user" ? string 
+    "password" ? string
+};
+
 type opennebula_remoteconf_ceph = {
     "pool_name" : string
     "host" : string
