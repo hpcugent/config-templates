@@ -25,7 +25,7 @@ pan schema and unittest data
 * the `scripts` directory holds useful standalone scripts, in particular the 
 `json2tt.pl` script
 * `test` directory with the (Python) unittest code
-* `setup_packaging.py` is a distultils packaging file for the new code (and only the new code)
+* `setup.py` is a distultils packaging file for the new code (and only the new code)
 * `NOTICE` (file as per the Apache License)
 
 Read the principles behind the structure of the metaconfig directory
