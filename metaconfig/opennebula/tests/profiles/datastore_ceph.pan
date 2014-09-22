@@ -2,7 +2,7 @@ object template datastore_ceph;
 
 include 'metaconfig/opennebula/schema';
 
-bind "/metaconfig/contents/datastore" = opennebula_datastore_ceph;
+bind "/metaconfig/contents/datastore" = opennebula_datastore;
 
 "/metaconfig/module" = "opennebula/datastore";
 

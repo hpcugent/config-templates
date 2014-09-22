@@ -6,10 +6,6 @@ type uuid = string with match(SELF,'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]
 
 type directory = string with match(SELF,'[^/]+/?$');
 
-type opennebula_datastore = {
-    "name" : string 
-};
-
 type opennebula_db = {
     "backend" : string 
     "server" : string
@@ -98,8 +94,8 @@ type opennebula_tm_mad_conf = {
     "shared" : boolean = true
 } = nlist();
 
-type opennebula_datastore_ceph = {
-    include opennebula_datastore
+type opennebula_datastore = {
+    "name" : string
     "bridge_list" : string[]
     "ceph_host" : string[]
     "ceph_secret" : uuid 
@@ -119,6 +115,12 @@ type opennebula_vnet = {
     "gateway" : type_ipv4
     "dns" : type_ipv4
     "network_mask" : type_ipv4
+};
+
+type opennebula_user = {
+    "ssh_public_key" ? string
+    "user" ? string 
+    "password" ? string
 };
 
 type opennebula_remoteconf_ceph = {
