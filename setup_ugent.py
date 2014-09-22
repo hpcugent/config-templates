@@ -24,7 +24,7 @@
 # You should have received a copy of the GNU General Public License
 # along with VSC-tools. If not, see <http://www.gnu.org/licenses/>.
 #
-"""Basic setup.py for building the hpcugent Icinga checks"""
+"""Basic setup.py for building the hpcugent metaconfig templates"""
 
 import sys
 import os
@@ -48,7 +48,7 @@ def gen_data_files(*dirs):
 
 
 setup(name="config-templates-metaconfig-ugent",
-      version="1.40",
+      version="2.0",
       description="Templates for services configured with ncm-metaconfig and Template::Toolkit",
       long_description="""Skeletons of configuration files for services that will be configured
 with ncm-metaconfig.
