@@ -106,7 +106,7 @@ type opennebula_datastore = {
     "pool_name" : string
     "tm_mad" : string = 'ceph'
     "type" : string = 'IMAGE_DS'
-    "rbd_format" ? long(2)
+    "rbd_format" ? long(1..2)
 };
 
 type opennebula_vnet = {
@@ -129,7 +129,7 @@ type opennebula_remoteconf_ceph = {
     "host" : string
     "ceph_user" ? string
     "staging_dir" ? directory = '/var/tmp'
-    "rbd_format" ? long(2)
+    "rbd_format" ? long(1..2)
     "qemu_img_convert_args" ? string
 };
 
