@@ -4,12 +4,12 @@
 [%- FOR pair IN datastore.pairs -%]
 [%    pair.key.upper %] =
 [%-        SWITCH pair.key -%]
-[%             CASE lists -%] 		  
+[%             CASE lists -%]
  "[%            pair.value.join(' ') %]"
-[%             CASE booleans -%] 		  
+[%             CASE booleans -%]
  "[%            pair.value ? "yes" : "no" %]"
 [%             CASE integer -%]
- [%            pair.value %]
+ [%             pair.value %]
 [%             CASE -%]
  "[%            pair.value %]"
 [%         END -%]
