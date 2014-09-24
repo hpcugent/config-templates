@@ -13,4 +13,5 @@ multiline
 ^POOL_NAME\s?=\s?".+"\s*$
 ^TM_MAD\s?=\s?".+"\s*$
 ^TYPE\s?=\s?".+"\s*$
+^RBD_FORMAT\s?=\s?\d+\s*$
 ^QUATTOR\s?=\s?\d+\s*$

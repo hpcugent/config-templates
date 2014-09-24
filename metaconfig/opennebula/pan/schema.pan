@@ -106,6 +106,7 @@ type opennebula_datastore = {
     "pool_name" : string
     "tm_mad" : string = 'ceph'
     "type" : string = 'IMAGE_DS'
+    "rbd_format" ? long(2)
 };
 
 type opennebula_vnet = {

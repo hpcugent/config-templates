@@ -15,3 +15,4 @@ prefix "/metaconfig/contents/datastore";
 "datastore_capacity_check" = true;
 "pool_name" = "one";
 "type" = "IMAGE_DS";
+"rbd_format" = 2;

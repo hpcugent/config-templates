@@ -1,4 +1,5 @@
 [%- lists = ['bridge_list', 'ceph_host'] -%]
+[%- integer = ['rbd_format'] -%]
 [%- booleans = ['datastore_capacity_check'] -%]
 [%- FOR pair IN datastore.pairs -%]
 [%    pair.key.upper %] =
@@ -7,6 +8,8 @@
  "[%            pair.value.join(' ') %]"
 [%             CASE booleans -%] 		  
  "[%            pair.value ? "yes" : "no" %]"
+[%             CASE integer -%]
+ [%            pair.value %]
 [%             CASE -%]
  "[%            pair.value %]"
 [%         END -%]
