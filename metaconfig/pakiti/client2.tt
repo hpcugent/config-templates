@@ -9,4 +9,3 @@ tag = [% tag %]
 [% IF connection_method.defined -%]
 connection_method = [% connection_method %]
 [% END -%]
-
