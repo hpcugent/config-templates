@@ -1,6 +1,8 @@
 Base test for config
 ---
+/etc/pakiti/pakiti2-client.conf
 multiline
 ---
-$wontmatch^
+^servers_name\s=\s
+^server_url\s=\s
 
