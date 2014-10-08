@@ -11,7 +11,7 @@ HOSTNAME = "[% fqdn %]",
 SIZE = "1"
 [%-     END %]
 ]
-[% # If we have several leases we have to split vnetleases in several files
+[% # If we have several leases we have to split address range in several files
    # Using NETWORK line. THIS MUST BE THE LAST TT FILE LINE-%]
 NETWORK = "[% system.opennebula.vnet.${pair.key} %]"
 [%- END %]
