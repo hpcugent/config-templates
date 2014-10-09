@@ -94,19 +94,39 @@ type opennebula_tm_mad_conf = {
     "shared" : boolean = true
 } = nlist();
 
+@{ check if a specific type of datastore has the right attributes @}
+function is_consistent_datastore = {
+    ds = ARGV[0];
+    if (ds['ds_mad'] == 'ceph') {
+        if (ds['tm_mad'] != 'ceph') {
+            error("for a ceph datastore both ds_mad and tm_mad should have value 'ceph'");
+            return(false);
+        };
+        req = ('bridge_list', 'ceph_host', 'ceph_secret', 'ceph_user', 'ceph_user_key', 'pool_name');
+        foreach(idx; attr; req) {
+            if(!exists(ds[attr])) {
+                error(format("Invalid ceph datastore! Expected '%s' ", attr));
+                return(false);
+            };
+        };
+    };
+    # Checks for other types can be added here
+};
+
 type opennebula_datastore = {
-    "name" : string
-    "bridge_list" : string[]
-    "ceph_host" : string[]
-    "ceph_secret" : uuid 
-    "ceph_user" : string
-    "datastore_capacity_check" : boolean = true
-    "disk_type" : string = 'RBD'
-    "ds_mad" : string = 'ceph'
-    "pool_name" : string
-    "tm_mad" : string = 'ceph'
-    "type" : string = 'IMAGE_DS'
-    "rbd_format" ? long(1..2)
+    "name"                      : string
+    "bridge_list"               ? string[]  # mandatory for cephds
+    "ceph_host"                 ? string[]  # mandatory for cephds
+    "ceph_secret"               ? uuid      # mandatory for cephds
+    "ceph_user"                 ? string    # mandatory for cephds
+    "ceph_user_key"             ? string    # mandatory for cephds
+    "datastore_capacity_check"  : boolean = true
+    "disk_type"                 : string = 'RBD'
+    "ds_mad"                    : string = 'ceph'
+    "pool_name"                 ? string    # mandatory for cephds
+    "tm_mad"                    : string = 'ceph'
+    "type"                      : string = 'IMAGE_DS'
+    "rbd_format"                ? long(1..2)
 };
 
 type opennebula_vnet = {
