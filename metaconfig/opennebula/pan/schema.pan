@@ -111,6 +111,7 @@ function is_consistent_datastore = {
         };
     };
     # Checks for other types can be added here
+    return(true);
 };
 
 type opennebula_datastore = {
@@ -127,7 +128,7 @@ type opennebula_datastore = {
     "tm_mad"                    : string = 'ceph'
     "type"                      : string = 'IMAGE_DS'
     "rbd_format"                ? long(1..2)
-};
+} with is_consistent_datastore(SELF);
 
 type opennebula_vnet = {
     "name" : string

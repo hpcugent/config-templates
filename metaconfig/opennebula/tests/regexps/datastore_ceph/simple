@@ -7,6 +7,7 @@ multiline
 ^CEPH_HOST\s?=\s?".+"\s*$
 ^CEPH_SECRET\s?=\s?".+"\s*$
 ^CEPH_USER\s?=\s?".+"\s*$
+^CEPH_USER_KEY\s?=\s?".+"\s*$
 ^DATASTORE_CAPACITY_CHECK\s?=\s?".+"\s*$
 ^DISK_TYPE\s?=\s?".+"\s*$
 ^DS_MAD\s?=\s?".+"\s*$
