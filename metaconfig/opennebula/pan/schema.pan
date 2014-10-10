@@ -102,7 +102,7 @@ function is_consistent_datastore = {
             error("for a ceph datastore both ds_mad and tm_mad should have value 'ceph'");
             return(false);
         };
-        req = ('bridge_list', 'ceph_host', 'ceph_secret', 'ceph_user', 'ceph_user_key', 'pool_name');
+        req = list('bridge_list', 'ceph_host', 'ceph_secret', 'ceph_user', 'ceph_user_key', 'pool_name');
         foreach(idx; attr; req) {
             if(!exists(ds[attr])) {
                 error(format("Invalid ceph datastore! Expected '%s' ", attr));
