@@ -10,6 +10,8 @@
  "[%            pair.value ? "yes" : "no" %]"
 [%             CASE integer -%]
  [%             pair.value %]
+[%             CASE 'ceph_user_key' -%]
+ ""
 [%             CASE -%]
  "[%            pair.value %]"
 [%         END -%]
