@@ -114,8 +114,10 @@ function is_consistent_datastore = {
     return(true);
 };
 
-@{ type for ceph datastore specific attributes. 
-ceph_host, ceph_secret, ceph_user, ceph_user_key and pool_name are mandatory @}
+@{ 
+type for ceph datastore specific attributes. 
+ceph_host, ceph_secret, ceph_user, ceph_user_key and pool_name are mandatory 
+@}
 type opennebula_ceph_datastore = {
     "ceph_host"                 ? string[]
     "ceph_secret"               ? uuid
@@ -123,8 +125,9 @@ type opennebula_ceph_datastore = {
     "ceph_user_key"             ? string
     "pool_name"                 ? string
     "rbd_format"                ? long(1..2)
+};
 
-@{ type for an opennebula datastore. Defaults to a ceph datastore (ds_mad=ceph) @}
+@{ type for an opennebula datastore. Defaults to a ceph datastore (ds_mad is ceph) @}
 type opennebula_datastore = {
     include opennebula_ceph_datastore
     "name"                      : string
