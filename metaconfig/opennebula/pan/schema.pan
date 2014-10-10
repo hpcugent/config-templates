@@ -114,20 +114,26 @@ function is_consistent_datastore = {
     return(true);
 };
 
+@{ type for ceph datastore specific attributes. 
+ceph_host, ceph_secret, ceph_user, ceph_user_key and pool_name are mandatory @}
+type opennebula_ceph_datastore = {
+    "ceph_host"                 ? string[]
+    "ceph_secret"               ? uuid
+    "ceph_user"                 ? string
+    "ceph_user_key"             ? string
+    "pool_name"                 ? string
+    "rbd_format"                ? long(1..2)
+
+@{ type for an opennebula datastore. Defaults to a ceph datastore (ds_mad=ceph) @}
 type opennebula_datastore = {
+    include opennebula_ceph_datastore
     "name"                      : string
-    "bridge_list"               ? string[]  # mandatory for cephds
-    "ceph_host"                 ? string[]  # mandatory for cephds
-    "ceph_secret"               ? uuid      # mandatory for cephds
-    "ceph_user"                 ? string    # mandatory for cephds
-    "ceph_user_key"             ? string    # mandatory for cephds
+    "bridge_list"               ? string[]  # mandatory for ceph ds, lvm ds, ..
     "datastore_capacity_check"  : boolean = true
     "disk_type"                 : string = 'RBD'
     "ds_mad"                    : string = 'ceph'
-    "pool_name"                 ? string    # mandatory for cephds
     "tm_mad"                    : string = 'ceph'
     "type"                      : string = 'IMAGE_DS'
-    "rbd_format"                ? long(1..2)
 } with is_consistent_datastore(SELF);
 
 type opennebula_vnet = {
