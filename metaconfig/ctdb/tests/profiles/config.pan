@@ -5,7 +5,6 @@ include 'metaconfig/ctdb/config';
 variable FULL_HOSTNAME = 'storage2201';
 prefix "/software/components/metaconfig/services/{/etc/sysconfig/ctdb}/contents/service";
 
-
 "ctdb_debuglevel" = 2;
 "ctdb_manages_nfs" = true;
 "ctdb_manages_samba"= false;
@@ -15,5 +14,4 @@ prefix "/software/components/metaconfig/services/{/etc/sysconfig/ctdb}/contents/
 "ctdb_syslog" = true;
 "nfs_hostname" = FULL_HOSTNAME;
 "nfs_server_mode" = 'ganesha';
-"ulimit" =  10000;
-"waitforgpfs" =  "/dev/scratchtest";
+"prologue" = "/usr/bin/waitforgpfs.sh /dev/scratchtest\nulimit -n 10000";

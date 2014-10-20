@@ -1,0 +1,3 @@
+[%-     FOREACH item IN nodelist -%]
+[% item %]
+[% END %]

@@ -21,17 +21,16 @@ type ctdb_nodes = type_ip[];
 
 @{ type for configuring the ctdb config file @}
 type ctdb_service = {
-'waitforgpfs'               ? string     # file system to wait for
-'ulimit'                    ? long(0..)
-'ctdb_debuglevel'           ? long(0..)
-'ctdb_manages_nfs'          ? boolean
-'ctdb_manages_samba'        ? boolean
-'ctdb_nfs_skip_share_check' ? boolean
-'ctdb_public_addresses'     ? string
-'ctdb_recovery_lock'        : string
-'ctdb_syslog'               ? boolean
-'nfs_hostname'              ? type_fqdn
-'nfs_server_mode'           ? string
-'ctdb_nodes'                ? string
+    'ctdb_debuglevel'           ? long(0..)
+    'ctdb_manages_nfs'          ? boolean
+    'ctdb_manages_samba'        ? boolean
+    'ctdb_nfs_skip_share_check' ? boolean
+    'ctdb_nodes'                ? string
+    'ctdb_public_addresses'     ? string
+    'ctdb_recovery_lock'        : string
+    'ctdb_syslog'               ? boolean
+    'nfs_hostname'              ? type_fqdn
+    'nfs_server_mode'           ? string
+    'prologue'                  ? string    
 };
 
