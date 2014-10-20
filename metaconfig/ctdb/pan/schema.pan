@@ -29,6 +29,7 @@ type ctdb_nodes = type_ip[];
 @{ type for configuring the ctdb config file @}
 type ctdb_service = {
     'ctdb_debuglevel'           ? long(0..)
+    'ctdb_logfile'              ? string
     'ctdb_manages_nfs'          ? boolean
     'ctdb_manages_samba'        ? boolean
     'ctdb_nfs_skip_share_check' ? boolean
