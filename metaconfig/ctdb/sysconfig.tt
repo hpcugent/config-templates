@@ -1,7 +1,7 @@
 [%- booleans = ['ctdb_manages_nfs', 'ctdb_manages_samba', 'ctdb_nfs_skip_share_check', 'ctdb_syslog'] -%]
 [%- FOR pair IN service.pairs -%]
 [%      IF pair.key == 'prologue' %]
-[% pair.value %]
+[%          pair.value %]
 [%      ELSE -%]
 [%          pair.key.upper %] =
 [%-         SWITCH pair.key -%]

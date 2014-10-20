@@ -6,4 +6,4 @@ bind "/software/components/metaconfig/services/{/etc/sysconfig/ctdb}/contents/se
 
 prefix "/software/components/metaconfig/services/{/etc/sysconfig/ctdb}";
 "daemon" = "ctdb";
-"module" = "ctdb/main";
+"module" = "ctdb/sysconfig";

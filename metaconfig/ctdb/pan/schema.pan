@@ -2,11 +2,26 @@ declaration template metaconfig/ctdb/schema;
 
 include 'pan/types';
 
+
+function is_interface_device = {
+    foreach(ifc;attr;value('/system/network/interfaces')) {
+        if (attr['device'] == ARGV[0]){
+            return(true);
+        };
+    };
+    return(false);
+};
+
 @{ Checks for a valid ctdb public address @}
 function is_ctdb_pub_address = {
     parts = split(' ', ARGV[0]);
-    if(is_network_name(parts[0]) && match(parts[1], ("^(eth[0-9]+|p[0-9]+p[0-9]+|em[0-9]+)$"))) {
-        return(true);
+    if(is_network_name(parts[0])) {
+        if (exists(format("/system/network/interfaces/", parts[1])) || is_interface_device(parts[1]) ) {
+                return(true);
+        } else {
+            error(format("%s is not specified in /system/network", parts[1]));
+            return(false);
+        }
     } else {
         error(format("%s is not a valid ctdb public address!", ARGV[0]));
         return(false);
