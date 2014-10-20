@@ -3,7 +3,11 @@ declaration template metaconfig/ctdb/schema;
 include 'pan/types';
 
 
+@{ Checks for a valid network device @}
 function is_interface_device = {
+    if (exists(format("/system/network/interfaces/", ARGV[0]))) {
+        return(true);
+    };
     foreach(ifc;attr;value('/system/network/interfaces')) {
         if (attr['device'] == ARGV[0]){
             return(true);
@@ -12,24 +16,12 @@ function is_interface_device = {
     return(false);
 };
 
-@{ Checks for a valid ctdb public address @}
-function is_ctdb_pub_address = {
-    parts = split(' ', ARGV[0]);
-    if(is_network_name(parts[0])) {
-        if (exists(format("/system/network/interfaces/", parts[1])) || is_interface_device(parts[1]) ) {
-                return(true);
-        } else {
-            error(format("%s is not specified in /system/network", parts[1]));
-            return(false);
-        }
-    } else {
-        error(format("%s is not a valid ctdb public address!", ARGV[0]));
-        return(false);
-    };
+@{ type for a ctdb public address @}
+type ctdb_public_address = {
+    'network_name'          : type_network_name
+    'network_interface'    : string with is_interface_device(SELF)
 };
 
-
-type ctdb_public_address = string with is_ctdb_pub_address(SELF);
 type ctdb_public_addresses = ctdb_public_address[];
 
 type ctdb_nodes = type_ip[];
