@@ -258,6 +258,11 @@ if ($mm eq "general") {
     $this_app->debug(3,"Config::General, ignoring TT opts ", Dumper($template_opts));
     my $c = Config::General->new($json);
     $output = $c->save_string();
+} elsif ($mm eq "json") {
+    $this_app->debug(3,"JSON::XS, ignoring TT opts ", Dumper($template_opts));
+    my $j = JSON::XS->new();
+    $j->canonical(1); # sort the keys, to create reproducable results
+    $output =  $j->encode($json);
 } elsif ($tt) {
     $this_app->debug(3,"tt file $tt opts ", Dumper($template_opts));
     my $tpl = Template->new($template_opts);
