@@ -3,12 +3,12 @@
 [%      IF pair.key == 'prologue' %]
 [%          pair.value %]
 [%      ELSE -%]
-[%          pair.key.upper %] =
+[%          pair.key.upper %]=
 [%-         SWITCH pair.key -%]
 [%              CASE booleans -%]
- [%                 pair.value ? "yes" : "no" %]
+[%                 pair.value ? "yes" : "no" %]
 [%              CASE -%]
- [%                 pair.value %]
+[%                 pair.value %]
 [%         END -%]
 [%     END -%]
 [%- END -%]
