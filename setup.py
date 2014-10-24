@@ -51,7 +51,7 @@ def gen_tt_files_metaconfig():
 
 setup(
     name="config-templates-metaconfig",
-    version="2.0.7",
+    version="2.0.8",
     description="Templates for services configured with ncm-metaconfig and Template::Toolkit",
     long_description="""Skeletons of configuration files for services that will be configured with ncm-metaconfig.""",
     license='Apache License 2.0',
