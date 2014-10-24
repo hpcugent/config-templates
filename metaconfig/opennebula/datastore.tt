@@ -2,8 +2,8 @@
 [%- integer = ['rbd_format'] -%]
 [%- booleans = ['datastore_capacity_check'] -%]
 [%- FOR pair IN datastore.pairs -%]
-[%      IF pair.key == 'ceph_user_key' %]
-[%          pair.value %]
+[%      IF pair.key == 'ceph_user_key' -%]
+[%           -%]
 [%      ELSE -%]
 [%          pair.key.upper %] =
 [%-             SWITCH pair.key -%]
