@@ -301,7 +301,7 @@ def make_regexps_unittests(service, profpath, templatepath, regexps_map):
     return TestLoader().loadTestsFromTestCase(testclass)
 
 
-def make_tests(path, tests):
+def make_tests(srvcpath, path, tests):
     """Make the tests for each profile"""
     testsdir = os.path.join(path, 'tests')
     if not (os.path.exists(testsdir) and os.path.isdir(testsdir)):
@@ -338,7 +338,7 @@ def make_tests(path, tests):
     if not len(regexps_map) == len(profiles):
         log.error("Number of regexps_map entries %s is not equal to total number of profiles %s" % (len(regexps_map), len(profiles)))
 
-    return make_regexps_unittests(os.path.basename(path), profilesdir, path, regexps_map)
+    return make_regexps_unittests(os.path.basename(srvcpath), profilesdir, srvcpath, regexps_map)
 
 
 def validate(service=None, tests=None, path=None):
@@ -368,8 +368,20 @@ def validate(service=None, tests=None, path=None):
             log.error('check_pan failed for %s. Skipping' % srvc)
             continue
 
-        restests = make_tests(abs_srvc, tests)
-        res.append(restests)
+        versions = glob.glob(abs_srvc + '/[0-9]*')
+        if versions:
+            log.debug('Using versions abs_srvc %s' % versions)
+        else:
+            versions = [abs_srvc]
+            log.debug('Using non-versioned abs_srvc %s' % abs_srvc)
+
+        for testpath in versions:
+            restests = make_tests(abs_srvc, testpath, tests)
+            if not restests:
+                log.error('make_tests returned no usable tests for servicepath %s testpath %s and tests %s' % (abs_srvc, testpath, tests))
+                continue
+
+            res.append(restests)
 
     return res
 
@@ -458,7 +470,12 @@ if __name__ == '__main__':
     fancylogger.logToFile(log_fn)
     log = fancylogger.getLogger()
 
-    SUITE = unittest.TestSuite(validate(path=path, service=go.options.service, tests=go.options.tests))
+    candidate_tests = validate(path=path, service=go.options.service, tests=go.options.tests)
+    if not candidate_tests:
+        log.error("No tests were found. Log available at %s" % (log_fn))
+        sys.exit(3)
+
+    SUITE = unittest.TestSuite(candidate_tests)
 
     # uses XMLTestRunner if possible, so we can output an XML file that can be supplied to Jenkins
     xml_msg = ""
