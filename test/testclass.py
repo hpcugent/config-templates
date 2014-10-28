@@ -82,7 +82,7 @@ class RegexpTestCase(TestCase):
     PROFILEPATH = None  # absolute path of profiles folder
     METACONFIGPATH = None  # absolute path to metaconfig subdir
     TEMPLATEPATH = None  # absolute path of templates folder
-    VERSIOn = None  # version of service
+    VERSION = None  # version of service
 
     JSON2TT = None  # absolute path to the json2tt.pl tool
     TEMPLATE_LIBRARY_CORE = None  # abs path to template library core (mainly for pan/types etc)
