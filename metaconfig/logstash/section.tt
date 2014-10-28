@@ -1,5 +1,0 @@
-[% INCLUDE "metaconfig/logstash/plugins.tt" desc=desc.plugins section=section %]
-[%- FOREACH block IN ${section}.conditionals %]
-[%      INCLUDE "metaconfig/logstash/conditional.tt" block=block section=section
-            first=${section}.conditionals.first last=${section}.conditionals.last %]
-[% END -%]

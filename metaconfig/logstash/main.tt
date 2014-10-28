@@ -1,7 +1,2 @@
-[%- FOREACH section IN ['input', 'filter', 'output'] -%]
-[%      IF ${section}.defined %]
-[%          section %] {
-[%          INCLUDE "metaconfig/logstash/section.tt" desc=$section section=section FILTER indent %]
-}
-[%      END %]
-[%  END %]
+[% # legacy version defaults to 1.2/main
+  INCLUDE "metaconfig/logstash/1.2/main.tt" %]

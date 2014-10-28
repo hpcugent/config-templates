@@ -1,3 +1,0 @@
-[%- INCLUDE "metaconfig/logstash/type.tt" type="boolean" names=['negate', 'drop'] -%]
-[%- INCLUDE "metaconfig/logstash/type.tt" type="stringarray" names=['add_tag', 'remove_tag', 'remove_field'] -%]
-[%- INCLUDE "metaconfig/logstash/type.tt" type="stringhash" names=['add_field'] -%]
