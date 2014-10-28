@@ -66,8 +66,11 @@ def gen_test_func(profile, regexps_tuples, **make_result_extra_flags):
                         extra_msg += ' (forcing operator.truth; thus ignoring flag (e.g. negate))'
                         op[0] = operator.truth
 
-                msg = "%s regexp (%03d) %spattern %s%s\noutput:\n%s"
-                tup = (descr, idx, op[1], compiled_regexp.pattern, extra_msg, self.result)
+                versioninfo = ''
+                if self.VERSION is not None:
+                    versioninfo = " (version %s)" % self.VERSION
+                msg = "%s%s regexp (%03d) %spattern %s%s\noutput:\n%s"
+                tup = (descr, versioninfo, idx, op[1], compiled_regexp.pattern, extra_msg, self.result)
                 self.assertTrue(op[0](to_check), msg % tup)
 
     return test_func
@@ -79,6 +82,7 @@ class RegexpTestCase(TestCase):
     PROFILEPATH = None  # absolute path of profiles folder
     METACONFIGPATH = None  # absolute path to metaconfig subdir
     TEMPLATEPATH = None  # absolute path of templates folder
+    VERSIOn = None  # version of service
 
     JSON2TT = None  # absolute path to the json2tt.pl tool
     TEMPLATE_LIBRARY_CORE = None  # abs path to template library core (mainly for pan/types etc)

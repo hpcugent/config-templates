@@ -186,7 +186,7 @@ def parse_regexp(fn):
         # if flag starts with a /, interpret it as the absolute path of a metaconfigservice
         # intentionally not using os.path.sep
         if flag.startswith('/'):
-            log.info('Flag %s interpreted as absolute path for metaconfigservice')
+            log.info('Flag %s interpreted as absolute path for metaconfigservice' % flag)
             flag = 'metaconfigservice=%s' % flag
 
         # extra check
@@ -269,15 +269,22 @@ def get_regexps(path, profs):
     return res
 
 
-def make_regexps_unittests(service, profpath, templatepath, regexps_map):
+def make_regexps_unittests(service, profpath, templatepath, regexps_map, version):
     """Create the unittest class and test functions, run the test and return the result"""
 
-    class_name = "%sRegexpTest" % service
+    if version is not None:
+        versioninfo = 'v%s' % version
+    else:
+        versioninfo = ''
+
+    class_name = "%sRegexpTest%s" % (service, versioninfo)
+
     attrs = {
         'SERVICE': service,
         'PROFILEPATH': profpath,
         'TEMPLATEPATH': templatepath,
         'METACONFIGPATH': os.path.dirname(templatepath),
+        'VERSION' : version,
     }
     attrs.update(TEST_CLASS_ATTRS)
 
@@ -301,8 +308,13 @@ def make_regexps_unittests(service, profpath, templatepath, regexps_map):
     return TestLoader().loadTestsFromTestCase(testclass)
 
 
-def make_tests(srvcpath, path, tests):
+def make_tests(srvcpath, version, tests):
     """Make the tests for each profile"""
+    if version is None:
+        path = srvcpath
+    else:
+        path = os.path.join(srvcpath, version)
+
     testsdir = os.path.join(path, 'tests')
     if not (os.path.exists(testsdir) and os.path.isdir(testsdir)):
         log.error('No valid tests subdirectory in path %s' % path)
@@ -338,7 +350,7 @@ def make_tests(srvcpath, path, tests):
     if not len(regexps_map) == len(profiles):
         log.error("Number of regexps_map entries %s is not equal to total number of profiles %s" % (len(regexps_map), len(profiles)))
 
-    return make_regexps_unittests(os.path.basename(srvcpath), profilesdir, srvcpath, regexps_map)
+    return make_regexps_unittests(os.path.basename(srvcpath), profilesdir, srvcpath, regexps_map, version)
 
 
 def validate(service=None, tests=None, path=None):
@@ -368,17 +380,17 @@ def validate(service=None, tests=None, path=None):
             log.error('check_pan failed for %s. Skipping' % srvc)
             continue
 
-        versions = glob.glob(abs_srvc + '/[0-9]*')
+        versions = map(os.path.basename, glob.glob(abs_srvc + '/[0-9]*'))
         if versions:
-            log.debug('Using versions abs_srvc %s' % versions)
+            log.debug('Using versions %s for abs_srvc %s' % (versions, abs_srvc))
         else:
-            versions = [abs_srvc]
+            versions = [None]
             log.debug('Using non-versioned abs_srvc %s' % abs_srvc)
 
-        for testpath in versions:
-            restests = make_tests(abs_srvc, testpath, tests)
+        for version in versions:
+            restests = make_tests(abs_srvc, version, tests)
             if not restests:
-                log.error('make_tests returned no usable tests for servicepath %s testpath %s and tests %s' % (abs_srvc, testpath, tests))
+                log.error('make_tests returned no usable tests for servicepath %s version %s and tests %s' % (abs_srvc, version, tests))
                 continue
 
             res.append(restests)
