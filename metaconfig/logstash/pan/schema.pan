@@ -265,3 +265,31 @@ type type_logstash = {
     "filter" ? logstash_filter
     "output" : logstash_output
 };
+
+@{ logstash-forwarder type }
+type type_logstash_forwarder_network_server = {
+    "host" : type_hostname
+    "port" : long(0..)
+};
+
+type type_logstash_forwarder_network = {
+    "servers" : type_logstash_forwarder_network_server[]
+    "ssl_certificate" ? string
+    "ssl_key" ? string
+    "ssl_ca" ? string
+    "timeout" : long(0..) = 15
+};
+
+type type_logstash_forwarder_file_fields = {
+    "type" : string
+};
+
+type type_logstash_forwarder_file = {
+    "paths" : string[]
+    "fields" : type_logstash_forwarder_file_fields
+};
+
+type type_logstash_forwarder = {
+    "network" : type_logstash_forwarder_network
+    "files" : type_logstash_forwarder_file[]
+};
