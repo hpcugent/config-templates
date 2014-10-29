@@ -89,11 +89,22 @@ type logstash_input_gelf = {
     "remap" : boolean = true
 };
 
+@{ Lumberjack/logstash-forwarder input }
+type logstash_input_lumberjack = {
+    include logstash_input_plugin_common
+    "port" : type_port = 12201
+    "host" ? type_hostname
+    "ssl_certificate" : string
+    "ssl_key" : string
+    "ssl_key_passphrase" ? string
+};
+
 type logstash_input_plugin = {
     "file" ? logstash_input_file
     "gelf" ? logstash_input_gelf
     "tcp" ? logstash_input_tcp
     "udp" ? logstash_input_udp
+    "lumberjack" ? logstash_input_lumberjack
 } with length(SELF) == 1;
 
 
