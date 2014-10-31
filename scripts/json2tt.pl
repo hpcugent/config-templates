@@ -265,6 +265,7 @@ if ($mm eq "general") {
     $output =  $j->encode($json);
 } elsif ($tt) {
     $this_app->debug(3,"tt file $tt opts ", Dumper($template_opts));
+    $template_opts->{RECURSION} = 1;
     my $tpl = Template->new($template_opts);
     if($tpl->process($tt, $json, \$output)) {
         $this_app->verbose("Succesful template processing.")
