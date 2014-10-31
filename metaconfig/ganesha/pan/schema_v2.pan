@@ -2,6 +2,8 @@ declaration template metaconfig/ganesha/schema_v2;
 
 # the defaults are based on the GPFS FSAL
 
+include 'pan/types';
+
 final variable GANESHA_V2_LOG_COMPONENTS = list(
 'ALL', 'LOG', 'LOG_EMERG', 'MEMLEAKS', 'FSAL', 'NFSPROTO', 
 'NFS_V4', 'EXPORT', 'FILEHANDLE', 'DISPATCH', 'CACHE_INODE', 
@@ -40,15 +42,15 @@ type ganesha_v2_cacheinode = {
 };
 type ganesha_v2_export_FSAL = {
     "name" : string
-    "FSAL" ? ganesha_v2_export_FSAL
+    #"FSAL" ? ganesha_v2_export_FSAL
     #FSAL_VFS
     "pnfs" ? boolean = false
     "fsid_type" ? string with match(SELF, '^(None|One64|Major64|Two64|uuid|Two32|Dev|Device)$')
     #FSAL_GLUSTER
     "glfs_log" ? string = "/tmp/gfapi.log"
-    "hostname" : string 
+    "hostname" ? string # Mandatory
     "volpath" ? string = "/"
-    "volume" : string 
+    "volume" ? string  # Mandatory
     #FSAL_ZFS
     "pool_path" ? string 
     #FSAL_PT
@@ -77,7 +79,7 @@ type ganesha_v2_export_permissions = {
 
 type ganesha_v2_export_client = {
     include ganesha_v2_export_permissions
-    "Clients" : string 
+    "Clients" : string[] 
 };
 type ganesha_v2_exports = {
     include ganesha_v2_export_permissions
@@ -99,6 +101,9 @@ type ganesha_v2_exports = {
     "Tag" ? string
     "UseCookieVerifier" ? boolean = true
 };
+
+type ganesha_v2_log_level = string with match(SELF, 
+    '^(NULL|FATAL|MAJ|CRIT|WARN|EVENT|INFO|DEBUG|MID_DEBUG|M_DBG|FULL_DEBUG|F_DBG)$');
 
 function is_ganesha_v2_log_Components = {
     components = ARGV[0];
@@ -133,9 +138,6 @@ type ganesha_v2_log_Format = {
 
 };
 
-type ganesha_v2_log_level = string with match(SELF, 
-    '^(NULL|FATAL|MAJ|CRIT|WARN|EVENT|INFO|DEBUG|MID_DEBUG|M_DBG|FULL_DEBUG|F_DBG)$');
-
 type ganesha_v2_log_Facility = {
     "destination" : string 
     "enable" ? string = 'idle' with match(SELF, '^(idle|active|default)$')
@@ -147,8 +149,8 @@ type ganesha_v2_log_Facility = {
 type ganesha_v2_log = {
     "Components" ? ganesha_v2_log_Components
     "Default_log_level" ? ganesha_v2_log_level = 'EVENT'
-    "Facility" ? type_ganesha_v2_log_Facility[]
-    "Format" ? type_ganesha_v2_log_Format
+    "Facility" ? ganesha_v2_log_Facility[]
+    "Format" ? ganesha_v2_log_Format
 };
 
 type ganesha_v2_nfs_ip_name = {
@@ -303,11 +305,6 @@ type ganesha_v2_ZFS = {
     include ganesha_v2_fsalsettings
 };
 
-type ganesha_v2_config = {
-    "main" ? ganesha_v2_config_sections
-    "exports" : ganesha_v2_exports[]
-};
-
 type ganesha_v2_config_sections = {
     "NFS_CORE_PARAM" ? ganesha_v2_nfs_core_param
     "NFS_IP_NAME" ? ganesha_v2_nfs_ip_name
@@ -326,3 +323,7 @@ type ganesha_v2_config_sections = {
     "PROXY" ? ganesha_v2_proxy
 };
 
+type ganesha_v2_config = {
+    "main" ? ganesha_v2_config_sections
+    "exports" : ganesha_v2_exports[]
+};
