@@ -231,7 +231,7 @@ type ganesha_v2_proxy_remote_server = {
     "HandleMap_HashTable_Size" ? long(0..) = 103
     "HandleMap_Tmp_Dir" ? string = "/var/ganesha/tmp"
     "KeytabPath" ? string = "/etc/krb5.keytab"
-    "NFS_Port" ? INET_PORT = 2049
+    "NFS_Port" ? long(0..) = 2049
     "NFS_RecvSize" ? long(0..) = 32768
     "NFS_SendSize" ? long(0..) = 32768
     "NFS_Service" ? long(0..) = 100003
@@ -273,7 +273,7 @@ type ganesha_v2_GPFS = {
 type ganesha_v2_LUSTRE_PNFS_DataServer = {
     "DS_Addr" ? type_ip = "127.0.0.1"
     "DS_Id" ? long(0..) = 1
-    "DS_Port" ? INET_PORT = 3260
+    "DS_Port" ? long(0..) = 3260
 };
  
 type ganesha_v2_LUSTRE_PNFS = {
@@ -303,13 +303,17 @@ type ganesha_v2_ZFS = {
     include ganesha_v2_fsalsettings
 };
 
-type ganesha_config = {
+type ganesha_v2_config = {
+    "main" ? ganesha_v2_config_sections
+    "exports" : ganesha_v2_exports[]
+};
+
+type ganesha_v2_config_sections = {
     "NFS_CORE_PARAM" ? ganesha_v2_nfs_core_param
     "NFS_IP_NAME" ? ganesha_v2_nfs_ip_name
     "NFS_KRB5" ? ganesha_v2_nfs_krb5
     "NFSV4" ? ganesha_v2_nfsv4
     "EXPORT_DEFAULTS" ? ganesha_v2_export_permissions
-    "EXPORT" : ganesha_v2_exports
     "LOG" ? ganesha_v2_log
     "_9P" ? ganesha_v2_9p
     "CACHEINODE" ? ganesha_v2_cacheinode
