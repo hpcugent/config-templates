@@ -12,7 +12,7 @@ prefix "/software/components/metaconfig/services/{/etc/ganesha/ganesha.nfsd.conf
 "FD_HWMark_Percent" = 60; 
 "FD_LWMark_Percent" = 20; 
 "FD_Limit_Percent" = 90; 
-"Reaper_Work" = 15000; 
+"Reaper_Work" = 1500; 
  
 prefix "/software/components/metaconfig/services/{/etc/ganesha/ganesha.nfsd.conf}/contents/main/NFS_CORE_PARAM"; 
 "Nb_Worker" = 128*4 ; 
