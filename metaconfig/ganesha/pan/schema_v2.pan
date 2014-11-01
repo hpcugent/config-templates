@@ -14,7 +14,7 @@ final variable GANESHA_V2_LOG_COMPONENTS = list(
 '9P_DISPATCH', 'FSAL_UP', 'DBUS'
 );
 
-
+@{ Ganesha 9p protocol section @}
 type ganesha_v2_9p = {
     "_9P_RDMA_Backlog" ? long(0..) = 10
     "_9P_RDMA_Inpool_size" ? long(0..) = 64
@@ -24,6 +24,8 @@ type ganesha_v2_9p = {
     "_9P_TCP_Msize" ? long(0..) = 65536
     "_9P_TCP_Port" ? long(0..) = 564
 };
+
+@{ Ganesha cacheinode section @}
 type ganesha_v2_cacheinode = {
     "Attr_Expiration_Time" ? long = 60
     "Biggest_Window" ? long(0..) = 40
@@ -40,6 +42,8 @@ type ganesha_v2_cacheinode = {
     "Retry_Readdir" ? boolean = false
     "Use_Getattr_Directory_Invalidation" ? boolean = false
 };
+
+@{ Ganesha Export FSAL subsection @}
 type ganesha_v2_export_FSAL = {
     "name" : string
     #"FSAL" ? ganesha_v2_export_FSAL
@@ -61,6 +65,7 @@ type ganesha_v2_protocol = string with match(SELF, '^(3|4|NFS3|NFS4|V3|V4|NFSv4|
 type ganesha_v2_SecType = string with match(SELF, '^(none|sys|krb5|krb5i|krb5p)$');
 type ganesha_v2_Transports =string with match(SELF, '^(UDP|TCP)$');
 
+@{ Ganesha Export Permissions for EXPORT_DEFAULLTS, EXPORT and CLIENT sections @}
 type ganesha_v2_export_permissions = {
     "Access_Type" ? string = 'None' with match(SELF, '^(None|RW|RO|MDONLY|MDONLY_RO)$')
     "Anonymous_gid" ? long = -2
@@ -77,10 +82,13 @@ type ganesha_v2_export_permissions = {
     "Transports" ? ganesha_v2_Transports[] = list('UDP', 'TCP')
 };
 
+@{ Ganesha Export CLIENT subsection @}
 type ganesha_v2_export_client = {
     include ganesha_v2_export_permissions
     "Clients" : string[] 
 };
+
+@{ Ganesha Export section @}
 type ganesha_v2_exports = {
     include ganesha_v2_export_permissions
     "Attr_Expiration_Time" ? long = 60
@@ -105,6 +113,7 @@ type ganesha_v2_exports = {
 type ganesha_v2_log_level = string with match(SELF, 
     '^(NULL|FATAL|MAJ|CRIT|WARN|EVENT|INFO|DEBUG|MID_DEBUG|M_DBG|FULL_DEBUG|F_DBG)$');
 
+@{ Check for valid Ganesha Log Component names @}
 function is_ganesha_v2_log_Components = {
     components = ARGV[0];
     foreach(cmp;logl; components) {
@@ -119,6 +128,7 @@ type ganesha_v2_log_Components = ganesha_v2_log_level{} with is_ganesha_v2_log_C
 type ganesha_v2_log_time_format = string with match(SELF, 
     '^(ganesha|true|local|8601|ISO-8601|ISO 8601|ISO|syslog|syslog_usec|false|none|user_defined)$');
 
+@{ Ganesha Log Format subsection @}
 type ganesha_v2_log_Format = {
     "CLIENTIP" ? boolean = false
     "COMPONENT" ? boolean = true
@@ -138,6 +148,7 @@ type ganesha_v2_log_Format = {
 
 };
 
+@{ Ganesha Log Facility subsection @}
 type ganesha_v2_log_Facility = {
     "destination" : string 
     "enable" ? string = 'idle' with match(SELF, '^(idle|active|default)$')
@@ -146,6 +157,7 @@ type ganesha_v2_log_Facility = {
     "name" ? string 
 };
 
+@{ Ganesha Log section @}
 type ganesha_v2_log = {
     "Components" ? ganesha_v2_log_Components
     "Default_log_level" ? ganesha_v2_log_level = 'EVENT'
@@ -153,11 +165,13 @@ type ganesha_v2_log = {
     "Format" ? ganesha_v2_log_Format
 };
 
+@{ Ganesha NFS_IP_NAME section @}
 type ganesha_v2_nfs_ip_name = {
     "Expiration_Time" ? long(0..) = 3600
     "Index_Size" ? long(1..51) = 17
 };
 
+@{ Ganesha NFS_KRB5 section @}
 type ganesha_v2_nfs_krb5 = {
     "Active_krb5" ? boolean = true
     "CCacheDir" ? string = "/var/run/ganesha"
@@ -165,6 +179,7 @@ type ganesha_v2_nfs_krb5 = {
     "PrincipalName" ? string = "nfs"
 };
 
+@{ Ganesha NFS4 section @}
 type ganesha_v2_nfsv4 = {
     "Allow_Numeric_Owners" ? boolean = true
     "Delegations" ? boolean = false
@@ -177,6 +192,7 @@ type ganesha_v2_nfsv4 = {
     "UseGetpwnam" ? boolean # default false if using idmap, true otherwise
 };
 
+@{ Ganesha NFS_CORE_PARAM section @}
 type ganesha_v2_nfs_core_param = {
     "Bind_Addr" ? type_ip = "0.0.0.0"
     "Clustered" ? boolean = true
@@ -224,6 +240,7 @@ type ganesha_v2_nfs_core_param = {
     "Rquota_Program" ? long(1..) = 100011
 };
 
+@{ Ganesha Proxy remote_server subsection @}
 type ganesha_v2_proxy_remote_server = {
     "Active_krb5" ? boolean = false
     "Credential_LifeTime" ? long(0..) = 86400
@@ -245,6 +262,7 @@ type ganesha_v2_proxy_remote_server = {
     "Use_Privileged_Client_Port" ? boolean = false
 };
 
+@{ Ganesha FSAL common settings @}
 type ganesha_v2_fsalsettings_all = {
     "auth_xdev_export" ? boolean = false
     "cansettime" ? boolean = true
@@ -254,17 +272,20 @@ type ganesha_v2_fsalsettings_all = {
     "xattr_access_rights" ? string = '0400'
 };
 
+@{ Ganesha FSAL common settings, but not for GPFS @}
 type ganesha_v2_fsalsettings = {
     include ganesha_v2_fsalsettings_all
     "maxread" ? long(0..) = 67108864
     "maxwrite" ? long(0..) = 67108864
 };
 
+@{ Ganesha PROXY section @}
 type ganesha_v2_proxy = {
     include ganesha_v2_fsalsettings
     "remote_server" ? ganesha_v2_proxy_remote_server
 };
 
+@{ Ganesha GPFS section @}
 type ganesha_v2_GPFS = {
     include ganesha_v2_fsalsettings_all
     "delegations" ? boolean = false
@@ -272,39 +293,47 @@ type ganesha_v2_GPFS = {
     "pnfs_file" ? boolean = false   
 };
 
+@{ Ganesha LUSTRE pnfs DataServer subsection @}
 type ganesha_v2_LUSTRE_PNFS_DataServer = {
     "DS_Addr" ? type_ip = "127.0.0.1"
     "DS_Id" ? long(0..) = 1
     "DS_Port" ? long(0..) = 3260
 };
  
+@{ Ganesha LUSTRE pnfs subsection @}
 type ganesha_v2_LUSTRE_PNFS = {
     "DataServer" ? ganesha_v2_LUSTRE_PNFS_DataServer
     "Stripe_Size" ? long(0..) = 65536
     "Stripe_Width" ? long(0..128) = 8
 };
 
+@{ Ganesha LUSTRE section @}
 type ganesha_v2_LUSTRE = {
     include ganesha_v2_fsalsettings
     "pnfs" ? ganesha_v2_LUSTRE_PNFS
 };
 
+@{ Ganesha VFS section @}
 type ganesha_v2_VFS = {
     include ganesha_v2_fsalsettings
 };
 
+@{ Ganesha XFS section @}
 type ganesha_v2_XFS = {
     include ganesha_v2_fsalsettings
 };
 
+@{ Ganesha PT section @}
 type ganesha_v2_PT = {
     include ganesha_v2_fsalsettings
 };
 
+@{ Ganesha ZFS section @}
 type ganesha_v2_ZFS = {
     include ganesha_v2_fsalsettings
 };
 
+@{ Ganesha config top level sections @}
 type ganesha_v2_config_sections = {
     "NFS_CORE_PARAM" ? ganesha_v2_nfs_core_param
     "NFS_IP_NAME" ? ganesha_v2_nfs_ip_name
@@ -323,6 +352,7 @@ type ganesha_v2_config_sections = {
     "PROXY" ? ganesha_v2_proxy
 };
 
+@{ Ganesha config: global sections and exports @}
 type ganesha_v2_config = {
     "main" ? ganesha_v2_config_sections
     "exports" : ganesha_v2_exports[]
