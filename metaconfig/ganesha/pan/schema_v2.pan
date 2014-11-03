@@ -95,7 +95,7 @@ type ganesha_v2_exports = {
     include ganesha_v2_export_permissions
     "Attr_Expiration_Time" ? long = 60
     "CLIENT" ? ganesha_v2_export_client[] # the first applicable CLIENT block is used
-    "Export_id" : long(0..) # = 1
+    "Export_id" : long(0..)
     "FSAL" : ganesha_v2_export_FSAL
     "Filesystem_id" ? string = "666.666"
     "MaxOffsetRead" ? long(0..) 
