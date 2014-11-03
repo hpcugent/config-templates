@@ -1,7 +1,7 @@
 Tests for nfs gpfs
 ---
 multiline
-metaconfigservice=/etc/ganesha/ganesha.nfsd.conf
+/etc/ganesha/ganesha.nfsd.conf
 ---
 ^NFS_Core_Param {
 ^\s{4}Clustered\s=\sTRUE;

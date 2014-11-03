@@ -10,12 +10,12 @@
 [%-     IF export.clients -%]
 [%-         FOREACH client IN export.clients %]
 EXPORT_CLIENT {
-[%            FILTER indent -%]
-Path = "[% export.Path %]";
-[%             FOREACH pair IN client.pairs %]
-[%-                 INCLUDE "metaconfig/ganesha/1.5/attribute.tt" %]
-[%              END -%]
-[%-            END -%]
+[%              FILTER indent -%]
+Path = "[%          export.Path %]";
+[%                  FOREACH pair IN client.pairs %]
+[%-                     INCLUDE "metaconfig/ganesha/1.5/attribute.tt" %]
+[%                  END -%]
+[%-             END -%]
 }
 [%          END -%]
 [%      END -%]

@@ -1,7 +1,7 @@
 Tests for filesystem config
 ---
 multiline
-metaconfigservice=/etc/ganesha/ganesha.nfsd.conf
+/etc/ganesha/ganesha.nfsd.conf
 ---
 ^FileSystem {
 ^\s{4}umask\s=\s0;

@@ -1,7 +1,7 @@
 Tests for export_client gpfs
 ---
 multiline
-metaconfigservice=/etc/ganesha/ganesha.nfsd.conf
+/etc/ganesha/ganesha.nfsd.conf
 ---
 ^EXPORT_CLIENT {
 ^\s{4}Path\s=\s"/some/path";

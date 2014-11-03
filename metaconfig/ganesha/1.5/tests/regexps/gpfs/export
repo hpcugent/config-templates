@@ -1,7 +1,7 @@
 Tests for export gpfs
 ---
 multiline
-metaconfigservice=/etc/ganesha/ganesha.nfsd.conf
+/etc/ganesha/ganesha.nfsd.conf
 ---
 ^EXPORT {
 ^\s{4}Anonymous_gid\s=\s-2;

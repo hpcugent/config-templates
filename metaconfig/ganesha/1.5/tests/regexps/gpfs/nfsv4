@@ -1,7 +1,7 @@
 Tests for nfsv4 gpfs
 ---
 multiline
-metaconfigservice=/etc/ganesha/ganesha.nfsd.conf
+/etc/ganesha/ganesha.nfsd.conf
 ---
 ^NFSv4 {
 ^\s{4}FH_Expire\s=\sFALSE;

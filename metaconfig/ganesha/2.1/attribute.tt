@@ -10,8 +10,6 @@
 -%]
 [%- comma_sep_list = ["Clients","Access_Type", "NFS_Protocols", "Protocols", "Transports", "SecType"]
 -%]
-[%- long_or_never = ["Attr_Expiration_Time"]
--%]
 [%- block_type = ["Components", "DataServer", "Format", "FSAL", "pnfs", "remote_server"]
 -%]
 [%- block_array = ["CLIENT", "Facility"]
@@ -21,7 +19,7 @@
 [% pair.key %] {
 [%          FOREACH subpair IN pair.value.pairs -%] 
 [%-             INCLUDE "metaconfig/ganesha/2.1/attribute.tt" pair=subpair FILTER indent %]
-[%      END -%] 
+[%          END -%] 
 }
 [%-     CASE block_array -%]
 [%          FOREACH block IN pair.value -%]
@@ -31,7 +29,7 @@
 [%              END -%] 
 }
 [%          END -%] 
-    [%- CASE -%]
+[%-     CASE -%]
 [%-         pair.key -%] =
 [%-         SWITCH pair.key -%]
 [%-             CASE [ "Filesystem_id" ] -%]
@@ -40,12 +38,6 @@
  [%                 pair.value.join(',') -%]
 [%-             CASE booleans -%]
  [%                 pair.value ? 'TRUE' : 'FALSE' -%]
-[%-             CASE long_or_never -%]
-[%-                 IF (pair.value.match('^-1$')) -%]
- Never
-[%-                 ELSE -%]
- [%                     pair.value -%]
-[%-                 END -%]
 [%-             CASE -%]
 [%-                 IF (pair.value.match('^(-?\d+)$')) -%]
  [%                     pair.value -%]

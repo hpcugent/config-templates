@@ -1,7 +1,7 @@
 Tests for stat_exporter gpfs
 ---
 multiline
-metaconfigservice=/etc/ganesha/ganesha.nfsd.conf
+/etc/ganesha/ganesha.nfsd.conf
 ---
 ^STAT_EXPORTER {
 ^\s{4}Access\s=\s"localhost";

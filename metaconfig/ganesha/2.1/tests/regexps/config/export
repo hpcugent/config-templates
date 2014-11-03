@@ -1,7 +1,7 @@
 Tests for export config
 ---
 multiline
-metaconfigservice=/etc/ganesha/ganesha.nfsd.conf
+/etc/ganesha/ganesha.nfsd.conf
 ---
 ^EXPORT \{$ ### COUNT 2
 ^\s{4}CLIENT \{ $ ### COUNT 3

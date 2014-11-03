@@ -1,7 +1,7 @@
 Tests for cacheinode config
 ---
 multiline
-metaconfigservice=/etc/ganesha/ganesha.nfsd.conf
+/etc/ganesha/ganesha.nfsd.conf
 ---
 ^CacheInode {
 ^\s{4}Use_Getattr_Directory_Invalidation\s=\s0;

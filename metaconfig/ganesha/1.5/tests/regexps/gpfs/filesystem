@@ -1,7 +1,7 @@
 Tests for filesystem gpfs
 ---
 multiline
-metaconfigservice=/etc/ganesha/ganesha.nfsd.conf
+/etc/ganesha/ganesha.nfsd.conf
 ---
 ^FileSystem {
 ^\s{4}Umask\s=\s0000;

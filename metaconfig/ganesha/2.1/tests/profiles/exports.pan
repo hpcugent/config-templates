@@ -20,7 +20,7 @@ prefix "/software/components/metaconfig/services/{/etc/ganesha/ganesha.nfsd.conf
 "Clients" = list("*.domain");
 
 prefix "/software/components/metaconfig/services/{/etc/ganesha/ganesha.nfsd.conf}/contents/exports/1";
-"Export_id" = 77 ;
+"Export_id" = 77;
 "Path" = "/gpfs/scratchtest/data/gent";
 "Pseudo" = "/user/data/gent";
 "Protocols" = list('4');
