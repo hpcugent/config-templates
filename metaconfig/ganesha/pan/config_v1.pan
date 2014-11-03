@@ -1,4 +1,4 @@
-unique template metaconfig/ganesha/config;
+unique template metaconfig/ganesha/config_v1;
 
 variable GANESHA_FSAL ?= undef;
 variable GANESHA_SERVICE ?= format('nfs-ganesha-%s',GANESHA_FSAL);
