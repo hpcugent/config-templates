@@ -23,4 +23,4 @@ metaconfigservice=/etc/ganesha/ganesha.nfsd.conf
 ^\s{4}Path = "/gpfs/scratchtest/data/gent";$
 ^\s{4}Pseudo = "/user/data/gent";$
 ^\s{4}Tag = "data";$
-
+^EXPORT \{\n(\s{4}.*\n)*\}$ ### COUNT 2
