@@ -25,14 +25,14 @@
 [%-     CASE block_type -%]
 [% pair.key %] {
 [%          FOREACH subpair IN pair.value.pairs -%] 
-[%-             INCLUDE "metaconfig/ganesha/2.1/attribute.tt" pair=subpair FILTER indent %]
+[%-             INCLUDE "metaconfig/ganesha/2.2/attribute.tt" pair=subpair FILTER indent %]
 [%          END -%] 
 }
 [%-     CASE block_array -%]
 [%          FOREACH block IN pair.value -%]
 [%              pair.key %] { 
 [%              FOREACH subpair IN block.pairs -%] 
-[%-                 INCLUDE "metaconfig/ganesha/2.1/attribute.tt" pair=subpair FILTER indent %]
+[%-                 INCLUDE "metaconfig/ganesha/2.2/attribute.tt" pair=subpair FILTER indent %]
 [%              END -%] 
 }
 [%          END -%] 

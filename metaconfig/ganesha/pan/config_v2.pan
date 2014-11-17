@@ -9,5 +9,5 @@ bind "/software/components/metaconfig/services/{/etc/ganesha/ganesha.nfsd.conf}/
 
 prefix "/software/components/metaconfig/services/{/etc/ganesha/ganesha.nfsd.conf}";
 "daemon" = {if (CTDB_MANAGES_GANESHA) { null } else { list(GANESHA_SERVICE) }};
-"module" = "ganesha/2.1/main";
+"module" = "ganesha/2.2/main";
 
