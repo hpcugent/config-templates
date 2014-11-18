@@ -2,9 +2,9 @@ unique template metaconfig/logstash/forwarder;
 
 include 'metaconfig/logstash/schema';
 
-bind "/software/components/metaconfig/services/{/etc/logstash/forwarder.conf}/contents" = type_logstash_forwarder;
+bind "/software/components/metaconfig/services/{/etc/logstash-forwarder}/contents" = type_logstash_forwarder;
 
-prefix "/software/components/metaconfig/services/{/etc/logstash/forwarder.conf}";
+prefix "/software/components/metaconfig/services/{/etc/logstash-forwarder}";
 "daemon/0" = "logstash-forwarder";
 "owner" = "root";
 "group" = "root";

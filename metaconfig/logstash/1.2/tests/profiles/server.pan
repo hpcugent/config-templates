@@ -17,6 +17,14 @@ prefix "/software/components/metaconfig/services/{/etc/logstash/conf.d/logstash.
     "port", 12201,
 )));
 
+"input/plugins" = append(nlist("lumberjack", nlist(
+    "type", "lumberjack",
+    "port", 5043,
+    "ssl_certificate", "/software/components/ccm/cert_file",
+    "ssl_key", "/software/components/ccm/key_file",
+)));
+    
+    
 "filter/conditionals" = append(nlist(
     "type", "ifelseif",
     "expr", list(nlist(
