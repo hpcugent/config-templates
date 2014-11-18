@@ -1,7 +1,7 @@
 Base test for forwarder
 ---
 multiline
-/etc/logstash/forwarder.conf
+/etc/logstash-forwarder
 ---
 ^\{$
 ^\s{4}"network": \{$
