@@ -1,8 +1,0 @@
-OpenNebula vnet leases template full test
----
-multiline
----
-^LEASES\s?=\s?\[IP\=10.141.8.30\,\s?MAC\=AA:00:00:80:01:00\]$
-^NETWORK\s?=\s?"br100"$
-^LEASES\s?=\s?\[IP\=172.24.8.30\,\s?MAC\=AA:00:00:80:01:01\]$
-^NETWORK\s?=\s?"br101"$

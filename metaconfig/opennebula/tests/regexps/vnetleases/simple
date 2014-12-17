@@ -1,6 +1,0 @@
-OpenNebula simple vnet leases template test
----
-multiline
----
-^LEASES\s?=\s*\[.+\]\s*$
-^NETWORK\s?=\s*".+"\s*$
