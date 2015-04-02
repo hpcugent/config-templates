@@ -1,5 +1,0 @@
-device {
-[%  FOREACH pair IN device.pairs -%]
-[%      INCLUDE metaconfig/multipath/attribute.tt FILTER indent %]
-[%  END -%]
-}

@@ -1,4 +1,0 @@
-[%- FOREACH match IN desc -%]
-browsermatch "[% match.match %]" [% match.names.join(' ') %]
-[% END -%]
- 

@@ -1,3 +1,0 @@
-[% FOREACH rule IN main -%]
-[%- rule.output %] ([% rule.frequency %]) = [% rule.method %] [% rule.input %]
-[% END %]

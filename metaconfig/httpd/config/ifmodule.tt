@@ -1,8 +1,0 @@
-[%- IF desc.exists('ifmodules') -%]
-[%-     FOREACH ifmodnd IN desc.ifmodules -%]
-<ifmodule [% ifmodnd.name %]>
-[%                  INCLUDE metaconfig/httpd/config/ifmodule_norecursion.tt desc=ifmodnd FILTER indent %]
-</ifmodule>
-[%      END -%]
-[%- END -%]
-[%-  INCLUDE metaconfig/httpd/config/ifmodule_norecursion.tt desc=desc FILTER indent -%]

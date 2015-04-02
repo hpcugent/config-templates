@@ -1,3 +1,0 @@
-[%- FOREACH i IN interfaces.pairs -%]
-SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="[% i.value FILTER lower %]", ATTR{type}=="1", NAME="[% i.key %]"
-[% END -%]

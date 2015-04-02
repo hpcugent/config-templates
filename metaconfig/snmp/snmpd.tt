@@ -1,2 +1,0 @@
-[% INCLUDE 'metaconfig/snmp/field.tt' name='group' field=group %]
-[% INCLUDE 'metaconfig/snmp/main.tt' main=main %]

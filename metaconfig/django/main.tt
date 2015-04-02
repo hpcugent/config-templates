@@ -1,3 +1,0 @@
-[%- FOR pair IN config.pairs %]
-[%- pair.key.upper -%] = ('[%  pair.value.join("', '") %]',)
-[% END -%]

@@ -1,3 +1,0 @@
-[%- FOREACH incl IN desc -%] 
-include [% incl %]
-[% END -%]
