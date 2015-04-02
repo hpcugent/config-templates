@@ -1,7 +1,0 @@
-Base test for snmp
----
-multiline
-metaconfigservice=/etc/snmp/snmp.conf
----
-^mibs\s+\S+$
-^mibdirs\s+\S+$

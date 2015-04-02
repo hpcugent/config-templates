@@ -1,3 +1,0 @@
-[%- FOREACH a IN desc -%]
-[% a.type %]alias [% a.url %] [% a.destination %]
-[% END -%]

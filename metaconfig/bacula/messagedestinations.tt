@@ -1,7 +1,0 @@
-[%- FOREACH message IN messages -%]
-[%      message.destination %] =
-[%-     IF message.address -%]
- [%         message.address %] =
-[%-     END -%]
- [%     message.types.join(', ') -%]
-[%- END -%]

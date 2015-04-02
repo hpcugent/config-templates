@@ -1,8 +1,0 @@
-Base test for bwctl_bwctlrc
----
-multiline
-/var/lib/bwctl/.bwctlrc
----
-^iperf_port\s+5001$
-^allow_unsync\s+1$
-^control_timeout\s+7200$

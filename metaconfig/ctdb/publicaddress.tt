@@ -1,3 +1,0 @@
-[%-  FOREACH adr IN addresses -%]
-[%      adr.network_name%] [% adr.network_interface %]
-[% END -%]
